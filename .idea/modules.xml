@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot_main.iml" group="pupperbot" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot_test.iml" group="pupperbot" />
+    </modules>
+  </component>
+</project>
