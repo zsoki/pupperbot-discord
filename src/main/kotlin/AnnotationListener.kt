@@ -6,7 +6,7 @@ class AnnotationListener {
 
     @EventSubscriber
     fun onReadyEvent(event: ReadyEvent) {
-        print("Ready!")
+        Main.listenForCommand()
     }
 
     @EventSubscriber
