@@ -1,10 +1,11 @@
 import sx.blah.discord.api.IDiscordClient
 import sx.blah.discord.handle.obj.Permissions
+import sx.blah.discord.handle.obj.Status
 import java.util.*
 
 object Main {
 
-    lateinit var pupperBot : IDiscordClient
+    lateinit var pupperBot: IDiscordClient
 
     @JvmStatic fun main(args: Array<String>) {
 
@@ -24,20 +25,30 @@ object Main {
 
     fun listenForCommand() {
 
-        print("₍ᐢ•ﻌ•ᐢ₎ > ")
-        val command = readLine()
+        while (true) {
 
-        if (command == "login") {
-            pupperBot.login()
-            return
-        } else if (command == "logout") {
-            pupperBot.logout()
-            return
-        } else {
-            println("Bork? - Unrecognized command.")
+            print("₍ᐢ•ﻌ•ᐢ₎ > ")
+
+            val input = readLine()?.split(' ') ?: continue
+            val command = input[0]
+
+            when (command) {
+                "login" -> {
+                    pupperBot.login()
+                    return
+                }
+                "logout" -> {
+                    pupperBot.logout()
+                    return
+                }
+                "playing" -> {
+                    if (input.size > 1) {
+                        pupperBot.changeStatus(Status.game(input.takeLast(input.size - 1).reduce { s1, s2 -> "$s1 $s2" }))
+                    }
+                }
+                else -> println("Bork? - Unrecognized command.")
+            }
         }
-
-        listenForCommand()
     }
 
     private fun createInviteLink() {
@@ -45,6 +56,3 @@ object Main {
         print("Invite link: https://discordapp.com/api/oauth2/authorize?client_id=${pupperBot.applicationClientID}&scope=bot&permissions=$permissions\n")
     }
 }
-
-
-
