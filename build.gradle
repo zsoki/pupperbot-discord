@@ -6,6 +6,7 @@ buildscript {
     ext.rxjava_version = '2.0.5'
     ext.fuel_version = '1.4.0'
     ext.discord4j_version = '2.7.0:shaded'
+    ext.kodein_version = '3.2.0'
 
     repositories {
         mavenCentral()
@@ -43,4 +44,7 @@ dependencies {
 
     // Reactive
     compile "io.reactivex.rxjava2:rxjava:$rxjava_version"
+
+    // DI
+    compile "com.github.salomonbrys.kodein:kodein:$kodein_version"
 }

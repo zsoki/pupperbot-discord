@@ -1,22 +1,23 @@
-import sx.blah.discord.api.IDiscordClient
+import com.github.salomonbrys.kodein.instance
+import common.PupperBot
+import common.TokenProvider
+import di.kodein
+import listeners.AnnotationListener
 import sx.blah.discord.handle.obj.Permissions
 import sx.blah.discord.handle.obj.Status
 import java.util.*
 
-object Main {
+object PupperBotApplication {
 
-    lateinit var pupperBot: IDiscordClient
+    private val pupperBot: PupperBot by kodein.instance()
 
     @JvmStatic fun main(args: Array<String>) {
 
         if (args.count() < 1) throw RuntimeException("Need at least 1 argument! (Token)")
 
-        val client = PupperBot().createClient(args[0], false) ?: throw RuntimeException("Failed to create client.")
+        TokenProvider.token = args[0]
 
-        pupperBot = client
-
-        val dispatcher = pupperBot.dispatcher
-        dispatcher.registerListener(AnnotationListener())
+        pupperBot.client.dispatcher.registerListener(AnnotationListener())
 
         createInviteLink()
 
@@ -27,32 +28,30 @@ object Main {
 
         while (true) {
 
-            print("₍ᐢ•ﻌ•ᐢ₎ > ")
-
             val input = readLine()?.split(' ') ?: continue
             val command = input[0]
 
             when (command) {
                 "login" -> {
-                    pupperBot.login()
+                    pupperBot.client.login()
                     return
                 }
                 "logout" -> {
-                    pupperBot.logout()
+                    pupperBot.client.logout()
                     return
                 }
                 "playing" -> {
                     if (input.size > 1) {
-                        pupperBot.changeStatus(Status.game(input.takeLast(input.size - 1).reduce { s1, s2 -> "$s1 $s2" }))
+                        pupperBot.client.changeStatus(Status.game(input.takeLast(input.size - 1).reduce { s1, s2 -> "$s1 $s2" }))
                     }
                 }
-                else -> println("Bork? - Unrecognized command.")
+                else -> println("Unrecognized command.")
             }
         }
     }
 
     private fun createInviteLink() {
         val permissions = Permissions.generatePermissionsNumber(EnumSet.copyOf(mutableListOf(Permissions.SEND_MESSAGES, Permissions.READ_MESSAGES)))
-        print("Invite link: https://discordapp.com/api/oauth2/authorize?client_id=${pupperBot.applicationClientID}&scope=bot&permissions=$permissions\n")
+        print("Invite link: https://discordapp.com/api/oauth2/authorize?client_id=${pupperBot.client.applicationClientID}&scope=bot&permissions=$permissions\n")
     }
 }

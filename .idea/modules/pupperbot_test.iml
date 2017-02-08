@@ -51,6 +51,7 @@
     <orderEntry type="library" name="Gradle: com.github.kittinunf.fuel:fuel-rxjava:1.4.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.austinv11:Discord4j:shaded:2.7.0" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex.rxjava2:rxjava:2.0.5" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.salomonbrys.kodein:kodein:3.2.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-runtime:1.1.0-beta-22" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex:rxjava:1.2.5" level="project" />
     <orderEntry type="library" name="Gradle: com.github.kittinunf.fuel:fuel:1.4.0" level="project" />
@@ -70,6 +71,7 @@
     <orderEntry type="library" name="Gradle: com.googlecode.soundlibs:tritonus-share:0.3.7.4" level="project" />
     <orderEntry type="library" name="Gradle: org.tritonus:tritonus-dsp:0.3.6" level="project" />
     <orderEntry type="library" name="Gradle: org.reactivestreams:reactive-streams:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.salomonbrys.kodein:kodein-core:3.2.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.kittinunf.result:result:1.0.5" level="project" />
     <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
