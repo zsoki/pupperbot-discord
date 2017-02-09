@@ -1,9 +1,9 @@
-package giphy
+package hu.suppoze.pupperbot.giphy
 
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.google.gson.Gson
 
-data class GiphyRandomResponse(val data: GiphyRandomResponseData, val meta: GiphyMeta) {
+data class GiphyRandomResponse(val data: GiphyRandomResponse.GiphyRandomResponseData, val meta: GiphyRandomResponse.GiphyMeta) {
 
     class Deserializer : ResponseDeserializable<GiphyRandomResponse> {
         override fun deserialize(content: String): GiphyRandomResponse? = Gson().fromJson(content, GiphyRandomResponse::class.java)

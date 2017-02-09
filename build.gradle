@@ -7,6 +7,7 @@ buildscript {
     ext.fuel_version = '1.4.0'
     ext.discord4j_version = '2.7.0:shaded'
     ext.kodein_version = '3.2.0'
+    ext.rome_version = '1.7.1'
 
     repositories {
         mavenCentral()
@@ -47,4 +48,7 @@ dependencies {
 
     // DI
     compile "com.github.salomonbrys.kodein:kodein:$kodein_version"
+    
+    // RSS
+    compile "com.rometools:rome:$rome_version"
 }

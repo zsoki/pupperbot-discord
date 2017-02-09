@@ -1,8 +1,8 @@
-package di
+package hu.suppoze.pupperbot.di
 
 import com.github.salomonbrys.kodein.*
-import common.PupperBot
-import common.TokenProvider
+import hu.suppoze.pupperbot.common.PupperBot
+import hu.suppoze.pupperbot.common.TokenProvider
 import sx.blah.discord.api.ClientBuilder
 import sx.blah.discord.api.IDiscordClient
 

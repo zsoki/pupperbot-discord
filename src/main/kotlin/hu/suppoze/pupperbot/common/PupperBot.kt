@@ -1,4 +1,4 @@
-package common
+package hu.suppoze.pupperbot.common
 
 import sx.blah.discord.api.IDiscordClient
 

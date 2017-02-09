@@ -1,15 +1,15 @@
-package giphy
+package hu.suppoze.pupperbot.giphy
 
-import common.Command
+import hu.suppoze.pupperbot.common.Command
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent
 
-class GiphyCommand(val event: MessageReceivedEvent, val tag: String) : Command {
+class GiphyCommand(val event: MessageReceivedEvent, val tag: String) : Command<String> {
 
-    private val onNext: (String) -> Unit = {
+    override val onNext: (String) -> Unit = {
         event.message.reply(it)
     }
 
-    private val  onError: ((t: Throwable) -> Unit)? = {
+    override val onError: (Throwable) -> Unit = {
         event.message.channel.sendMessage("Error during giphy request!")
     }
 

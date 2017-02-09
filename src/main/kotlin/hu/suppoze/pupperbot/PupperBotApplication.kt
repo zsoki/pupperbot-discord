@@ -1,8 +1,10 @@
+package hu.suppoze.pupperbot
+
 import com.github.salomonbrys.kodein.instance
-import common.PupperBot
-import common.TokenProvider
-import di.kodein
-import listeners.AnnotationListener
+import hu.suppoze.pupperbot.common.PupperBot
+import hu.suppoze.pupperbot.common.TokenProvider
+import hu.suppoze.pupperbot.di.kodein
+import hu.suppoze.pupperbot.listeners.AnnotationListener
 import sx.blah.discord.handle.obj.Permissions
 import sx.blah.discord.handle.obj.Status
 import java.util.*

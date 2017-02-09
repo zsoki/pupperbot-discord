@@ -1,4 +1,4 @@
-package giphy
+package hu.suppoze.pupperbot.giphy
 
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.rx.rx_object

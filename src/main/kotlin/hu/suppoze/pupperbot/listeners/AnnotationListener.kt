@@ -1,12 +1,15 @@
-package listeners
+package hu.suppoze.pupperbot.listeners
 
 import com.github.salomonbrys.kodein.instance
-import common.Command
-import common.CommandError
-import common.PupperBot
-import di.kodein
-import giphy.GiphyCommand
-import help.HelpCommand
+import hu.suppoze.pupperbot.PupperBotApplication
+import hu.suppoze.pupperbot.common.Command
+import hu.suppoze.pupperbot.common.CommandError
+import hu.suppoze.pupperbot.common.PupperBot
+import hu.suppoze.pupperbot.di.kodein
+import hu.suppoze.pupperbot.giphy.GiphyCommand
+import hu.suppoze.pupperbot.help.HelpCommand
+import hu.suppoze.pupperbot.rss.RssCommand
+import hu.suppoze.pupperbot.rss.RssService
 import sx.blah.discord.api.events.EventSubscriber
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent
 import sx.blah.discord.handle.impl.events.ReadyEvent
@@ -34,13 +37,14 @@ class CommandFactory(val event: MessageReceivedEvent) {
 
     val commandLine: String = event.message.content.trimStart(';')
 
-    fun  build(): Command {
+    fun  build(): Command<*> {
         val words = commandLine.split(' ')
         return determineAndCreateCommand(words[0], words.drop(1))
     }
 
-    private fun determineAndCreateCommand(command: String, params: List<String>): Command {
+    private fun determineAndCreateCommand(command: String, params: List<String>): Command<*> {
         when (command) {
+            "rsstest" -> return RssCommand(event)
             "giphy" -> return GiphyCommand(event, params.reduce { s1, s2 -> "$s1+$s2" })
             "help" -> return HelpCommand(event)
             else -> return CommandError(event)
