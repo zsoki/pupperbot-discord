@@ -2,18 +2,15 @@ group 'hu.dogecrib.pupperbot'
 version '0.1'
 
 buildscript {
-    ext.kotlin_version = '1.1.0-beta-22'
-    ext.rxjava_version = '2.0.5'
-    ext.fuel_version = '1.4.0'
+    ext.kotlin_version = '1.1.0'
+    ext.rxjava_version = '2.0.7'
+    ext.fuel_version = '1.5.0'
     ext.discord4j_version = '2.7.0:shaded'
     ext.kodein_version = '3.2.0'
     ext.rome_version = '1.7.1'
 
     repositories {
         mavenCentral()
-        maven {
-            url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
-        }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -27,9 +24,6 @@ repositories {
     mavenCentral()
     maven {
         url  "https://jitpack.io"
-    }
-    maven {
-        url "http://dl.bintray.com/kotlin/kotlin-eap-1.1"
     }
 }
 
