@@ -19,5 +19,4 @@ class RssService {
             it.onCompleted()
         }
     }
-
 }

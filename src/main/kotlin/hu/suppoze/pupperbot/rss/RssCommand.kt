@@ -2,7 +2,7 @@ package hu.suppoze.pupperbot.rss
 
 import com.rometools.rome.feed.synd.SyndFeed
 import hu.suppoze.pupperbot.common.Command
-import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent
 import sx.blah.discord.util.EmbedBuilder
 
 class RssCommand(val event: MessageReceivedEvent) : Command<SyndFeed> {

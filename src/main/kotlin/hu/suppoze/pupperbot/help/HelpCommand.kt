@@ -1,7 +1,7 @@
 package hu.suppoze.pupperbot.help
 
 import hu.suppoze.pupperbot.common.Command
-import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent
 
 class HelpCommand(val event: MessageReceivedEvent) : Command<Any> {
 

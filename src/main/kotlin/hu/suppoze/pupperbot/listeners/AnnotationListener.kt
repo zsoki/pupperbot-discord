@@ -2,19 +2,12 @@ package hu.suppoze.pupperbot.listeners
 
 import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.PupperBotApplication
-import hu.suppoze.pupperbot.common.Command
-import hu.suppoze.pupperbot.common.CommandError
 import hu.suppoze.pupperbot.common.CommandFactory
 import hu.suppoze.pupperbot.common.PupperBot
 import hu.suppoze.pupperbot.di.kodein
-import hu.suppoze.pupperbot.giphy.GiphyCommand
-import hu.suppoze.pupperbot.help.HelpCommand
-import hu.suppoze.pupperbot.rss.RssCommand
-import hu.suppoze.pupperbot.rss.RssService
 import sx.blah.discord.api.events.EventSubscriber
-import sx.blah.discord.handle.impl.events.MessageReceivedEvent
 import sx.blah.discord.handle.impl.events.ReadyEvent
-import sx.blah.discord.handle.obj.Status
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent
 
 class AnnotationListener {
 
@@ -22,7 +15,7 @@ class AnnotationListener {
 
     @EventSubscriber
     fun onReadyEvent(event: ReadyEvent) {
-        pupperBot.client.changeStatus(Status.game(";help for commands"))
+        pupperBot.client.online(";help for commands")
         PupperBotApplication.listenForCommand()
     }
 

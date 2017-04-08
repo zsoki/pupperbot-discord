@@ -6,7 +6,7 @@ import hu.suppoze.pupperbot.common.CommandFactory.Commands.RSS
 import hu.suppoze.pupperbot.giphy.GiphyCommand
 import hu.suppoze.pupperbot.help.HelpCommand
 import hu.suppoze.pupperbot.rss.RssCommand
-import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent
 
 class CommandFactory(val event: MessageReceivedEvent) {
 
