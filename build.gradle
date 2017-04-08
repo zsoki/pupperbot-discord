@@ -2,16 +2,22 @@ group 'hu.dogecrib.pupperbot'
 version '0.1'
 
 buildscript {
-    ext.kotlin_version = '1.1.0'
-    ext.rxjava_version = '2.0.7'
+    ext.kotlin_version = '1.1.2-eap-44'
+    ext.rxjava_version = '2.0.8'
     ext.fuel_version = '1.5.0'
-    ext.discord4j_version = '2.7.0:shaded'
-    ext.kodein_version = '3.2.0'
+    ext.discord4j_version = '2.7.0'
+    ext.kodein_version = '3.3.0'
     ext.rome_version = '1.7.1'
+    ext.xerial_sqlite_jdbc = '3.16.1'
+    ext.requery = '1.2.1'
 
     repositories {
         mavenCentral()
+        maven {
+            url "https://dl.bintray.com/kotlin/kotlin-eap-1.1"
+        }
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -19,11 +25,18 @@ buildscript {
 
 apply plugin: 'kotlin'
 
+kapt {
+    generateStubs = true
+}
+
 repositories {
     jcenter()
     mavenCentral()
     maven {
         url  "https://jitpack.io"
+    }
+    maven {
+        url "https://dl.bintray.com/kotlin/kotlin-eap-1.1"
     }
 }
 
@@ -45,4 +58,9 @@ dependencies {
     
     // RSS
     compile "com.rometools:rome:$rome_version"
+
+    // Database
+    compile "org.xerial:sqlite-jdbc:$xerial_sqlite_jdbc"
+    compile "io.requery:requery:$requery"
+    kapt "io.requery:requery-processor:$requery"
 }
