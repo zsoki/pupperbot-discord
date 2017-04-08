@@ -6,7 +6,7 @@ import rx.Observable
 import java.io.InputStreamReader
 import java.net.URL
 
-class RssService() {
+class RssService {
 
     fun getFeed(): Observable<SyndFeed> {
         return Observable.create<SyndFeed> {
