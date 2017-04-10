@@ -62,6 +62,8 @@ dependencies {
     compile "com.rometools:rome:$rome_version"
 
     // Database
+    compile "org.xerial:sqlite-jdbc:$xerial_sqlite_jdbc"
     compile "io.requery:requery:$requery"
+    compile "io.requery:requery-kotlin:$requery"
     kapt "io.requery:requery-processor:$requery"
 }

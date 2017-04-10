@@ -6,7 +6,6 @@ import hu.suppoze.pupperbot.common.TokenProvider
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.listeners.AnnotationListener
 import sx.blah.discord.handle.obj.Permissions
-import sx.blah.discord.handle.obj.Status
 import java.util.*
 
 object PupperBotApplication {
@@ -44,7 +43,7 @@ object PupperBotApplication {
                 }
                 "playing" -> {
                     if (input.size > 1) {
-                        pupperBot.client.changeStatus(Status.game(input.takeLast(input.size - 1).reduce { s1, s2 -> "$s1 $s2" }))
+                        pupperBot.client.online(input.takeLast(input.size - 1).reduce { s1, s2 -> "$s1 $s2" })
                     }
                 }
                 else -> println("Unrecognized command.")
