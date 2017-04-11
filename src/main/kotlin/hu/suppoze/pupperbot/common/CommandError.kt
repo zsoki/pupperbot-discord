@@ -1,6 +1,6 @@
 package hu.suppoze.pupperbot.common
 
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
 
 class CommandError(val event: MessageReceivedEvent) : Command<Any> {
 

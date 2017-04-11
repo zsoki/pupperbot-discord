@@ -1,26 +1,24 @@
 package hu.suppoze.pupperbot.rss
 
-import io.requery.Entity
-import io.requery.Generated
-import io.requery.Key
-import io.requery.Persistable
+import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.dao.IntEntity
+import org.jetbrains.exposed.dao.IntEntityClass
+import org.jetbrains.exposed.dao.IntIdTable
 
-@Entity
-interface RssEntryEntity : Persistable {
-    @get:Key
-    @get:Generated
-    val id: Int
-
-    var title: String
-    var author: String
-    var authorUrl: String
-    var description: String
-    var link: String
+object RssEntries : IntIdTable() {
+    val title = varchar("title", 128)
+    val author = varchar("author", 128)
+    val authorUrl = varchar("authorUrl", 256)
+    val description = varchar("description", 512)
+    val link = varchar("link", 256)
 }
 
-class RssEntry(override var title: String, override var author: String, override var authorUrl: String, override var description: String, override var link: String) : RssEntryEntity {
+class RssEntry(id: EntityID<Int>) : IntEntity(id) {
+    companion object: IntEntityClass<RssEntry>(RssEntries)
 
-    override val id: Int
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
-
+    var title by RssEntries.title
+    var author by RssEntries.author
+    var authorUrl by RssEntries.authorUrl
+    var description by RssEntries.description
+    var link by RssEntries.link
 }

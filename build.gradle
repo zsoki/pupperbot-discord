@@ -6,11 +6,11 @@ buildscript {
     ext.rxjava_version = '2.0.8'
     ext.fuel_version = '1.5.0'
     ext.gson_version = '2.8.0'
-    ext.discord4j_version = 'dev-SNAPSHOT'
+    ext.discord4j_version = '2.7.0'
     ext.kodein_version = '3.3.0'
     ext.rome_version = '1.7.1'
     ext.xerial_sqlite_jdbc = '3.16.1'
-    ext.requery = '1.2.1'
+    ext.exposed = '0.7.6'
 
     repositories {
         mavenCentral()
@@ -39,6 +39,9 @@ repositories {
     maven {
         url "https://dl.bintray.com/kotlin/kotlin-eap-1.1"
     }
+    maven {
+        url "https://dl.bintray.com/kotlin/exposed"
+    }
 }
 
 dependencies {
@@ -63,7 +66,5 @@ dependencies {
 
     // Database
     compile "org.xerial:sqlite-jdbc:$xerial_sqlite_jdbc"
-    compile "io.requery:requery:$requery"
-    compile "io.requery:requery-kotlin:$requery"
-    kapt "io.requery:requery-processor:$requery"
+    compile "org.jetbrains.exposed:exposed:$exposed"
 }

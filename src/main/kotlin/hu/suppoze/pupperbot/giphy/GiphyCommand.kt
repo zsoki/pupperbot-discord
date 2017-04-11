@@ -1,7 +1,7 @@
 package hu.suppoze.pupperbot.giphy
 
 import hu.suppoze.pupperbot.common.Command
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
 
 class GiphyCommand(val event: MessageReceivedEvent, val tag: String) : Command<String> {
 

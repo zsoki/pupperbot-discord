@@ -6,8 +6,9 @@ import hu.suppoze.pupperbot.common.CommandFactory
 import hu.suppoze.pupperbot.common.PupperBot
 import hu.suppoze.pupperbot.di.kodein
 import sx.blah.discord.api.events.EventSubscriber
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
 import sx.blah.discord.handle.impl.events.ReadyEvent
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent
+import sx.blah.discord.handle.obj.Status
 
 class AnnotationListener {
 
@@ -15,7 +16,7 @@ class AnnotationListener {
 
     @EventSubscriber
     fun onReadyEvent(event: ReadyEvent) {
-        pupperBot.client.online(";help for commands")
+        pupperBot.client.changeStatus(Status.game(";help for commands"))
         PupperBotApplication.listenForCommand()
     }
 
