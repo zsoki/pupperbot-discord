@@ -34,12 +34,9 @@ object PupperBotApplication {
             val command = input[0]
 
             when (command) {
-                "login" -> {
-                    pupperBot.client.login()
-                    return
-                }
                 "logout" -> {
                     pupperBot.client.logout()
+                    System.exit(0)
                     return
                 }
                 "playing" -> {

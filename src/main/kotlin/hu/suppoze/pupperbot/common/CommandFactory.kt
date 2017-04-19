@@ -1,34 +1,24 @@
 package hu.suppoze.pupperbot.common
 
-import hu.suppoze.pupperbot.common.CommandFactory.Commands.GIPHY
-import hu.suppoze.pupperbot.common.CommandFactory.Commands.HELP
-import hu.suppoze.pupperbot.common.CommandFactory.Commands.RSS
+import hu.suppoze.pupperbot.error.CommandError
 import hu.suppoze.pupperbot.giphy.GiphyCommand
 import hu.suppoze.pupperbot.help.HelpCommand
 import hu.suppoze.pupperbot.rss.RssCommand
-import sx.blah.discord.handle.impl.events.MessageReceivedEvent
 
-class CommandFactory(val event: MessageReceivedEvent) {
+class CommandFactory {
 
-    val commandLine: String = event.message.content.trimStart(';')
-
-    fun  build(): Command<*> {
-        val words = commandLine.split(' ')
-        return determineAndCreateCommand(words[0], words.drop(1))
+    fun  build(rawCommand: CommandParser.RawCommand) : Command<*> {
+        return determineAndCreateCommand(rawCommand)
     }
 
-    private fun determineAndCreateCommand(command: String, params: List<String>): Command<*> {
-        when (command) {
-            RSS -> return RssCommand(event)
-            GIPHY -> return GiphyCommand(event, params.reduce { s1, s2 -> "$s1+$s2" })
-            HELP -> return HelpCommand(event)
-            else -> return CommandError(event)
+    private fun determineAndCreateCommand(rawCommand: CommandParser.RawCommand): Command<*> {
+        when (rawCommand.command) {
+            CommandParser.CommandStrings.RSS -> return RssCommand(rawCommand)
+            CommandParser.CommandStrings.GIPHY -> return GiphyCommand(rawCommand)
+            CommandParser.CommandStrings.HELP -> return HelpCommand(rawCommand)
+            else -> return CommandError(rawCommand, "Error parsing your command! Type ;help to see available commands.")
         }
     }
 
-    internal object Commands {
-        const val RSS: String = "rss"
-        const val GIPHY: String = "giphy"
-        const val HELP: String = "help"
-    }
+
 }

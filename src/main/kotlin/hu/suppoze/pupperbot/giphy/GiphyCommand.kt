@@ -1,19 +1,27 @@
 package hu.suppoze.pupperbot.giphy
 
 import hu.suppoze.pupperbot.common.Command
-import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+import hu.suppoze.pupperbot.common.CommandParser
 
-class GiphyCommand(val event: MessageReceivedEvent, val tag: String) : Command<String> {
+class GiphyCommand(val rawCommand: CommandParser.RawCommand) : Command<String> {
 
     override val onNext: (String) -> Unit = {
-        event.message.reply(it)
+        rawCommand.event.message.channel.sendMessage("${rawCommand.rawParams}: $it")
     }
 
     override val onError: (Throwable) -> Unit = {
-        event.message.channel.sendMessage("Error during giphy request!")
+        rawCommand.event.message.author.orCreatePMChannel.sendMessage("Error during giphy request: ${it.message}")
+        it.printStackTrace()
     }
 
     override fun perform() {
+        val tag = rawCommand.rawParams
+
+        if (tag == null) {
+            onError(Throwable("Tag was null."))
+            return
+        }
+
         GiphyServer().requestRandomGiphyUrlByTag(tag)
                 .subscribe(onNext, onError)
     }
