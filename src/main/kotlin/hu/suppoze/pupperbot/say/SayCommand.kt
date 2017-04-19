@@ -2,6 +2,7 @@ package hu.suppoze.pupperbot.say
 
 import hu.suppoze.pupperbot.common.Command
 import hu.suppoze.pupperbot.common.CommandParser
+import io.reactivex.Observable
 
 class SayCommand(val rawCommand: CommandParser.RawCommand) : Command<Any> {
 
