@@ -50,7 +50,12 @@ object PupperBotApplication {
     }
 
     private fun createInviteLink() {
-        val permissions = Permissions.generatePermissionsNumber(EnumSet.copyOf(mutableListOf(Permissions.SEND_MESSAGES, Permissions.READ_MESSAGES)))
+        val permissions = Permissions.generatePermissionsNumber(
+                EnumSet.copyOf(
+                        mutableListOf(
+                                Permissions.SEND_MESSAGES,
+                                Permissions.READ_MESSAGES,
+                                Permissions.MANAGE_MESSAGES)))
         print("Invite link: https://discordapp.com/api/oauth2/authorize?client_id=${pupperBot.client.applicationClientID}&scope=bot&permissions=$permissions\n")
     }
 }

@@ -19,6 +19,7 @@ class CommandParser {
         const val RSS: String = "rss"
         const val GIPHY: String = "giphy"
         const val HELP: String = "help"
+        const val SAY: String = "say"
     }
 
     data class RawCommand(
