@@ -4,23 +4,22 @@ import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.common.CommandParser
 import hu.suppoze.pupperbot.di.kodein
-import org.jetbrains.exposed.sql.SchemaUtils.create
-import org.jetbrains.exposed.sql.transactions.transaction
+import hu.suppoze.pupperbot.rss.model.RssEntry
+import io.reactivex.schedulers.Schedulers
 import sx.blah.discord.util.EmbedBuilder
+import java.net.URL
 
 class RssCommand(val rawCommand: CommandParser.RawCommand) : UseCase<RssEntry> {
 
-    private val rssDatabaseDatasource: RssDatabase by kodein.instance()
+    private val rssDatabase: RssDatabase by kodein.instance()
+    private val rssServer: RssServer by kodein.instance()
 
     override val onNext: (RssEntry) -> Unit = {
-//        val entry = it.entries.first()!!
         val embed = EmbedBuilder()
                 .withTitle(it.title)
                 .withAuthorName(it.author)
-                .withAuthorUrl(it.authorUrl)
                 .withDesc(it.description)
                 .withUrl(it.link)
-//        if (it.image != null) embed.withImage(it.image.url)
         rawCommand.event.message.channel.sendMessage("", embed.build(), false)
     }
 
@@ -30,24 +29,16 @@ class RssCommand(val rawCommand: CommandParser.RawCommand) : UseCase<RssEntry> {
     }
 
     override fun execute() {
-
-        transaction {
-            create (RssEntries)
-            RssEntry.new {
-                title = "title"
-                author = "author"
-                authorUrl = "https://google.com"
-                link = "https://google.com"
-                description = "description"
-            }
-
-            rssDatabaseDatasource.getTestEntry()
-                    .subscribe(onNext, onError)
+        if (rawCommand.parameters == null || rawCommand.parameters.isEmpty()) {
+            onError (IllegalArgumentException("You need to add an RSS feed URL as a parameter"))
+            return
         }
 
-//        RssService().getFeed()
-//                .flatMap { feed -> feed.toEntities() }
-//                .flatMap { feed -> rssDatabaseDatasource.persistFeedAndGetNew(feed) }
+        // TODO: build observable
+//        rssServer.getFeed(URL(rawCommand.parameters[0]))
+//                .subscribeOn(Schedulers.io())
+//                .flatMap { feed -> rssDatabase.persistFeed(feed) }
+//                .observeOn(Schedulers.trampoline())
 //                .subscribe(onNext, onError)
     }
 }

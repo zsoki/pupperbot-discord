@@ -6,11 +6,11 @@ import io.reactivex.Observable
 import java.io.InputStreamReader
 import java.net.URL
 
-class RssService {
+class RssServer {
 
-    fun getFeed(): Observable<SyndFeed> = Observable.fromPublisher<SyndFeed> {
+    fun getFeed(feedUrl: URL): Observable<SyndFeed> = Observable.fromPublisher<SyndFeed> {
         try {
-            val feed = SyndFeedInput().build(InputStreamReader(URL("http://prog.hu/site/backend/proghu-rss.xml").openStream()))
+            val feed = SyndFeedInput().build(InputStreamReader(feedUrl.openStream()))
             it.onNext(feed)
         } catch(t: Throwable) {
             it.onError(t)
