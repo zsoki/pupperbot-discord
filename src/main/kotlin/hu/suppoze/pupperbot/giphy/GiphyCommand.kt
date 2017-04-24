@@ -1,9 +1,9 @@
 package hu.suppoze.pupperbot.giphy
 
-import hu.suppoze.pupperbot.common.Command
+import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.common.CommandParser
 
-class GiphyCommand(val rawCommand: CommandParser.RawCommand) : Command<String> {
+class GiphyCommand(val rawCommand: CommandParser.RawCommand) : UseCase<String> {
 
     override val onNext: (String) -> Unit = {
         rawCommand.event.message.channel.sendMessage("${rawCommand.rawParams}: $it")
@@ -14,7 +14,7 @@ class GiphyCommand(val rawCommand: CommandParser.RawCommand) : Command<String> {
         it.printStackTrace()
     }
 
-    override fun perform() {
+    override fun execute() {
         val tag = rawCommand.rawParams
 
         if (tag == null) {

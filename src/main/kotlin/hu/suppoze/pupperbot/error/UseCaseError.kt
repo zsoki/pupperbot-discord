@@ -1,10 +1,10 @@
 package hu.suppoze.pupperbot.error
 
-import hu.suppoze.pupperbot.common.Command
+import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.common.CommandParser
 import io.reactivex.Observable
 
-class CommandError(val rawCommand: CommandParser.RawCommand, val errorMessage: String) : Command<String> {
+class UseCaseError(val rawCommand: CommandParser.RawCommand, val errorMessage: String) : UseCase<String> {
 
     override val onNext: (String) -> Unit = {
         rawCommand.event.message.author.orCreatePMChannel.sendMessage(it)
@@ -15,7 +15,7 @@ class CommandError(val rawCommand: CommandParser.RawCommand, val errorMessage: S
         it.printStackTrace()
     }
 
-    override fun perform() {
+    override fun execute() {
         Observable.fromCallable { errorMessage }
                 .subscribe(onNext, onError)
     }

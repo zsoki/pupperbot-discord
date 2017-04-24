@@ -27,7 +27,7 @@ class AnnotationListener {
     fun onMessageReceiedEvent(event: MessageReceivedEvent) {
         if (event.message.content.startsWith(';')) {
             val rawCommand = commandParser.parse(event)
-            commandFactory.build(rawCommand).perform()
+            commandFactory.build(rawCommand).execute()
         }
     }
 }

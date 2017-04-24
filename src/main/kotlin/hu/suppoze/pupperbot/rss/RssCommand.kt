@@ -1,14 +1,14 @@
 package hu.suppoze.pupperbot.rss
 
 import com.github.salomonbrys.kodein.instance
-import hu.suppoze.pupperbot.common.Command
+import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.common.CommandParser
 import hu.suppoze.pupperbot.di.kodein
 import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.transactions.transaction
 import sx.blah.discord.util.EmbedBuilder
 
-class RssCommand(val rawCommand: CommandParser.RawCommand) : Command<RssEntry> {
+class RssCommand(val rawCommand: CommandParser.RawCommand) : UseCase<RssEntry> {
 
     private val rssDatabaseDatasource: RssDatabase by kodein.instance()
 
@@ -29,7 +29,7 @@ class RssCommand(val rawCommand: CommandParser.RawCommand) : Command<RssEntry> {
         it.printStackTrace()
     }
 
-    override fun perform() {
+    override fun execute() {
 
         transaction {
             create (RssEntries)

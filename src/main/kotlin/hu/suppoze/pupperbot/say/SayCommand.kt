@@ -1,17 +1,16 @@
 package hu.suppoze.pupperbot.say
 
-import hu.suppoze.pupperbot.common.Command
+import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.common.CommandParser
-import io.reactivex.Observable
 
-class SayCommand(val rawCommand: CommandParser.RawCommand) : Command<Any> {
+class SayCommand(val rawCommand: CommandParser.RawCommand) : UseCase<Any> {
 
     override val onNext: (Any) -> Unit
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
     override val onError: (Throwable) -> Unit
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
-    override fun perform() {
+    override fun execute() {
         if (rawCommand.rawParams == null || rawCommand.rawParams.isEmpty())
             return
 

@@ -21,12 +21,8 @@ val appModule = Kodein.Module {
 
 val databaseModule = Kodein.Module {
 
-    // TODO: other method of binding
-    bind<Database>() with eagerSingleton {
-        val db = Database.connect("jdbc:sqlite:pupperbot.sqlite", driver = "org.sqlite.JDBC")
-        TransactionManager.manager.defaultIsolationLevel = SQLiteConnection.TRANSACTION_SERIALIZABLE
-        db
-    }
+    constant("databaseUrl") with "jdbc:sqlite:pupperbot.sqlite"
+    constant("databaseDriver") with "org.sqlite.JDBC"
 
     bind<RssDatabase>() with singleton {
         RssDatabase()
