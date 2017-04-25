@@ -8,9 +8,9 @@ import java.net.URL
 
 class RssServer {
 
-    fun getFeed(feedUrl: URL): Observable<SyndFeed> = Observable.fromPublisher<SyndFeed> {
+    fun getFeed(feedUrl: String): Observable<SyndFeed> = Observable.fromPublisher<SyndFeed> {
         try {
-            val feed = SyndFeedInput().build(InputStreamReader(feedUrl.openStream()))
+            val feed = SyndFeedInput().build(InputStreamReader(URL(feedUrl).openStream()))
             it.onNext(feed)
         } catch(t: Throwable) {
             it.onError(t)

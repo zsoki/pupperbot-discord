@@ -7,6 +7,7 @@ import hu.suppoze.pupperbot.common.PupperBot
 import hu.suppoze.pupperbot.common.TokenProvider
 import hu.suppoze.pupperbot.rss.RssDatabase
 import hu.suppoze.pupperbot.rss.RssServer
+import hu.suppoze.pupperbot.rss.RssService
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.sqlite.SQLiteConnection
@@ -30,6 +31,7 @@ val databaseModule = Kodein.Module {
 
 val serverModule = Kodein.Module {
     bind<RssServer>() with singleton { RssServer() }
+    bind<RssService>() with singleton { RssService(instance(), instance()) }
 }
 
 val kodein = Kodein.lazy {

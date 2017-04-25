@@ -17,6 +17,8 @@ object RssEntries : IntIdTable() {
     val link = varchar("link", 512)
     val title = varchar("title", 128)
     val isPosted = bool("isPosted").default(false)
+    val saveTime = long("saveTime")
+
     val feed = reference("feed", RssFeeds)
 
 }
@@ -24,5 +26,6 @@ object RssEntries : IntIdTable() {
 object RssSubscriptions : IntIdTable() {
     val guildId = long("guildId")
     val channelId = long("channelId")
+
     val feed = reference("feed", RssFeeds)
 }

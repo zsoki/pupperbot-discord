@@ -26,6 +26,7 @@ class RssEntry(id: EntityID<Int>) : IntEntity(id) {
     var link by RssEntries.link
     var title by RssEntries.title
     var isPosted by RssEntries.isPosted
+    var saveTime by RssEntries.saveTime
 
     var feed by RssFeed referencedOn RssEntries.feed
 }
