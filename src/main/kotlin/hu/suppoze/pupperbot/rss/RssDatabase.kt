@@ -6,7 +6,6 @@ import hu.suppoze.pupperbot.rss.model.RssFeed
 import hu.suppoze.pupperbot.rss.model.RssSubscription
 import io.reactivex.Observable
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.joda.time.DateTime
 
 class RssDatabase {
 
