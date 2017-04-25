@@ -24,7 +24,6 @@ class RssEntry(id: EntityID<Int>) : IntEntity(id) {
     var author by RssEntries.author
     var description by RssEntries.description
     var link by RssEntries.link
-    var updatedDate by RssEntries.updatedDate
     var title by RssEntries.title
     var isPosted by RssEntries.isPosted
 

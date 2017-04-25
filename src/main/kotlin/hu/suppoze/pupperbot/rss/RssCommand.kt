@@ -4,23 +4,16 @@ import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.common.CommandParser
 import hu.suppoze.pupperbot.di.kodein
-import hu.suppoze.pupperbot.rss.model.RssEntry
-import io.reactivex.schedulers.Schedulers
-import sx.blah.discord.util.EmbedBuilder
+import hu.suppoze.pupperbot.rss.model.RssSubscription
 import java.net.URL
 
-class RssCommand(val rawCommand: CommandParser.RawCommand) : UseCase<RssEntry> {
+class RssCommand(val rawCommand: CommandParser.RawCommand) : UseCase<RssSubscription> {
 
     private val rssDatabase: RssDatabase by kodein.instance()
     private val rssServer: RssServer by kodein.instance()
 
-    override val onNext: (RssEntry) -> Unit = {
-        val embed = EmbedBuilder()
-                .withTitle(it.title)
-                .withAuthorName(it.author)
-                .withDesc(it.description)
-                .withUrl(it.link)
-        rawCommand.event.message.channel.sendMessage("", embed.build(), false)
+    override val onNext: (RssSubscription) -> Unit = {
+        rawCommand.event.message.channel.sendMessage("Subscribed to ${it.feed.title} RSS in channel #${rawCommand.event.channel.name}")
     }
 
     override val onError: (Throwable) -> Unit = {
@@ -34,11 +27,13 @@ class RssCommand(val rawCommand: CommandParser.RawCommand) : UseCase<RssEntry> {
             return
         }
 
-        // TODO: build observable
-//        rssServer.getFeed(URL(rawCommand.parameters[0]))
-//                .subscribeOn(Schedulers.io())
-//                .flatMap { feed -> rssDatabase.persistFeed(feed) }
-//                .observeOn(Schedulers.trampoline())
-//                .subscribe(onNext, onError)
+        val feedUrl = rawCommand.parameters[0]
+        val guildId = rawCommand.event.guild.longID
+        val channelId = rawCommand.event.channel.longID
+
+        rssServer.getFeed(URL(feedUrl))
+                .flatMap { syndFeed -> rssDatabase.persistFeed(syndFeed, feedUrl) }
+                .flatMap { dbFeed -> rssDatabase.persistSubscription(guildId, channelId, dbFeed) }
+                .subscribe(onNext, onError)
     }
 }
