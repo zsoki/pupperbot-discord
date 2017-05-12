@@ -1,0 +1,8 @@
+{
+  "command": [
+    "java",
+    "-jar",
+    "pupperbot-0.1.jar"
+  ],
+  "jarName": "pupperbot-0.1.jar"
+}

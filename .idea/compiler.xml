@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="pupperbot-bootloader_main" target="1.8" />
+      <module name="pupperbot-bootloader_test" target="1.8" />
       <module name="pupperbot_main" target="1.8" />
       <module name="pupperbot_test" target="1.8" />
     </bytecodeTargetLevel>
