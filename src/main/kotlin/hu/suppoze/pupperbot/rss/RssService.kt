@@ -1,40 +1,87 @@
 package hu.suppoze.pupperbot.rss
 
-import hu.suppoze.pupperbot.rss.model.RssEntry
-import hu.suppoze.pupperbot.rss.model.RssSubscription
+import com.github.salomonbrys.kodein.instance
+import hu.suppoze.pupperbot.common.PupperBot
+import hu.suppoze.pupperbot.di.kodein
+import hu.suppoze.pupperbot.rss.model.RssEntryDao
+import hu.suppoze.pupperbot.rss.model.RssFeedDao
+import hu.suppoze.pupperbot.rss.model.RssSubscriptionDao
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import kotlinx.coroutines.experimental.*
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
 import java.util.concurrent.TimeUnit
 
 @Suppress("EXPERIMENTAL_FEATURE_WARNING")
 class RssService(private val rssServer: RssServer, private val rssDatabase: RssDatabase) {
 
-    private val subscriptionJobs = hashMapOf<Int, Job>()
+    private val pupperBot: PupperBot by kodein.instance()
 
-    fun subscribe(subscription: RssSubscription,
-                  onNewEntry: (RssEntry) -> Unit,
-                  onFeedError: (Throwable) -> Unit) {
+    private val rssFeedUpdateJobs = hashMapOf<String, Job>()
 
-        val subscriptionJob = launch(CommonPool) {
-            rssUpdateJob(subscription, onNewEntry, onFeedError)
+    private val postToChannel: (SubToEntries) -> Unit = {
+        pupperBot.client.channels.find { channel -> channel.longID == it.sub.channelId }
+            ?.sendMessage("New post on that shitty RSS feed you subscribed to.")
+    }
+
+    private val onUpdateJobError: (Throwable) -> Unit ={
+        it.printStackTrace()
+    }
+
+    private var updateFrequency: Long = 5
+
+    fun startService(updateFrequencyInMinutes: Long = updateFrequency) {
+
+        updateFrequency = updateFrequencyInMinutes
+
+        rssDatabase.getFeeds()
+                .map {
+                    val subscriptions = transaction { it.subscriptions }.toList()
+                    startNewRssFeedUpdateJob(it, subscriptions)
+                }.subscribe()
+    }
+
+    private fun startNewRssFeedUpdateJob(feed: RssFeedDao, subscriptions: List<RssSubscriptionDao>) {
+
+        val feedUpdateJob = launch(CommonPool) {
+            rssFeedUpdateJob(feed, subscriptions)
         }
 
-        subscriptionJobs.putIfAbsent(subscription.hashCode(), subscriptionJob)
+        rssFeedUpdateJobs.putIfAbsent(feed.feedUrl, feedUpdateJob)
     }
 
-    fun unSubscribe(subscription: RssSubscription) {
-        subscriptionJobs[subscription.hashCode()]?.cancel()
-        subscriptionJobs.remove(subscription.hashCode())
-    }
+    suspend private fun rssFeedUpdateJob(feed: RssFeedDao, subscriptions: List<RssSubscriptionDao>) {
 
-    suspend private fun rssUpdateJob(subscription: RssSubscription, onNewEntry: (RssEntry) -> Unit, onFeedError: (Throwable) -> Unit) {
-        while(true) {
-            rssServer.getFeed(subscription.feed.feedUrl)
-                    .map { syndFeed -> syndFeed.entries }
-                    .flatMap { entries -> rssDatabase.persistEntriesFor(subscription, entries) }
-                    .flatMap { _ -> rssDatabase.deleteEntriesOlderThan(DateTime.now().millis) }
-                    .subscribe(onNewEntry, onFeedError)
-            delay(5, TimeUnit.MINUTES)
+        val feedUrl = feed.feedUrl
+
+        while (true) {
+            Observable.zip(
+                    rssServer.getFeed(feedUrl)
+                            .map { syndFeed -> syndFeed.entries }
+                            .map { entries -> rssDatabase.persistEntriesFor(feed, entries) }
+                            .flatMap {
+                                rssDatabase.deleteEntriesOlderThan(DateTime.now().millis)
+                                        .repeat(subscriptions.count().toLong())
+                            },
+                    Observable.fromIterable(subscriptions),
+                    BiFunction<List<RssEntryDao>, RssSubscriptionDao, SubToEntries> {
+                        t1, t2 ->
+                        SubToEntries(t1, t2)
+                    }
+            ).subscribe(postToChannel, onUpdateJobError)
+
+            delay(updateFrequency, TimeUnit.MINUTES)
         }
     }
+
+    fun notifyFeedsChanged() {
+
+//            rssFeedUpdateJobs[subscriptionDao.hashCode()]?.cancel()
+//            rssFeedUpdateJobs.remove(subscriptionDao.hashCode())
+
+    }
+
+    private data class SubToEntries(val entries: List<RssEntryDao>,
+                                    val sub: RssSubscriptionDao)
 }

@@ -2,7 +2,7 @@ package hu.suppoze.pupperbot.rss.model
 
 import org.jetbrains.exposed.dao.IntIdTable
 
-object RssFeeds : IntIdTable() {
+object RssFeedTable : IntIdTable() {
     val feedUrl = varchar("feedUrl", 512)
     val author = varchar("author", 128).nullable()
     val description = varchar("description", 512).nullable()
@@ -11,7 +11,7 @@ object RssFeeds : IntIdTable() {
     val title = varchar("title", 128)
 }
 
-object RssEntries : IntIdTable() {
+object RssEntryTable : IntIdTable() {
     val author = varchar("author", 128).nullable()
     val description = varchar("description", 512)
     val link = varchar("link", 512)
@@ -19,13 +19,13 @@ object RssEntries : IntIdTable() {
     val isPosted = bool("isPosted").default(false)
     val saveTime = long("saveTime")
 
-    val feed = reference("feed", RssFeeds)
+    val feed = reference("feed", RssFeedTable)
 
 }
 
-object RssSubscriptions : IntIdTable() {
+object RssSubscriptionTable : IntIdTable() {
     val guildId = long("guildId")
     val channelId = long("channelId")
 
-    val feed = reference("feed", RssFeeds)
+    val feed = reference("feed", RssFeedTable)
 }

@@ -4,38 +4,38 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 
-class RssFeed(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<RssFeed>(RssFeeds)
+class RssFeedDao(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<RssFeedDao>(RssFeedTable)
 
-    var feedUrl by RssFeeds.feedUrl
-    var author by RssFeeds.author
-    var description by RssFeeds.description
-    var imgUrl by RssFeeds.imgUrl
-    var link by RssFeeds.link
-    var title by RssFeeds.title
+    var feedUrl by RssFeedTable.feedUrl
+    var author by RssFeedTable.author
+    var description by RssFeedTable.description
+    var imgUrl by RssFeedTable.imgUrl
+    var link by RssFeedTable.link
+    var title by RssFeedTable.title
 
-    val subscriptions by RssSubscription referrersOn RssSubscriptions.feed
-    val entries by RssEntry referrersOn RssEntries.feed
+    val subscriptions by RssSubscriptionDao referrersOn RssSubscriptionTable.feed
+    val entries by RssEntryDao referrersOn RssEntryTable.feed
 }
 
-class RssEntry(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<RssEntry>(RssEntries)
+class RssEntryDao(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<RssEntryDao>(RssEntryTable)
 
-    var author by RssEntries.author
-    var description by RssEntries.description
-    var link by RssEntries.link
-    var title by RssEntries.title
-    var isPosted by RssEntries.isPosted
-    var saveTime by RssEntries.saveTime
+    var author by RssEntryTable.author
+    var description by RssEntryTable.description
+    var link by RssEntryTable.link
+    var title by RssEntryTable.title
+    var isPosted by RssEntryTable.isPosted
+    var saveTime by RssEntryTable.saveTime
 
-    var feed by RssFeed referencedOn RssEntries.feed
+    var feed by RssFeedDao referencedOn RssEntryTable.feed
 }
 
-class RssSubscription(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<RssSubscription>(RssSubscriptions)
+class RssSubscriptionDao(id: EntityID<Int>) : IntEntity(id) {
+    companion object : IntEntityClass<RssSubscriptionDao>(RssSubscriptionTable)
 
-    var guildId by RssSubscriptions.guildId
-    var channelId by RssSubscriptions.channelId
+    var guildId by RssSubscriptionTable.guildId
+    var channelId by RssSubscriptionTable.channelId
 
-    var feed by RssFeed referencedOn RssSubscriptions.feed
+    var feed by RssFeedDao referencedOn RssSubscriptionTable.feed
 }

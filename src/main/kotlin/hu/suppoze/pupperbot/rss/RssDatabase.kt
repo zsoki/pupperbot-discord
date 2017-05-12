@@ -2,10 +2,7 @@ package hu.suppoze.pupperbot.rss
 
 import com.rometools.rome.feed.synd.SyndEntry
 import com.rometools.rome.feed.synd.SyndFeed
-import hu.suppoze.pupperbot.rss.model.RssEntries
-import hu.suppoze.pupperbot.rss.model.RssEntry
-import hu.suppoze.pupperbot.rss.model.RssFeed
-import hu.suppoze.pupperbot.rss.model.RssSubscription
+import hu.suppoze.pupperbot.rss.model.*
 import io.reactivex.Observable
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -14,84 +11,92 @@ import org.reactivestreams.Subscriber
 
 class RssDatabase {
 
-    fun persistFeed(syndFeed: SyndFeed, feedUrl: String): Observable<RssFeed> = Observable.fromPublisher<RssFeed> {
-        checkedAction(it) {
-            transaction {
-                val dbFeed = RssFeed.new {
-                    this.feedUrl = feedUrl
-                    author = syndFeed.author ?: null
-                    description = syndFeed.description ?: null
-                    imgUrl = syndFeed.image?.url
-                    link = syndFeed.link
-                    title = syndFeed.title
-                }
-
-                for (entry in syndFeed.entries) {
-                    RssEntry.new {
-                        author = entry.author ?: null
-                        description = entry.description.value
-                        link = entry.link
-                        title = entry.title
-                        isPosted = true
-                        saveTime = DateTime.now().millis
-                        feed = dbFeed
-                    }
-                }
-                it.onNext(dbFeed)
+    fun persistFeed(syndFeed: SyndFeed, feedUrl: String): Observable<RssFeedDao> = Observable.fromPublisher<RssFeedDao> {
+        checkedTransaction(it) {
+            val dbFeed = RssFeedDao.new {
+                this.feedUrl = feedUrl
+                author = syndFeed.author ?: null
+                description = syndFeed.description ?: null
+                imgUrl = syndFeed.image?.url
+                link = syndFeed.link
+                title = syndFeed.title
             }
+
+            for (entry in syndFeed.entries) {
+                RssEntryDao.new {
+                    author = entry.author ?: null
+                    description = entry.description.value
+                    link = entry.link
+                    title = entry.title
+                    isPosted = true
+                    saveTime = DateTime.now().millis
+                    feed = dbFeed
+                }
+            }
+            it.onNext(dbFeed)
         }
     }
 
-    fun persistSubscription(guildId: Long, channelId: Long, dbFeed: RssFeed): Observable<RssSubscription> = Observable.fromPublisher<RssSubscription> {
-        checkedAction(it) {
-            transaction {
-                val subscription = RssSubscription.new {
-                    this.guildId = guildId
-                    this.channelId = channelId
-                    this.feed = dbFeed
-                }
-                it.onNext(subscription)
+    fun persistSubscription(guildId: Long, channelId: Long, dbFeedDao: RssFeedDao): Observable<RssSubscriptionDao> = Observable.fromPublisher<RssSubscriptionDao> {
+        checkedTransaction(it) {
+            val subscription = RssSubscriptionDao.new {
+                this.guildId = guildId
+                this.channelId = channelId
+                this.feed = dbFeedDao
             }
+            it.onNext(subscription)
         }
     }
 
-    fun persistEntriesFor(subscription: RssSubscription, entries: List<SyndEntry>): Observable<List<RssEntry>> = Observable.fromPublisher<List<RssEntry>> {
-        checkedAction(it) {
-            transaction {
-                it.onNext(
-                        entries
-                            .filterNot { subscription.feed.entries.any { dbEntry -> dbEntry.title == it.title } }
+    fun persistEntriesFor(feedDao: RssFeedDao, entries: List<SyndEntry>): Observable<List<RssEntryDao>> = Observable.fromPublisher<List<RssEntryDao>> {
+        checkedTransaction(it) {
+            it.onNext(
+                    entries
+                            .filterNot { feedDao.entries.any { dbEntry -> dbEntry.title == it.title } }
                             .map {
-                                RssEntry.new {
+                                RssEntryDao.new {
                                     author = it.author ?: null
                                     description = it.description.value
                                     link = it.link
                                     title = it.title
                                     isPosted = true
                                     saveTime = DateTime.now().millis
-                                    feed = subscription.feed
+                                    feed = feedDao
                                 }
                             }
                             .toList())
-            }
         }
     }
 
-    fun deleteEntriesOlderThan(now: Long): Observable<RssEntry> = Observable.fromPublisher {
-        checkedAction(it) {
-            transaction {
-                RssEntries.deleteWhere { RssEntries.saveTime less now }
-                RssEntry.all().forEach { dbEntry -> it.onNext(dbEntry) }
-            }
+    fun deleteEntriesOlderThan(now: Long): Observable<List<RssEntryDao>> = Observable.fromPublisher {
+        checkedTransaction(it) {
+            RssEntryTable.deleteWhere { RssEntryTable.saveTime less now }
+            it.onNext(RssEntryDao.all().toList())
+        }
+    }
+
+    fun getFeeds(): Observable<RssFeedDao> = Observable.fromPublisher {
+        checkedTransaction(it) {
+            RssFeedDao.all().forEach { feedDao -> it.onNext(feedDao) }
+        }
+    }
+
+    fun getFeedByUrl(feedUrl: String): Observable<RssFeedDao> = Observable.fromPublisher {
+        checkedTransaction(it) {
+            val feedDao = RssFeedDao.find { RssFeedTable.feedUrl eq feedUrl }.singleOrNull()
+            if (feedDao != null) it.onNext(feedDao)
         }
     }
 
     // TODO: extract this little helper method somewhere
-    private fun <T : Any?> checkedAction(subscriber: Subscriber<T>, action: () -> Unit) {
+    private fun <T : Any?> checkedTransaction(subscriber: Subscriber<T>, action: () -> Unit) {
         try {
-            action()
+            transaction {
+                action()
+            }
         } catch (e: Exception) {
             subscriber.onError(e)
+            e.printStackTrace()
         } finally {
             subscriber.onComplete()
         }
