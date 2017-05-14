@@ -14,6 +14,9 @@ buildscript {
 }
 
 apply plugin: 'kotlin'
+apply plugin: 'application'
+
+mainClassName = "hu.suppoze.pupperbot.bootloader.BootLoader"
 
 repositories {
     mavenCentral()
@@ -22,4 +25,9 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "com.google.code.gson:gson:$gson_version"
+}
+
+task copyResources(type: Copy) {
+    from 'bootloader.json'
+    into 'build/install/pupperbot-bootloader/bin'
 }

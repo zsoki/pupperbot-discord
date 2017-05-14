@@ -6,6 +6,7 @@ import hu.suppoze.pupperbot.common.TokenProvider
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.listeners.AnnotationListener
 import sx.blah.discord.handle.obj.Permissions
+import java.io.FileReader
 import java.util.*
 
 object PupperBotApplication {
@@ -14,9 +15,10 @@ object PupperBotApplication {
 
     @JvmStatic fun main(args: Array<String>) {
 
-        if (args.count() < 1) throw RuntimeException("Need at least 1 argument! (Token)")
+        val reader = FileReader("./token.txt")
+        val token = reader.readText()
 
-        TokenProvider.token = args[0]
+        TokenProvider.token = token
 
         pupperBot.client.dispatcher.registerListener(AnnotationListener())
 
@@ -33,13 +35,16 @@ object PupperBotApplication {
             when (command) {
                 "logout" -> {
                     pupperBot.client.logout()
-                    System.exit(0)
+                    System.exit(ExitCodes.EXIT_CODE_NORMAL)
                     return
                 }
-                "playing" -> {
-                    if (input.size > 1) {
-                        pupperBot.client.online(input.takeLast(input.size - 1).reduce { s1, s2 -> "$s1 $s2" })
-                    }
+                "restart" -> {
+                    pupperBot.client.logout()
+                    System.exit(ExitCodes.EXIT_CODE_RESTART)
+                }
+                "update" -> {
+                    pupperBot.client.logout()
+                    System.exit(ExitCodes.EXIT_CODE_UPDATE)
                 }
                 else -> println("Unrecognized command.")
             }
@@ -54,5 +59,11 @@ object PupperBotApplication {
                                 Permissions.READ_MESSAGES,
                                 Permissions.MANAGE_MESSAGES)))
         print("Invite link: https://discordapp.com/api/oauth2/authorize?client_id=${pupperBot.client.applicationClientID}&scope=bot&permissions=$permissions\n")
+    }
+
+    private object ExitCodes {
+        const val EXIT_CODE_NORMAL: Int = 0
+        const val EXIT_CODE_UPDATE: Int = 20
+        const val EXIT_CODE_RESTART: Int = 21
     }
 }

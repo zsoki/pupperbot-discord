@@ -31,7 +31,7 @@ import java.io.File
 
 object BootLoader {
 
-    private var params: BootLoaderParams? = null
+    private var config: BootLoaderConfig? = null
     private var lastBoot: Long = 0
     private var recentBoots: Int = 0
 
@@ -39,9 +39,8 @@ object BootLoader {
 
         OUTER@ while (true) {
 
-            val file = javaClass.classLoader.getResource("bootloader.json").file
-            val reader = FileReader(file)
-            params = Gson().fromJson(reader.readText(), BootLoaderParams::class.java)
+            val reader = FileReader("bootloader.json")
+            config = Gson().fromJson(reader.readText(), BootLoaderConfig::class.java)
             reader.close()
 
             val process = boot()
@@ -84,7 +83,7 @@ object BootLoader {
 
         // ProcessBuilder pb = new ProcessBuilder(System.getProperty("java.home") + "/bin/java -jar "+new File("FredBoat-1.0.jar").getAbsolutePath())
         val pb = ProcessBuilder().inheritIO()
-        pb.command(params?.command)
+        pb.command(config?.command)
 
         return pb.start()
     }
@@ -92,10 +91,10 @@ object BootLoader {
     private fun update() {
 
         // The main program has already prepared the shaded jar. We just need to replace the jars.
-        val oldJar = File("./" + params?.jarName)
+        val oldJar = File("./" + config?.jarName)
         oldJar.delete()
 
-        val newJar = File("./update/target/" + params?.jarName)
+        val newJar = File("./update/target/" + config?.jarName)
         newJar.renameTo(oldJar)
 
         // Now clean up the workspace
@@ -109,5 +108,5 @@ object BootLoader {
         const val EXIT_CODE_RESTART: Int = 21
     }
 
-    private data class BootLoaderParams(val command: MutableList<String>, val jarName: String)
+    private data class BootLoaderConfig(val command: MutableList<String>, val jarName: String)
 }
