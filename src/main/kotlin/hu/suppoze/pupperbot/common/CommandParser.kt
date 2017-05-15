@@ -16,7 +16,8 @@ class CommandParser {
     }
 
     internal object CommandStrings {
-        const val RSS: String = "rss"
+        const val RSSSUB: String = "rsssub"
+        const val RSSUNSUB: String = "rssunsub"
         const val GIPHY: String = "giphy"
         const val HELP: String = "help"
         const val SAY: String = "say"

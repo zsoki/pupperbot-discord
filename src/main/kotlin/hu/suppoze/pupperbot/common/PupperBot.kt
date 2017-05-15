@@ -2,6 +2,7 @@ package hu.suppoze.pupperbot.common
 
 import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.di.kodein
+import hu.suppoze.pupperbot.rss.RssService
 import hu.suppoze.pupperbot.rss.model.RssEntryTable
 import hu.suppoze.pupperbot.rss.model.RssFeedTable
 import hu.suppoze.pupperbot.rss.model.RssSubscriptionTable
@@ -16,12 +17,14 @@ class PupperBot(val client: IDiscordClient) {
 
     private val databaseUrl: String by kodein.instance("databaseUrl")
     private val databaseDriver: String by kodein.instance("databaseDriver")
+    private val rssService: RssService by kodein.instance()
 
     init {
-        initializeDatabase()
+        initDatabase()
+        initRssService()
     }
 
-    private fun initializeDatabase() {
+    private fun initDatabase() {
         Database.connect(databaseUrl, driver = databaseDriver)
         TransactionManager.manager.defaultIsolationLevel = SQLiteConnection.TRANSACTION_SERIALIZABLE
 
@@ -29,5 +32,9 @@ class PupperBot(val client: IDiscordClient) {
             create (RssFeedTable, RssEntryTable, RssSubscriptionTable)
         }
 
+    }
+
+    private fun initRssService() {
+        rssService.startService()
     }
 }

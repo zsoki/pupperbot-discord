@@ -4,6 +4,8 @@ import com.rometools.rome.feed.synd.SyndEntry
 import com.rometools.rome.feed.synd.SyndFeed
 import hu.suppoze.pupperbot.rss.model.*
 import io.reactivex.Observable
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
@@ -99,6 +101,35 @@ class RssDatabase {
             e.printStackTrace()
         } finally {
             subscriber.onComplete()
+        }
+    }
+
+    fun removeSubscription(feedUrl: String, guildId: Long, channelId: Long): Observable<RssFeedDao> = Observable.fromPublisher {
+        checkedTransaction(it) {
+
+            val exception = Exception("Subscription to $feedUrl does not exist on this channel.")
+
+            val feed = RssFeedDao.find { RssFeedTable.feedUrl eq feedUrl }.singleOrNull()
+                    ?: throw exception
+            val sub = feed.subscriptions.singleOrNull { sub -> sub.channelId == channelId && sub.guildId == guildId }
+                    ?: throw exception
+
+            sub.delete()
+
+            it.onNext(feed)
+        }
+    }
+
+    fun removeFeedIfNoSubs(feedDao: RssFeedDao): Observable<String>  = Observable.fromPublisher {
+        checkedTransaction(it) {
+            val feedName = feedDao.title
+
+            if (feedDao.subscriptions.empty()) {
+                feedDao.entries.forEach { it.delete() }
+                feedDao.delete()
+            }
+
+            it.onNext(feedName)
         }
     }
 }

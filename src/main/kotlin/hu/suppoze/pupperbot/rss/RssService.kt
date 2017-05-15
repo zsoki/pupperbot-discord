@@ -7,7 +7,9 @@ import hu.suppoze.pupperbot.rss.model.RssEntryDao
 import hu.suppoze.pupperbot.rss.model.RssFeedDao
 import hu.suppoze.pupperbot.rss.model.RssSubscriptionDao
 import io.reactivex.Observable
+import io.reactivex.Scheduler
 import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
@@ -18,7 +20,7 @@ class RssService(private val rssServer: RssServer, private val rssDatabase: RssD
 
     private val pupperBot: PupperBot by kodein.instance()
 
-    private val rssFeedUpdateJobs = hashMapOf<String, Job>()
+    private val rssFeedUpdateJobs = hashMapOf<Int, Job>()
 
     private val postToChannel: (SubToEntries) -> Unit = {
         pupperBot.client.channels.find { channel -> channel.longID == it.sub.channelId }
@@ -48,7 +50,7 @@ class RssService(private val rssServer: RssServer, private val rssDatabase: RssD
             rssFeedUpdateJob(feed, subscriptions)
         }
 
-        rssFeedUpdateJobs.putIfAbsent(feed.feedUrl, feedUpdateJob)
+        rssFeedUpdateJobs.putIfAbsent(feed.id.value, feedUpdateJob)
     }
 
     suspend private fun rssFeedUpdateJob(feed: RssFeedDao, subscriptions: List<RssSubscriptionDao>) {
@@ -77,9 +79,21 @@ class RssService(private val rssServer: RssServer, private val rssDatabase: RssD
 
     fun notifyFeedsChanged() {
 
-//            rssFeedUpdateJobs[subscriptionDao.hashCode()]?.cancel()
-//            rssFeedUpdateJobs.remove(subscriptionDao.hashCode())
+        val feeds = rssDatabase.getFeeds().blockingIterable().toList()
 
+        feeds.forEach {
+            if (!rssFeedUpdateJobs.containsKey(it.id.value)){
+                startNewRssFeedUpdateJob(it, transaction { it.subscriptions }.toList() )
+            }
+        }
+
+        rssFeedUpdateJobs.filterKeys { id -> !feeds.none { it.id.value == id } }.keys.forEach { stopRssFeedUpdateJob(it) }
+
+    }
+
+    private fun stopRssFeedUpdateJob(id: Int) {
+        rssFeedUpdateJobs[id]?.cancel()
+        rssFeedUpdateJobs.remove(id)
     }
 
     private data class SubToEntries(val entries: List<RssEntryDao>,

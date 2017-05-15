@@ -77,6 +77,7 @@ dependencies {
 }
 
 task copyResources(type: Copy) {
-    from 'token.txt'
+    from 'token_release.txt'
     into 'build/libs'
+    rename ('token_release.txt', 'token.txt')
 }

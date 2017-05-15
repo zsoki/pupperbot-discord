@@ -75,3 +75,4 @@ build.gradle.rej
 *.sqlite
 run.bat
 /token.txt
+/token_release.txt

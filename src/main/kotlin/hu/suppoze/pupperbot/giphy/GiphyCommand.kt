@@ -6,7 +6,7 @@ import hu.suppoze.pupperbot.common.CommandParser
 class GiphyCommand(val rawCommand: CommandParser.RawCommand) : UseCase<String> {
 
     override val onNext: (String) -> Unit = {
-        rawCommand.event.message.channel.sendMessage("${rawCommand.rawParams}: $it")
+        rawCommand.event.message.channel.sendMessage("${rawCommand.rawParams} $it")
     }
 
     override val onError: (Throwable) -> Unit = {
