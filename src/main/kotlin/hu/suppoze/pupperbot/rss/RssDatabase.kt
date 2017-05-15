@@ -8,6 +8,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import org.joda.time.DateTime
 import org.reactivestreams.Subscriber
 
@@ -50,30 +51,29 @@ class RssDatabase {
         }
     }
 
-    fun persistEntriesFor(feedDao: RssFeedDao, entries: List<SyndEntry>): Observable<List<RssEntryDao>> = Observable.fromPublisher<List<RssEntryDao>> {
+    fun saveNewEntries(feedDao: RssFeedDao, entries: List<SyndEntry>): Observable<List<RssEntryDao>> = Observable.fromPublisher<List<RssEntryDao>> {
         checkedTransaction(it) {
-            it.onNext(
-                    entries
-                            .filterNot { feedDao.entries.any { dbEntry -> dbEntry.title == it.title } }
-                            .map {
-                                RssEntryDao.new {
-                                    author = it.author ?: null
-                                    description = it.description.value
-                                    link = it.link
-                                    title = it.title
-                                    isPosted = true
-                                    saveTime = DateTime.now().millis
-                                    feed = feedDao
-                                }
-                            }
-                            .toList())
-        }
-    }
 
-    fun deleteEntriesOlderThan(now: Long): Observable<List<RssEntryDao>> = Observable.fromPublisher {
-        checkedTransaction(it) {
-            RssEntryTable.deleteWhere { RssEntryTable.saveTime less now }
-            it.onNext(RssEntryDao.all().toList())
+            // Delete old entries from DB
+            feedDao.entries.filter { dbEntry -> entries.none { syndEntry -> syndEntry.link == dbEntry.link } }.forEach { it.delete() }
+
+            // Save new entries to DB
+            val savedEntries = entries
+                    .filter { syndEntry ->
+                        feedDao.entries.none { dbEntry -> dbEntry.link == syndEntry.link } }
+                    .map {
+                        RssEntryDao.new {
+                            author = it.author ?: null
+                            description = it.description.value
+                            link = it.link
+                            title = it.title
+                            isPosted = true
+                            saveTime = DateTime.now().millis
+                            feed = feedDao
+                        } }
+
+            // Return new entries for publishing
+            it.onNext(savedEntries.toList())
         }
     }
 
