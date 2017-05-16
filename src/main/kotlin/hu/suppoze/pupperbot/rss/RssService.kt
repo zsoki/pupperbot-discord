@@ -18,11 +18,10 @@ class RssService(private val rssServer: RssServer, private val rssDatabase: RssD
     private val pupperBot: PupperBot by kodein.instance()
 
     private lateinit var observables: MutableMap<RssFeedDao, Observable<List<RssEntryDao>>>
-    private lateinit var subscriptions: MutableMap<RssFeedDao, List<Disposable>> // TODO: store subscriptions
+    private lateinit var subscriptions: MutableMap<RssSubscriptionDao, Disposable>
 
     private fun postToChannel(sub: RssSubscriptionDao, entryList: List<RssEntryDao>) {
-
-        val subbedChannel = pupperBot.client.channels.singleOrNull{ channel -> channel.longID == sub.channelId }
+        val subbedChannel = pupperBot.client.channels.singleOrNull { channel -> channel.longID == sub.channelId }
 
         if (subbedChannel == null) {
             rssDatabase.removeSubscription(sub.feed.feedUrl, sub.guildId, sub.channelId)
@@ -35,7 +34,7 @@ class RssService(private val rssServer: RssServer, private val rssDatabase: RssD
                     .withAuthorName(it.author)
                     .withDesc(it.description)
                     .withUrl(it.link)
-            pupperBot.client.channels.singleOrNull{ it.longID == sub.channelId }?.sendMessage("", embed.build(), false)
+            pupperBot.client.channels.singleOrNull { it.longID == sub.channelId }?.sendMessage("", embed.build(), false)
         }
     }
 
@@ -44,7 +43,6 @@ class RssService(private val rssServer: RssServer, private val rssDatabase: RssD
     }
 
     fun startService() {
-
         val feeds = rssDatabase.getFeeds().blockingIterable()
 
         observables = feeds.associateBy({ feedDao -> feedDao }) { feedDao ->
@@ -52,7 +50,6 @@ class RssService(private val rssServer: RssServer, private val rssDatabase: RssD
         }.toMutableMap()
 
         feeds.forEach { feedDao -> subscribeAllChannelToFeed(feedDao) }
-
     }
 
     private fun createHotFeedObservable(feedDao: RssFeedDao): Observable<List<RssEntryDao>> {
@@ -66,27 +63,41 @@ class RssService(private val rssServer: RssServer, private val rssDatabase: RssD
     }
 
     private fun subscribeAllChannelToFeed(feedDao: RssFeedDao) {
-        transaction { feedDao.subscriptions }.forEach { sub ->
-            // TODO: store subscriptions
-            observables[feedDao]!!.subscribe(
-                    { entryList -> postToChannel(sub, entryList) },
-                    onUpdateJobError)
+        transaction { feedDao.subscriptions }
+                .forEach { sub -> subscribeChannel(sub) }
+    }
+
+    private fun subscribeChannel(sub: RssSubscriptionDao) {
+        val feed = sub.feed
+
+        val disposable = observables[feed]!!
+                .subscribe(
+                        { entryList -> postToChannel(sub, entryList) },
+                        onUpdateJobError
+                )
+
+        subscriptions.putIfAbsent(sub, disposable)
+    }
+
+    fun subscriptionAdded(sub: RssSubscriptionDao) {
+        val feed = sub.feed
+
+        if (!observables.containsKey(feed)) {
+            observables.put(feed, createHotFeedObservable(feed))
+            subscribeAllChannelToFeed(feed)
+        } else {
+            subscribeChannel(sub)
         }
     }
 
-    fun notifyFeedsChanged() {
+    fun subscriptionRemoved(sub: RssSubscriptionDao) {
+        subscriptions[sub]?.dispose()
+        subscriptions.remove(sub)
 
-        val feeds = rssDatabase.getFeeds().blockingIterable()
-
-        feeds.forEach {
-            if (!observables.containsKey(it)) {
-                observables.put(it, createHotFeedObservable(it))
-                subscribeAllChannelToFeed(it)
-            }
+        val feed = sub.feed
+        if (observables.contains(feed) && subscriptions.keys.none { it.feed == feed }) {
+            observables.remove(feed)
         }
-
-        // TODO: remove feeds & subscriptions
-        observables.filter { keyValuePair -> !feeds.contains(keyValuePair.key) }.values.forEach { it. }
 
     }
 }

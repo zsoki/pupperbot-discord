@@ -5,7 +5,6 @@ import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.common.CommandParser
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.rss.model.RssSubscriptionDao
-import io.reactivex.rxkotlin.toObservable
 
 class RssSubscribeCommand(val rawCommand: CommandParser.RawCommand) : UseCase<RssSubscriptionDao> {
 
@@ -18,7 +17,7 @@ class RssSubscribeCommand(val rawCommand: CommandParser.RawCommand) : UseCase<Rs
     }
 
     override val onError: (Throwable) -> Unit = {
-        rawCommand.event.message.author.orCreatePMChannel.sendMessage("Error during RSS request: ${it.message}")
+        rawCommand.event.message.channel.sendMessage("Cannot subscribe: ${it.message}")
     }
 
     override fun execute() {
@@ -32,17 +31,13 @@ class RssSubscribeCommand(val rawCommand: CommandParser.RawCommand) : UseCase<Rs
         val channelId = rawCommand.event.channel.longID
 
         rssDatabase.getFeedByUrl(feedUrl)
-                .flatMap { feedDao -> feedDao.subscriptions.toObservable()
-                        .filter { !(it.guildId == guildId && it.channelId == channelId) }
-                        .flatMap { rssDatabase.persistSubscription(guildId, channelId, feedDao) }
-                }
+                .flatMap { rssDatabase.saveSubscriptionIfNotExists(guildId, channelId, it) }
                 .switchIfEmpty {
-                        rssServer.getFeed(feedUrl)
-                                .flatMap { syndFeed -> rssDatabase.persistFeed(syndFeed, feedUrl) }
-                                .flatMap { dbFeed -> rssDatabase.persistSubscription(guildId, channelId, dbFeed)
-                                    .doOnComplete { rssService.notifyFeedsChanged() }
-                        }
+                    rssServer.getFeed(feedUrl)
+                            .flatMap { syndFeed -> rssDatabase.persistFeed(syndFeed, feedUrl) }
+                            .flatMap { dbFeed -> rssDatabase.saveSubscriptionIfNotExists(guildId, channelId, dbFeed) }
                 }
+                .doOnNext { rssService.subscriptionAdded(it) }
                 .subscribe(onNext, onError)
     }
 }

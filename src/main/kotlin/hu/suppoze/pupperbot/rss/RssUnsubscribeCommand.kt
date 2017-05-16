@@ -16,13 +16,13 @@ class RssUnsubscribeCommand(val rawCommand: CommandParser.RawCommand) : UseCase<
 
     override val onError: (Throwable) -> Unit = {
         it.printStackTrace()
-        rawCommand.event.message.author.orCreatePMChannel.sendMessage("Error during RSSSUB request: ${it.message}")
+        rawCommand.event.message.author.orCreatePMChannel.sendMessage("Error during RSS request: ${it.message}")
     }
 
 
     override fun execute() {
         if (rawCommand.parameters == null || rawCommand.parameters.isEmpty()) {
-            onError(IllegalArgumentException("You need to add an RSSSUB feed URL as a parameter"))
+            onError(IllegalArgumentException("You need to add an RSS feed URL as a parameter"))
             return
         }
 
@@ -30,9 +30,9 @@ class RssUnsubscribeCommand(val rawCommand: CommandParser.RawCommand) : UseCase<
         val guildId = rawCommand.event.guild.longID
         val channelId = rawCommand.event.channel.longID
 
-        rssDatabase.removeSubscription(feedUrl, guildId, channelId)
-                .flatMap { rssDatabase.removeFeedIfNoSubs(it) }
-                .doOnNext { rssService.notifyFeedsChanged() }
-                .subscribe(onNext, onError)
+//        rssDatabase.removeSubscription(feedUrl, guildId, channelId)
+//                .flatMap { rssDatabase.removeFeedIfNoSubs(it) }
+//                .doOnNext { rssService.notifyFeedsChanged() }
+//                .subscribe(onNext, onError)
     }
 }

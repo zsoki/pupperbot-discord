@@ -16,6 +16,7 @@ class RssDatabase {
 
     fun persistFeed(syndFeed: SyndFeed, feedUrl: String): Observable<RssFeedDao> = Observable.fromPublisher<RssFeedDao> {
         checkedTransaction(it) {
+
             val dbFeed = RssFeedDao.new {
                 this.feedUrl = feedUrl
                 author = syndFeed.author ?: null
@@ -40,8 +41,14 @@ class RssDatabase {
         }
     }
 
-    fun persistSubscription(guildId: Long, channelId: Long, dbFeedDao: RssFeedDao): Observable<RssSubscriptionDao> = Observable.fromPublisher<RssSubscriptionDao> {
+    fun saveSubscriptionIfNotExists(guildId: Long, channelId: Long, dbFeedDao: RssFeedDao): Observable<RssSubscriptionDao> = Observable.fromPublisher<RssSubscriptionDao> {
         checkedTransaction(it) {
+
+            RssSubscriptionDao.find {
+                RssSubscriptionTable.channelId eq channelId and (RssSubscriptionTable.guildId eq guildId)
+            }.singleOrNull() ?: throw Exception("Already subscribed to ${dbFeedDao.title} on this channel!")
+
+
             val subscription = RssSubscriptionDao.new {
                 this.guildId = guildId
                 this.channelId = channelId
@@ -60,7 +67,8 @@ class RssDatabase {
             // Save new entries to DB
             val savedEntries = entries
                     .filter { syndEntry ->
-                        feedDao.entries.none { dbEntry -> dbEntry.link == syndEntry.link } }
+                        feedDao.entries.none { dbEntry -> dbEntry.link == syndEntry.link }
+                    }
                     .map {
                         RssEntryDao.new {
                             author = it.author ?: null
@@ -70,7 +78,8 @@ class RssDatabase {
                             isPosted = true
                             saveTime = DateTime.now().millis
                             feed = feedDao
-                        } }
+                        }
+                    }
 
             // Return new entries for publishing
             it.onNext(savedEntries.toList())
@@ -120,15 +129,15 @@ class RssDatabase {
         }
     }
 
-    fun removeFeedIfNoSubs(feedDao: RssFeedDao): Observable<String>  = Observable.fromPublisher {
+    fun removeFeedIfNoSubs(feedDao: RssFeedDao): Observable<String> = Observable.fromPublisher {
         checkedTransaction(it) {
+
             val feedName = feedDao.title
 
             if (feedDao.subscriptions.empty()) {
                 feedDao.entries.forEach { it.delete() }
                 feedDao.delete()
             }
-
             it.onNext(feedName)
         }
     }
