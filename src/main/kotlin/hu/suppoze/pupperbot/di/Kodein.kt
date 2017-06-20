@@ -5,6 +5,7 @@ import hu.suppoze.pupperbot.common.CommandFactory
 import hu.suppoze.pupperbot.common.CommandParser
 import hu.suppoze.pupperbot.common.PupperBot
 import hu.suppoze.pupperbot.common.TokenProvider
+import hu.suppoze.pupperbot.giphy.GiphyServer
 import hu.suppoze.pupperbot.rss.RssDatabase
 import hu.suppoze.pupperbot.rss.RssServer
 import hu.suppoze.pupperbot.rss.RssService
@@ -22,7 +23,6 @@ val appModule = Kodein.Module {
 }
 
 val databaseModule = Kodein.Module {
-
     constant("databaseUrl") with "jdbc:sqlite:pupperbot.sqlite"
     constant("databaseDriver") with "org.sqlite.JDBC"
 
@@ -30,6 +30,9 @@ val databaseModule = Kodein.Module {
 }
 
 val serverModule = Kodein.Module {
+    constant("giphyUrl") with "http://api.giphy.com/v1/gifs/random"
+
+    bind<GiphyServer>() with singleton { GiphyServer() }
     bind<RssServer>() with singleton { RssServer() }
     bind<RssService>() with singleton { RssService(instance(), instance()) }
 }

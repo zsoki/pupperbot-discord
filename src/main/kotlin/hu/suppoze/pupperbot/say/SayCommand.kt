@@ -7,6 +7,7 @@ class SayCommand(val rawCommand: CommandParser.RawCommand) : UseCase<Any> {
 
     override val onNext: (Any) -> Unit
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
     override val onError: (Throwable) -> Unit
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 

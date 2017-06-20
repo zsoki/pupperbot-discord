@@ -14,7 +14,8 @@ class RssServer {
             it.onNext(feed)
         } catch(t: Throwable) {
             it.onError(t)
+        } finally {
+            it.onComplete()
         }
-        it.onComplete()
     }
 }
