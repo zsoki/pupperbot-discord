@@ -2,4 +2,4 @@ package hu.suppoze.pupperbot.common
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ChatCommand(val name: AvailableCommands)
+annotation class ChatCommand(val type: AvailableCommands)

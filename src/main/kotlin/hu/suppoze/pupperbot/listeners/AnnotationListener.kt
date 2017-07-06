@@ -2,8 +2,8 @@ package hu.suppoze.pupperbot.listeners
 
 import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.PupperBotApplication
-import hu.suppoze.pupperbot.common.CommandFactory
 import hu.suppoze.pupperbot.common.CommandParser
+import hu.suppoze.pupperbot.common.CommandProvider
 import hu.suppoze.pupperbot.common.PupperBot
 import hu.suppoze.pupperbot.di.kodein
 import sx.blah.discord.api.events.EventSubscriber
@@ -15,7 +15,6 @@ class AnnotationListener {
     private val pupperBot: PupperBot by kodein.instance()
 
     private val commandParser: CommandParser by kodein.instance()
-    private val commandFactory: CommandFactory by kodein.instance()
 
     @EventSubscriber
     fun onReadyEvent(event: ReadyEvent) {
@@ -25,9 +24,9 @@ class AnnotationListener {
 
     @EventSubscriber
     fun onMessageReceiedEvent(event: MessageReceivedEvent) {
-        if (event.message.content.startsWith(';')) {
+        if (event.message.content.matches(Regex("^;[\\w\\s\\d]+$"))) {
             val rawCommand = commandParser.parse(event)
-            commandFactory.build(rawCommand).execute()
+            CommandProvider.get(rawCommand.command)?.execute(rawCommand)
         }
     }
 }

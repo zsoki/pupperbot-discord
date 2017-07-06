@@ -8,7 +8,6 @@ import hu.suppoze.pupperbot.rss.model.RssFeedDao
 import hu.suppoze.pupperbot.rss.model.RssSubscriptionDao
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import org.jetbrains.exposed.sql.transactions.transaction
 import sx.blah.discord.util.EmbedBuilder
 import java.util.concurrent.TimeUnit
@@ -54,7 +53,6 @@ class RssService(private val rssServer: RssServer, private val rssDatabase: RssD
 
     private fun createHotFeedObservable(feedDao: RssFeedDao): Observable<List<RssEntryDao>> {
         return Observable.interval(5, TimeUnit.MINUTES)
-                .subscribeOn(Schedulers.io())
                 .flatMap { rssServer.getFeed(feedDao.feedUrl) }
                 .map { syndFeed -> syndFeed.entries }
                 .flatMap { entries -> rssDatabase.saveNewEntries(feedDao, entries) }

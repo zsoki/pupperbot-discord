@@ -1,13 +1,15 @@
 package hu.suppoze.pupperbot.giphy
 
 import com.github.salomonbrys.kodein.instance
-import hu.suppoze.pupperbot.common.UseCase
-import hu.suppoze.pupperbot.common.CommandParser
+import hu.suppoze.pupperbot.common.*
 import hu.suppoze.pupperbot.di.kodein
 
-class GiphyCommand(val rawCommand: CommandParser.RawCommand) : UseCase<String> {
+@ChatCommand(type = AvailableCommands.GIPHY)
+class GiphyCommand : UseCase<String> {
 
     private val giphyServer: GiphyServer by kodein.instance()
+
+    private lateinit var rawCommand: RawCommand
 
     override val onNext: (String) -> Unit = {
         rawCommand.event.message.channel.sendMessage("${rawCommand.rawParams} $it")
@@ -18,7 +20,9 @@ class GiphyCommand(val rawCommand: CommandParser.RawCommand) : UseCase<String> {
         it.printStackTrace()
     }
 
-    override fun execute() {
+    override fun execute(rawCommand: RawCommand) {
+        this.rawCommand = rawCommand
+
         val tag = rawCommand.rawParams
 
         if (tag == null) {

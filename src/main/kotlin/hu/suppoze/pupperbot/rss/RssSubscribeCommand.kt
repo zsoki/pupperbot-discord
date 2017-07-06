@@ -1,16 +1,18 @@
 package hu.suppoze.pupperbot.rss
 
 import com.github.salomonbrys.kodein.instance
-import hu.suppoze.pupperbot.common.UseCase
-import hu.suppoze.pupperbot.common.CommandParser
+import hu.suppoze.pupperbot.common.*
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.rss.model.RssSubscriptionDao
 
-class RssSubscribeCommand(val rawCommand: CommandParser.RawCommand) : UseCase<RssSubscriptionDao> {
+@ChatCommand(type = AvailableCommands.RSSSUB)
+class RssSubscribeCommand : UseCase<RssSubscriptionDao> {
 
     private val rssDatabase: RssDatabase by kodein.instance()
     private val rssServer: RssServer by kodein.instance()
     private val rssService: RssService by kodein.instance()
+
+    private lateinit var rawCommand: RawCommand
 
     override val onNext: (RssSubscriptionDao) -> Unit = {
         rawCommand.event.message.channel.sendMessage("Subscribed to ${it.feed.title} RSS in channel #${rawCommand.event.channel.name}")
@@ -18,9 +20,12 @@ class RssSubscribeCommand(val rawCommand: CommandParser.RawCommand) : UseCase<Rs
 
     override val onError: (Throwable) -> Unit = {
         rawCommand.event.message.channel.sendMessage("Cannot subscribe: ${it.message}")
+        it.printStackTrace()
     }
 
-    override fun execute() {
+    override fun execute(rawCommand: RawCommand) {
+        this.rawCommand = rawCommand
+
         if (rawCommand.parameters == null || rawCommand.parameters.isEmpty()) {
             onError(IllegalArgumentException("You need to add an RSS feed URL as a parameter"))
             return
@@ -37,7 +42,10 @@ class RssSubscribeCommand(val rawCommand: CommandParser.RawCommand) : UseCase<Rs
                             .flatMap { syndFeed -> rssDatabase.persistFeed(syndFeed, feedUrl) }
                             .flatMap { dbFeed -> rssDatabase.saveSubscriptionIfNotExists(guildId, channelId, dbFeed) }
                 }
-                .doOnNext { rssService.subscriptionAdded(it) }
+                .map {
+                    rssService.subscriptionAdded(it)
+                    it
+                }
                 .subscribe(onNext, onError)
     }
 }

@@ -1,9 +1,9 @@
 package hu.suppoze.pupperbot.say
 
-import hu.suppoze.pupperbot.common.UseCase
-import hu.suppoze.pupperbot.common.CommandParser
+import hu.suppoze.pupperbot.common.*
 
-class SayCommand(val rawCommand: CommandParser.RawCommand) : UseCase<Any> {
+@ChatCommand(type = AvailableCommands.SAY)
+class SayCommand : UseCase<Any> {
 
     override val onNext: (Any) -> Unit
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
@@ -11,7 +11,7 @@ class SayCommand(val rawCommand: CommandParser.RawCommand) : UseCase<Any> {
     override val onError: (Throwable) -> Unit
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
-    override fun execute() {
+    override fun execute(rawCommand : RawCommand) {
         if (rawCommand.rawParams == null || rawCommand.rawParams.isEmpty())
             return
 
