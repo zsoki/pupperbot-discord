@@ -16,7 +16,7 @@ class HelpCommand : UseCase<Any> {
         var helpString = ""
 
         for (item in AvailableCommands.values()) {
-            helpString += "${item.usage} - ${item.description}\n"
+            helpString += "${item.example} - ${item.description}\n"
         }
 
         rawCommand.event.message.channel.sendMessage(helpString)

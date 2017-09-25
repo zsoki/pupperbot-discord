@@ -25,7 +25,8 @@ val databaseModule = Kodein.Module {
 }
 
 val serverModule = Kodein.Module {
-    constant("giphyUrl") with "http://api.giphy.com/v1/gifs/random"
+    constant("giphyRandomUrl") with "http://api.giphy.com/v1/gifs/random"
+    constant("giphySearchUrl") with "http://api.giphy.com/v1/gifs/search"
 
     bind<GiphyServer>() with singleton { GiphyServer() }
     bind<RssServer>() with singleton { RssServer() }

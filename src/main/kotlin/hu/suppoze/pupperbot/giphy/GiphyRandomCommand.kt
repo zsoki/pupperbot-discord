@@ -4,8 +4,8 @@ import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.*
 import hu.suppoze.pupperbot.di.kodein
 
-@ChatCommand(type = AvailableCommands.GIPHY)
-class GiphyCommand : UseCase<String> {
+@ChatCommand(type = AvailableCommands.GIPHY_RANDOM)
+class GiphyRandomCommand : UseCase<String> {
 
     private val giphyServer: GiphyServer by kodein.instance()
 
@@ -30,7 +30,7 @@ class GiphyCommand : UseCase<String> {
             return
         }
 
-        giphyServer.requestRandomGiphyUrlByTag(tag)
+        giphyServer.getRandomGiphyBy(tag)
                 .subscribe(onNext, onError)
     }
 }
