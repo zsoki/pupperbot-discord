@@ -5,6 +5,7 @@
     <content url="file://$MODULE_DIR$/../../pupperbot-bootloader">
       <excludeFolder url="file://$MODULE_DIR$/../../pupperbot-bootloader/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../pupperbot-bootloader/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../pupperbot-bootloader/out" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

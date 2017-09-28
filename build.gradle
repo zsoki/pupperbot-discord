@@ -5,11 +5,12 @@ buildscript {
     ext.kotlin_version = '1.2-M2'
     ext.kotlinx_coroutines_version = '0.18'
     ext.kotlin_logging_version = '1.4.6'
+    ext.slf4j_simple_version = '1.7.25'
     ext.reflections_version = '0.9.11'
     ext.rxkotlin_version = '2.1.0'
     ext.fuel_version = '1.10.0'
     ext.gson_version = '2.8.1'
-    ext.discord4j_version = 'dev-SNAPSHOT'
+    ext.discord4j_version = '2.9'
     ext.kodein_version = '4.1.0'
     ext.rome_version = '1.7.4'
     ext.xerial_sqlite_jdbc = '3.20.0'
@@ -65,6 +66,7 @@ dependencies {
 
     // Logging
     compile "io.github.microutils:kotlin-logging:$kotlin_logging_version"
+    compile "org.slf4j:slf4j-simple:$slf4j_simple_version"
 
     // Reflection
     compile "org.reflections:reflections:$reflections_version"
