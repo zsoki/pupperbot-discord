@@ -9,21 +9,21 @@ class GiphyRandomCommand : UseCase<String> {
 
     private val giphyServer: GiphyServer by kodein.instance()
 
-    private lateinit var rawCommand: RawCommand
+    private lateinit var parameterizedCommand: ParameterizedCommand
 
     override val onNext: (String) -> Unit = {
-        rawCommand.event.message.channel.sendMessage("${rawCommand.rawParams} $it")
+        parameterizedCommand.event.message.channel.sendMessage("${parameterizedCommand.paramString} $it")
     }
 
     override val onError: (Throwable) -> Unit = {
-        rawCommand.event.message.channel.sendMessage("Error during giphy request: ${it.message}")
+        parameterizedCommand.event.message.channel.sendMessage("Error during giphy request: ${it.message}")
         it.printStackTrace()
     }
 
-    override fun execute(rawCommand: RawCommand) {
-        this.rawCommand = rawCommand
+    override fun execute(parameterizedCommand: ParameterizedCommand) {
+        this.parameterizedCommand = parameterizedCommand
 
-        val tag = rawCommand.rawParams
+        val tag = parameterizedCommand.paramString
 
         if (tag == null) {
             onError(Throwable("Tag was null."))

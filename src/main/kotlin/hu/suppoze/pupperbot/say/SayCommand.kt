@@ -11,11 +11,11 @@ class SayCommand : UseCase<Any> {
     override val onError: (Throwable) -> Unit
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
-    override fun execute(rawCommand : RawCommand) {
-        if (rawCommand.rawParams == null || rawCommand.rawParams.isEmpty())
+    override fun execute(parameterizedCommand: ParameterizedCommand) {
+        if (parameterizedCommand.paramString == null || parameterizedCommand.paramString.isEmpty())
             return
 
-        rawCommand.event.message.delete()
-        rawCommand.event.message.channel.sendMessage(rawCommand.rawParams)
+        parameterizedCommand.event.message.delete()
+        parameterizedCommand.event.message.channel.sendMessage(parameterizedCommand.paramString)
     }
 }

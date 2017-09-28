@@ -11,7 +11,7 @@ class HelpCommand : UseCase<Any> {
     override val onError: (Throwable) -> Unit
         get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
 
-    override fun execute(rawCommand: RawCommand) {
+    override fun execute(parameterizedCommand: ParameterizedCommand) {
 
         var helpString = ""
 
@@ -19,6 +19,6 @@ class HelpCommand : UseCase<Any> {
             helpString += "${item.example} - ${item.description}\n"
         }
 
-        rawCommand.event.message.channel.sendMessage(helpString)
+        parameterizedCommand.event.message.channel.sendMessage(helpString)
     }
 }

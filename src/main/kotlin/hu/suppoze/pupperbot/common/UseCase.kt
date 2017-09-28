@@ -6,5 +6,5 @@ interface UseCase<in T> {
 
     val onError: (Throwable) -> Unit
 
-    fun execute(rawCommand: RawCommand)
+    fun execute(parameterizedCommand: ParameterizedCommand)
 }

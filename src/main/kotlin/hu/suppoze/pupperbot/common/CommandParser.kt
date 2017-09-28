@@ -4,10 +4,10 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 
 class CommandParser {
 
-    fun parse(event: MessageReceivedEvent): RawCommand {
+    fun parse(event: MessageReceivedEvent): ParameterizedCommand {
         val commandLine: String = event.message.content.trimStart(';')
         val words = commandLine.split(' ')
-        return RawCommand(
+        return ParameterizedCommand(
                 event,
                 words[0],
                 commandLine.drop(words[0].length + 1),
