@@ -17,8 +17,10 @@ class SayCommand : UseCase<ParameterizedCommand> {
     }
 
     override fun execute(parameterizedCommand: ParameterizedCommand) {
-        if (parameterizedCommand.paramString == null || parameterizedCommand.paramString.isEmpty())
+        if (parameterizedCommand.paramString == null || parameterizedCommand.paramString.isEmpty()) {
             onError(IllegalArgumentException("Parameter string is null or empty"))
+            return
+        }
 
         onNext(parameterizedCommand)
     }

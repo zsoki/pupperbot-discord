@@ -3,11 +3,13 @@ package hu.suppoze.pupperbot.giphy
 import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.*
 import hu.suppoze.pupperbot.di.kodein
+import mu.KLogging
 import java.net.URLEncoder
 import java.util.concurrent.ThreadLocalRandom
 
 @ChatCommand(type = AvailableCommands.GIPHY_SEARCH)
 class GiphySearchCommand : UseCase<String> {
+    companion object : KLogging()
 
     private val giphyServer: GiphyServer by kodein.instance()
 
@@ -18,8 +20,8 @@ class GiphySearchCommand : UseCase<String> {
     }
 
     override val onError: (Throwable) -> Unit = {
+        logger.error { it.stackTrace }
         parameterizedCommand.event.message.channel.sendMessage("Error during giphy request: ${it.message}")
-        it.printStackTrace()
     }
 
     override fun execute(parameterizedCommand: ParameterizedCommand) {
@@ -37,9 +39,9 @@ class GiphySearchCommand : UseCase<String> {
 
         giphyServer.searchGiphyBy(urlEncodedPhrase, limit)
                 .map {
-                    val range = maxOf(limit, it.pagination.count)
-                    if (range == 0) throw Throwable("No results found.") // TODO: Custom exception
-                    it.data[ThreadLocalRandom.current().nextInt(range)].url // TODO: outsource randomizer
+                    val upperRange = minOf(limit, it.pagination.count)
+                    if (upperRange == 0) throw Throwable("No results found.") // TODO: Custom exception
+                    it.data[ThreadLocalRandom.current().nextInt(upperRange)].url // TODO: outsource randomizer
                 }
                 .subscribe(onNext, onError)
     }
