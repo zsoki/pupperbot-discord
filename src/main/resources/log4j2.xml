@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="120">
+
+    <Properties>
+        <Property name="filename">target/rolling/rollinglog.log</Property>
+        <Property name="filepattern">target/archive/log-%i.log.zip</Property>
+    </Properties>
+
+    <Appenders>
+
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <RollingRandomAccessFile name="RollingRandomAccessFile"
+                                 fileName="${filename}"
+                                 filePattern="${filePattern}">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <SizeBasedTriggeringPolicy size="32 KB"/>
+            <DefaultRolloverStrategy fileIndex="max" min="1" max="128"/>
+        </RollingRandomAccessFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="hu.suppoze.pupperbot" level="trace" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingRandomAccessFile">
+                <ThresholdFilter level="info" />
+            </AppenderRef>
+        </Logger>
+
+        <Root level="error">
+            <AppenderRef ref="Console"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>

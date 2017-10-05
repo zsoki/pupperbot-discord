@@ -5,10 +5,14 @@ import hu.suppoze.pupperbot.common.PupperBot
 import hu.suppoze.pupperbot.common.TokenProvider
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.listeners.AnnotationListener
+import mu.KotlinLogging
 import sx.blah.discord.handle.obj.Permissions
 import java.io.FileReader
 import java.util.*
+import kotlin.concurrent.thread
 
+
+private val logger = KotlinLogging.logger {}
 object PupperBotApplication {
 
     private val pupperBot: PupperBot by kodein.instance()
@@ -25,24 +29,27 @@ object PupperBotApplication {
         createInviteLink()
     }
 
-    fun listenForCommand() {
+    fun listenForCommand() = thread(start = true, name = "ConsoleInput") {
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted) {
 
-            val input = readLine()?.split(' ') ?: continue
+            logger.info { "Listening for user input on System.in" }
+            val input = Scanner(System.`in`).nextLine()?.split(' ') ?: continue
             val command = input[0]
 
             when (command) {
                 "logout" -> {
+                    logger.info { "command=$command msg='Shutting down with ExitCode: ${ExitCodes.EXIT_CODE_NORMAL}'" }
                     pupperBot.client.logout()
                     System.exit(ExitCodes.EXIT_CODE_NORMAL)
-                    return
                 }
                 "restart" -> {
+                    logger.info { "command=$command msg='Shutting down with ExitCode: ${ExitCodes.EXIT_CODE_RESTART}'" }
                     pupperBot.client.logout()
                     System.exit(ExitCodes.EXIT_CODE_RESTART)
                 }
                 "update" -> {
+                    logger.info { "command=$command msg='Shutting down with ExitCode: ${ExitCodes.EXIT_CODE_UPDATE}'" }
                     pupperBot.client.logout()
                     System.exit(ExitCodes.EXIT_CODE_UPDATE)
                 }
