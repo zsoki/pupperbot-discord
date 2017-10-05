@@ -65,7 +65,7 @@ object PupperBotApplication {
                                 Permissions.SEND_MESSAGES,
                                 Permissions.READ_MESSAGES,
                                 Permissions.MANAGE_MESSAGES)))
-        print("Invite link: https://discordapp.com/api/oauth2/authorize?client_id=${pupperBot.client.applicationClientID}&scope=bot&permissions=$permissions\n")
+        logger.info { "Invite link: https://discordapp.com/api/oauth2/authorize?client_id=${pupperBot.client.applicationClientID}&scope=bot&permissions=$permissions\n" }
     }
 
     private object ExitCodes {

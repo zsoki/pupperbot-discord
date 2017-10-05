@@ -24,7 +24,7 @@ class AnnotationListener {
 
     @EventSubscriber
     fun onMessageReceiedEvent(event: MessageReceivedEvent) {
-        if (event.message.content.matches(Regex("^;[\\w\\s\\d]+$"))) {
+        if (event.message.content.matches(Regex("^;[\\w\\s\\d]+ .*"))) {
             val rawCommand = commandParser.parse(event)
             CommandProvider.get(rawCommand.command)?.execute(rawCommand)
         }
