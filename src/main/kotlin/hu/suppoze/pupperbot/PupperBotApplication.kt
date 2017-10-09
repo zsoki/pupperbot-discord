@@ -1,7 +1,6 @@
 package hu.suppoze.pupperbot
 
 import com.github.salomonbrys.kodein.instance
-import hu.suppoze.pupperbot.common.PupperBot
 import hu.suppoze.pupperbot.common.TokenProvider
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.listeners.AnnotationListener
@@ -10,7 +9,6 @@ import sx.blah.discord.handle.obj.Permissions
 import java.io.FileReader
 import java.util.*
 import kotlin.concurrent.thread
-
 
 private val logger = KotlinLogging.logger {}
 object PupperBotApplication {
@@ -31,7 +29,7 @@ object PupperBotApplication {
 
     fun listenForCommand() = thread(start = true, name = "ConsoleInput") {
 
-        while (!Thread.currentThread().isInterrupted) {
+        while (true) {
 
             logger.info { "Listening for user input on System.in" }
             val input = Scanner(System.`in`).nextLine()?.split(' ') ?: continue
