@@ -5,6 +5,7 @@ import mu.KLogging
 
 @ChatCommand(type = AvailableCommands.SAY)
 class SayCommand : UseCase<ParameterizedCommand> {
+
     companion object : KLogging()
 
     override val onNext: (ParameterizedCommand) -> Unit = {
@@ -13,7 +14,7 @@ class SayCommand : UseCase<ParameterizedCommand> {
     }
 
     override val onError: (Throwable) -> Unit = {
-        logger.error { it.message }
+        logger.error(it) { it.message }
     }
 
     override fun execute(parameterizedCommand: ParameterizedCommand) {

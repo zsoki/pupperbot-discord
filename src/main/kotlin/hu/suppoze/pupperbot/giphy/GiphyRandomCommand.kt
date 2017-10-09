@@ -3,9 +3,12 @@ package hu.suppoze.pupperbot.giphy
 import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.*
 import hu.suppoze.pupperbot.di.kodein
+import mu.KLogging
 
 @ChatCommand(type = AvailableCommands.GIPHY_RANDOM)
 class GiphyRandomCommand : UseCase<String> {
+
+    companion object : KLogging()
 
     private val giphyServer: GiphyServer by kodein.instance()
 
@@ -16,15 +19,14 @@ class GiphyRandomCommand : UseCase<String> {
     }
 
     override val onError: (Throwable) -> Unit = {
+        logger.error(it) { it.message }
         parameterizedCommand.event.message.channel.sendMessage("Error during giphy request: ${it.message}")
-        it.printStackTrace()
     }
 
     override fun execute(parameterizedCommand: ParameterizedCommand) {
         this.parameterizedCommand = parameterizedCommand
 
         val tag = parameterizedCommand.paramString
-
         if (tag == null) {
             onError(Throwable("Tag was null."))
             return

@@ -16,6 +16,7 @@ import sx.blah.discord.handle.impl.events.shard.ReconnectSuccessEvent
 import sx.blah.discord.handle.impl.events.shard.ResumedEvent
 
 class AnnotationListener {
+
     companion object : KLogging()
 
     private val pupperBot: PupperBot by kodein.instance()
@@ -30,9 +31,11 @@ class AnnotationListener {
 
     @EventSubscriber
     fun onMessageReceiedEvent(event: MessageReceivedEvent) {
-        if (event.message.content.matches(Regex("^;[\\w\\s\\d]+ .*"))) {
-            val rawCommand = commandParser.parse(event)
-            CommandProvider.get(rawCommand.command)?.execute(rawCommand)
+        val rawContent = event.message.content
+        if (rawContent.matches(Regex("^;[\\w\\s\\d]+ .*"))) {
+            logger.info { "Command received. Raw content='$rawContent'" }
+            val parameterizedCommand = commandParser.parse(event)
+            CommandProvider.get(parameterizedCommand.command)?.execute(parameterizedCommand)
         }
     }
 

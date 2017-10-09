@@ -7,13 +7,11 @@ class CommandProvider {
 
     companion object {
 
-        private val commandMap = mutableMapOf<String, UseCase<*>>()
-
         private val logger = KotlinLogging.logger {}
+        private val commandMap = mutableMapOf<String, UseCase<*>>()
         private val packageString = "hu.suppoze.pupperbot"
 
         init {
-
             val reflections = Reflections(packageString)
             val chatCommandClasses = reflections.getTypesAnnotatedWith(ChatCommand::class.java)
 
@@ -27,20 +25,19 @@ class CommandProvider {
                     if (!commandMap.containsKey(chatCommand.type.commandString)) {
                         commandMap.put(chatCommand.type.commandString, useCase)
                     } else {
-                        logger.error { "Command ${chatCommand.type} already defined" }
-                        throw RuntimeException("Duplicated commands!")
+                        logger.warn { "Duplicated commands! ${chatCommand.type} already defined!" }
                     }
 
                 } catch (ex: Exception) {
                     when (ex) {
                         is InstantiationException,
-                        is IllegalAccessException -> logger.error("Cannot make class instance", ex)
+                        is IllegalAccessException -> logger.error(ex) { "Cannot make class instance" }
+                        else -> logger.error(ex) { "Unknown error: ${ex.message}" }
                     }
                 }
             }
         }
 
         fun get(commandString: String) : UseCase<*>? = commandMap[commandString]
-
     }
 }

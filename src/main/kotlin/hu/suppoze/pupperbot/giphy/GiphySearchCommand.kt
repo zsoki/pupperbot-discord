@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom
 
 @ChatCommand(type = AvailableCommands.GIPHY_SEARCH)
 class GiphySearchCommand : UseCase<String> {
+
     companion object : KLogging()
 
     private val giphyServer: GiphyServer by kodein.instance()
@@ -20,7 +21,7 @@ class GiphySearchCommand : UseCase<String> {
     }
 
     override val onError: (Throwable) -> Unit = {
-        logger.error { it.stackTrace }
+        logger.error(it) { it.message }
         parameterizedCommand.event.message.channel.sendMessage("Error during giphy request: ${it.message}")
     }
 
@@ -28,7 +29,6 @@ class GiphySearchCommand : UseCase<String> {
         this.parameterizedCommand = parameterizedCommand
 
         val phrase = parameterizedCommand.paramString
-
         if (phrase == null) {
             onError(Throwable("Phrase was null."))
             return
