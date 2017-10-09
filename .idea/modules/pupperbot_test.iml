@@ -46,9 +46,6 @@
     <orderEntry type="library" name="Gradle: com.github.austinv11:Discord4j:2.9" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex.rxjava2:rxkotlin:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.salomonbrys.kodein:kodein:4.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.rometools:rome:1.7.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.20.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.exposed:exposed:0.8.5" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2-M2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2-M2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-reactive:0.18" level="project" />
@@ -74,9 +71,6 @@
     <orderEntry type="library" name="Gradle: com.vdurmont:emoji-java:3.2.0" level="project" />
     <orderEntry type="library" name="Gradle: com.koloboke:koloboke-impl-common-jdk8:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.salomonbrys.kodein:kodein-core:4.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.rometools:rome-utils:1.7.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.jdom:jdom2:2.0.6" level="project" />
-    <orderEntry type="library" name="Gradle: joda-time:joda-time:2.9.9" level="project" />
     <orderEntry type="library" name="Gradle: com.github.kittinunf.result:result:1.2.0" level="project" />
     <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.2" level="project" />
     <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.9" level="project" />

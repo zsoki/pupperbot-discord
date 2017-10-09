@@ -12,9 +12,6 @@ buildscript {
     ext.gson_version = '2.8.1'
     ext.discord4j_version = '2.9'
     ext.kodein_version = '4.1.0'
-    ext.rome_version = '1.7.4'
-    ext.xerial_sqlite_jdbc = '3.20.0'
-    ext.exposed = '0.8.5'
     ext.shadow_plugin_version = '2.0.1'
 
     repositories {
@@ -83,13 +80,6 @@ dependencies {
 
     // DI
     compile "com.github.salomonbrys.kodein:kodein:$kodein_version"
-    
-    // RSS
-    compile "com.rometools:rome:$rome_version"
-
-    // Database
-    compile "org.xerial:sqlite-jdbc:$xerial_sqlite_jdbc"
-    compile "org.jetbrains.exposed:exposed:$exposed"
 }
 
 task copyResources(type: Copy) {
