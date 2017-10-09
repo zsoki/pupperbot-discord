@@ -14,6 +14,7 @@ private val logger = KotlinLogging.logger {}
 object PupperBotApplication {
 
     private val pupperBot: PupperBot by kodein.instance()
+    private val consoleScanner: Scanner by lazy { Scanner(System.`in`) }
 
     @JvmStatic fun main(args: Array<String>) {
 
@@ -32,8 +33,7 @@ object PupperBotApplication {
         while (true) {
 
             logger.info { "Listening for user input on System.in" }
-            val input = Scanner(System.`in`).nextLine()?.split(' ') ?: continue
-            val command = input[0]
+            val command = consoleScanner.next() ?: continue
 
             when (command) {
                 "logout" -> {
@@ -63,7 +63,7 @@ object PupperBotApplication {
                                 Permissions.SEND_MESSAGES,
                                 Permissions.READ_MESSAGES,
                                 Permissions.MANAGE_MESSAGES)))
-        logger.info { "Invite link: https://discordapp.com/api/oauth2/authorize?client_id=${pupperBot.client.applicationClientID}&scope=bot&permissions=$permissions\n" }
+        logger.info { "Invite link: https://discordapp.com/api/oauth2/authorize?client_id=${pupperBot.client.applicationClientID}&scope=bot&permissions=$permissions" }
     }
 
     private object ExitCodes {

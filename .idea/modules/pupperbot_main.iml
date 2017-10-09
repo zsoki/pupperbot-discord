@@ -8,7 +8,7 @@
           <option name="destination" value="$MODULE_DIR$/../../build/kotlin-classes/main" />
           <option name="noStdlib" value="true" />
           <option name="noReflect" value="true" />
-          <option name="moduleName" value="pupperbot_main" />
+          <option name="moduleName" value="pupperbot" />
           <option name="addCompilerBuiltIns" value="true" />
           <option name="loadBuiltInsFromDependencies" value="true" />
           <option name="languageVersion" value="1.2" />
@@ -19,6 +19,7 @@
           <option name="pluginClasspaths">
             <array />
           </option>
+          <option name="version" value="true" />
         </compilerArguments>
       </configuration>
     </facet>
@@ -33,26 +34,26 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2-M2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.2-M2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.18" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-rx2:0.18" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.0-beta-31" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.2.0-beta-31" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:0.19.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-rx2:0.19.1" level="project" />
     <orderEntry type="library" name="Gradle: io.github.microutils:kotlin-logging:1.4.6" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-slf4j-impl:2.9.1" level="project" />
     <orderEntry type="library" name="Gradle: org.reflections:reflections:0.9.11" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.kittinunf.fuel:fuel-rxjava:1.10.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.1" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.austinv11:Discord4j:2.9" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.kittinunf.fuel:fuel-rxjava:1.11.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.austinv11:Discord4j:2.9.1" level="project" />
     <orderEntry type="library" name="Gradle: io.reactivex.rxjava2:rxkotlin:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.salomonbrys.kodein:kodein:4.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2-M2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2-M2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-reactive:0.18" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.2.0-beta-31" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.0-beta-31" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-reactive:0.19.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-api:2.9.1" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.logging.log4j:log4j-core:2.9.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:20.0" level="project" />
     <orderEntry type="library" name="Gradle: org.javassist:javassist:3.21.0-GA" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.kittinunf.fuel:fuel:1.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.kittinunf.fuel:fuel:1.11.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpcore:4.4.6" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpclient:4.5.3" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpmime:4.5.3" level="project" />
