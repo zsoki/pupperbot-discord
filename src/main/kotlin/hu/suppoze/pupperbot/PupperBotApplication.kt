@@ -37,7 +37,7 @@ object PupperBotApplication {
                 "logout" -> logoutAndShutdown(command, ExitCodes.EXIT_CODE_NORMAL)
                 "restart" -> logoutAndShutdown(command, ExitCodes.EXIT_CODE_RESTART)
                 "update" -> logoutAndShutdown(command, ExitCodes.EXIT_CODE_UPDATE)
-                else -> println { "Unrecognized command." }
+                else -> logger.trace { "Unrecognized command." }
             }
         }
     }
@@ -55,7 +55,7 @@ object PupperBotApplication {
                                 Permissions.SEND_MESSAGES,
                                 Permissions.READ_MESSAGES,
                                 Permissions.MANAGE_MESSAGES)))
-        println { "Invite link: https://discordapp.com/api/oauth2/authorize?client_id=" +
+        logger.info { "Invite link: https://discordapp.com/api/oauth2/authorize?client_id=" +
                 "${pupperBot.client.applicationClientID}&scope=bot&permissions=$permissions" }
     }
 
