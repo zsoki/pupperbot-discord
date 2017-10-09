@@ -20,16 +20,6 @@ enum class AvailableCommands(val commandString: String) {
     SAY("say") {
         override val description = "Make Pupper say something. Your message will be deleted."
         override val example = "`;$commandString I'm a good booy!`"
-    },
-
-    RSSSUB("rsssub") {
-        override val description = "Sub to an RSS feed by URL on this channel (UNDER DEVELOPMENT)"
-        override val example = "`;$commandString http://example.com/feedurl`"
-    },
-
-    RSSUNSUB("rssunsub") {
-        override val description = "Unsubscribe from an RSS feed on this channel (UNDER DEVELOPMENT)"
-        override val example = "`;$commandString http://example.com/feedurl`"
     };
 
     abstract val description : String
