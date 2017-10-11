@@ -6,9 +6,7 @@ import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.giphy.model.GiphyRandomResponse
 import hu.suppoze.pupperbot.giphy.model.GiphySearchResponse
-import io.reactivex.Observable
 import io.reactivex.Single
-import kotlinx.coroutines.experimental.rx2.rxObservable
 import java.util.concurrent.TimeUnit
 
 class GiphyServer {

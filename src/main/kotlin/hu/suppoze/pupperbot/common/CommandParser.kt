@@ -1,6 +1,6 @@
 package hu.suppoze.pupperbot.common
 
-import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 
 class CommandParser {
 
