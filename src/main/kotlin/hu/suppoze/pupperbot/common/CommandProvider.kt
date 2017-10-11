@@ -38,6 +38,8 @@ class CommandProvider {
             }
         }
 
-        fun get(commandString: String): UseCase<*>? = commandMap[commandString]
+        fun getUseCaseFor(commandString: String) = commandMap[commandString]
+
+        fun getCommandStrings() = commandMap.keys
     }
 }

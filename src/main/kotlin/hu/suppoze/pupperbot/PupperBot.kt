@@ -33,6 +33,7 @@ class PupperBot {
     }
 
 
+    @Suppress("UNUSED_PARAMETER")
     @SubscribeEvent
     private fun onReady(event: ReadyEvent) {
         logger.info { "ReadyEvent received, WOOF! " }
@@ -41,11 +42,11 @@ class PupperBot {
 
     @SubscribeEvent
     private fun onMessageReceived(event: MessageReceivedEvent) {
-        val rawContent = event.message.content
-        if (rawContent.matches(Regex("^;[\\w\\s\\d]+.*"))) {
+        val rawContent = event.message.rawContent
+        if (commandParser.isValidCommand(rawContent)) {
             logger.info { "Command received. Raw content='$rawContent'" }
-            val parameterizedCommand = commandParser.parse(event)
-            CommandProvider.get(parameterizedCommand.command)?.execute(parameterizedCommand)
+            val parameterizedCommand = commandParser.createParameterizedCommand(event)
+            CommandProvider.getUseCaseFor(parameterizedCommand.command)?.execute(parameterizedCommand)
         }
     }
 }

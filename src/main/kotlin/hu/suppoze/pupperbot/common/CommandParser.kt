@@ -4,14 +4,27 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 
 class CommandParser {
 
-    fun parse(event: MessageReceivedEvent): ParameterizedCommand {
-        val commandLine: String = event.message.content.trimStart(';')
+    fun isValidCommand(rawContent: String): Boolean {
+        val appendedCommands = CommandProvider
+                .getCommandStrings()
+                .fold("") { first, second -> first + "|" + second }
+        return rawContent.matches(Regex("^;($appendedCommands).*"))
+    }
+
+    fun createParameterizedCommand(event: MessageReceivedEvent): ParameterizedCommand {
+        val commandLine: String = event.message.rawContent.trimStart(';')
         val words = commandLine.split(' ')
         return ParameterizedCommand(
                 event,
                 words[0],
-                commandLine.drop(words[0].length + 1),
-                if (words.size > 1) words.drop(1) else null
+                extractRawParams(commandLine, words[0]),
+                extractParams(words)
         )
     }
+
+    private fun extractRawParams(commandLine: String, commandString: String) =
+            commandLine.drop(commandString.length + 1)
+
+    private fun extractParams(words: List<String>) = if (words.size > 1) words.drop(1) else null
+
 }
