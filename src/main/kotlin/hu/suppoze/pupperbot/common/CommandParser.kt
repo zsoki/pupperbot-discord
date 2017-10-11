@@ -7,7 +7,9 @@ class CommandParser {
     fun isValidCommand(rawContent: String): Boolean {
         val appendedCommands = CommandProvider
                 .getCommandStrings()
-                .fold("") { first, second -> first + "|" + second }
+                .foldIndexed("") { index, first, second ->
+                    first + if (index == 0) "" else "|" + second
+                }
         return rawContent.matches(Regex("^;($appendedCommands).*"))
     }
 
