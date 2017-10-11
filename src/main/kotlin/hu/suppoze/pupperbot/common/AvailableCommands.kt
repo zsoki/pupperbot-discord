@@ -22,7 +22,7 @@ enum class AvailableCommands(val commandString: String) {
         override val example = "`;$commandString I'm a good booy!`"
     };
 
-    abstract val description : String
+    abstract val description: String
     abstract val example: String
 
 }

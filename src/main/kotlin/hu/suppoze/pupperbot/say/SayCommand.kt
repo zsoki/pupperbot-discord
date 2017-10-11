@@ -1,6 +1,9 @@
 package hu.suppoze.pupperbot.say
 
-import hu.suppoze.pupperbot.common.*
+import hu.suppoze.pupperbot.common.AvailableCommands
+import hu.suppoze.pupperbot.common.ChatCommand
+import hu.suppoze.pupperbot.common.ParameterizedCommand
+import hu.suppoze.pupperbot.common.UseCase
 import mu.KLogging
 
 @ChatCommand(type = AvailableCommands.SAY)
@@ -9,8 +12,8 @@ class SayCommand : UseCase<ParameterizedCommand> {
     companion object : KLogging()
 
     override val onNext: (ParameterizedCommand) -> Unit = {
-        it.event.message.delete()
-        it.event.message.channel.sendMessage(it.paramString)
+        it.event.message.delete().queue()
+        it.event.textChannel.sendMessage(it.paramString).queue()
     }
 
     override val onError: (Throwable) -> Unit = {

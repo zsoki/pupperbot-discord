@@ -25,9 +25,9 @@
     <Loggers>
 
         <Logger name="hu.suppoze.pupperbot" level="trace" additivity="false">
-            <AppenderRef ref="Console" />
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="RollingRandomAccessFile">
-                <ThresholdFilter level="info" />
+                <ThresholdFilter level="info"/>
             </AppenderRef>
         </Logger>
 

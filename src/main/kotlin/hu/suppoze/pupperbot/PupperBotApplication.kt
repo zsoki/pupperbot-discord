@@ -3,9 +3,8 @@ package hu.suppoze.pupperbot
 import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.TokenProvider
 import hu.suppoze.pupperbot.di.kodein
-import hu.suppoze.pupperbot.listeners.AnnotationListener
 import mu.KotlinLogging
-import sx.blah.discord.handle.obj.Permissions
+import net.dv8tion.jda.core.Permission
 import java.io.FileReader
 import java.util.*
 import kotlin.concurrent.thread
@@ -17,15 +16,16 @@ object PupperBotApplication {
     private val pupperBot: PupperBot by kodein.instance()
     private val consoleScanner: Scanner by lazy { Scanner(System.`in`) }
 
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         val reader = FileReader("./token.txt")
         val token = reader.readText()
 
         TokenProvider.token = token
 
-        pupperBot.client.dispatcher.registerListener(AnnotationListener())
+        pupperBot.init()
 
-        createInviteLink()
+        logInviteLink()
     }
 
     fun listenForCommand() = thread(start = true, name = "ConsoleInput") {
@@ -44,19 +44,17 @@ object PupperBotApplication {
 
     private fun logoutAndShutdown(command: String, exitCode: Int) {
         logger.info { "command=$command msg='Shutting down with ExitCode: $exitCode'" }
-        pupperBot.client.logout()
+        pupperBot.api.shutdownNow()
         System.exit(exitCode)
     }
 
-    private fun createInviteLink() {
-        val permissions = Permissions.generatePermissionsNumber(
-                EnumSet.copyOf(
-                        mutableListOf(
-                                Permissions.SEND_MESSAGES,
-                                Permissions.READ_MESSAGES,
-                                Permissions.MANAGE_MESSAGES)))
-        logger.info { "Invite link: https://discordapp.com/api/oauth2/authorize?client_id=" +
-                "${pupperBot.client.applicationClientID}&scope=bot&permissions=$permissions" }
+    private fun logInviteLink() {
+        val inviteUrl = pupperBot.api.asBot().getInviteUrl(
+                mutableListOf(
+                        Permission.MESSAGE_WRITE,
+                        Permission.MESSAGE_READ,
+                        Permission.MESSAGE_MANAGE))
+        logger.info { "Invite link: $inviteUrl" }
     }
 
     private object ExitCodes {
