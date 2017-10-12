@@ -17,6 +17,11 @@ enum class AvailableCommands(val commandString: String) {
         override val example = "`;$commandString just do it!`"
     },
 
+    GIFLAND_NSFW("pron") {
+        override val description = "Fetches a random NSFW gif from <http://porn.gifland.us>"
+        override val example = "`;$commandString`"
+    },
+
     SAY("say") {
         override val description = "Make Pupper say something. Your message will be deleted."
         override val example = "`;$commandString I'm a good booy!`"

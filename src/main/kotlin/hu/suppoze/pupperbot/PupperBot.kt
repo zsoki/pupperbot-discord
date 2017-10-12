@@ -32,8 +32,7 @@ class PupperBot {
                 .buildBlocking()
     }
 
-
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("UNUSED_PARAMETER") // Annotations are processed at runtime
     @SubscribeEvent
     private fun onReady(event: ReadyEvent) {
         logger.info { "ReadyEvent received, WOOF! " }

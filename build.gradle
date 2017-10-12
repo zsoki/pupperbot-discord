@@ -12,6 +12,7 @@ buildscript {
     ext.gson_version = '2.8.2'
     ext.jda_version = '3.3.1_286'
     ext.kodein_version = '4.1.0'
+    ext.jsoup_version = '1.10.3'
     ext.shadow_plugin_version = '2.0.1'
 
     repositories {
@@ -77,6 +78,9 @@ dependencies {
 
     // DI
     compile "com.github.salomonbrys.kodein:kodein:$kodein_version"
+
+    // Scraper
+    compile "org.jsoup:jsoup:$jsoup_version"
 }
 
 task copyResources(type: Copy) {
