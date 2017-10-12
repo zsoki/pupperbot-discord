@@ -7,6 +7,11 @@ enum class AvailableCommands(val commandString: String) {
         override val example = "`;$commandString`"
     },
 
+    SAY("say") {
+        override val description = "Make Pupper say something. Your message will be deleted."
+        override val example = "`;$commandString I'm a good booy!`"
+    },
+
     GIPHY_RANDOM("random") {
         override val description = "Returns a random gif restricted by tags (R rated!)"
         override val example = "`;$commandString wet pussy cat kittens <add any more tags>`"
@@ -22,9 +27,9 @@ enum class AvailableCommands(val commandString: String) {
         override val example = "`;$commandString`"
     },
 
-    SAY("say") {
-        override val description = "Make Pupper say something. Your message will be deleted."
-        override val example = "`;$commandString I'm a good booy!`"
+    CINEMA_CITY("mozi") {
+        override val description = "Fetches movies shown in Cinema City Szeged."
+        override val example = "`;$commandString`"
     };
 
     abstract val description: String
