@@ -29,7 +29,7 @@ class PronCommand : UseCase<String> {
         this.parameterizedCommand = parameterizedCommand
 
         if (!parameterizedCommand.event.textChannel.isNSFW)
-            onError(Throwable("You naughty boy, this channel isn't NSFW!"))
+            onNext("You naughty boy, this channel isn't NSFW!")
 
         var imgUrl = ""
 
