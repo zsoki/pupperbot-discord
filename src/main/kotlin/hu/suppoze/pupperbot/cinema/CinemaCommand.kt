@@ -46,7 +46,7 @@ class CinemaCommand : UseCase<String> {
     private fun buildScheduleEmbed(schedule: Schedule): MessageEmbed {
         val builder = EmbedBuilder()
                 .setTitle("Cinema City Szeged Műsor")
-                .setDescription("${LocalDate.now()} - ${LocalDate.now().plusDays(7)}")
+                .setDescription(createDescriptionText())
                 .setColor(Color.ORANGE)
                 .setImage("http://www.cinemacity.hu/media/iti_cz/imgs/cc_logo.png")
         for (screening in schedule.screenings) {
@@ -57,17 +57,24 @@ class CinemaCommand : UseCase<String> {
                             .groupBy { it.toLocalTime() }
                             .map { createScreeningRow(it) }
                             .reduce { r1, r2 -> "$r1\n$r2" },
-                    true)
+                    false)
         }
         return builder.build()
+    }
+
+    private fun createDescriptionText(): String {
+        val pattern = DateTimeFormatter.ofPattern("YYYY. MMMM d.")
+        val from = LocalDate.now().format(pattern)
+        val to = LocalDate.now().plusDays(7).format(pattern)
+        return "$from - $to"
+
     }
 
     private fun createScreeningRow(timeToDateTime: Map.Entry<LocalTime, List<LocalDateTime>>): String {
         val timeString = timeToDateTime.key.format(DateTimeFormatter.ofPattern("H:mm"))
         val dateString = timeToDateTime.value.map {
-            it.format(DateTimeFormatter.ofPattern("eeee"))
+            it.format(DateTimeFormatter.ofPattern("d."))
         }.reduce { s1, s2 -> "$s1, $s2" }
-        return "*$timeString* - $dateString"
+        return "**$timeString** - $dateString"
     }
-
 }
