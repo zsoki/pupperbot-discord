@@ -28,6 +28,9 @@ class PronCommand : UseCase<String> {
     override fun execute(parameterizedCommand: ParameterizedCommand) {
         this.parameterizedCommand = parameterizedCommand
 
+        if (!parameterizedCommand.event.textChannel.isNSFW)
+            onError(Throwable("You naughty boy, this channel isn't NSFW!"))
+
         var imgUrl = ""
 
         try {
