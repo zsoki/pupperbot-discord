@@ -2,7 +2,7 @@ group 'hu.suppoze.pupperbot'
 version '0.3'
 
 buildscript {
-    ext.kotlin_version = '1.2.0-beta-31'
+    ext.kotlin_version = '1.2.0-rc-39'
     ext.kotlinx_coroutines_version = '0.19.1'
     ext.kotlin_logging_version = '1.4.6'
     ext.log4j2_version = '2.9.1'
@@ -87,4 +87,10 @@ task copyResources(type: Copy) {
     from 'token_release.txt'
     into 'build/libs'
     rename ('token_release.txt', 'token.txt')
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }

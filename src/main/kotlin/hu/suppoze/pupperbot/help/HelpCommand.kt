@@ -1,27 +1,12 @@
 package hu.suppoze.pupperbot.help
 
-import hu.suppoze.pupperbot.common.AvailableCommands
-import hu.suppoze.pupperbot.common.ChatCommand
-import hu.suppoze.pupperbot.common.ParameterizedCommand
-import hu.suppoze.pupperbot.common.UseCase
+import hu.suppoze.pupperbot.common.*
 import mu.KLogging
 
 @ChatCommand(type = AvailableCommands.HELP)
-class HelpCommand : UseCase<String> {
+class HelpCommand : UseCase2<String>() {
 
-    companion object : KLogging()
-
-    private lateinit var parameterizedCommand: ParameterizedCommand
-
-    override val onNext: (String) -> Unit = {
-        parameterizedCommand.event.textChannel.sendMessage(it).queue()
-    }
-
-    override val onError: (Throwable) -> Unit = {
-        logger.error(it) { it.message }
-    }
-
-    override fun execute(parameterizedCommand: ParameterizedCommand) {
+    override fun onExecute() {
         this.parameterizedCommand = parameterizedCommand
 
         var helpString = ""
@@ -29,6 +14,7 @@ class HelpCommand : UseCase<String> {
             helpString += "${item.example} - ${item.description}\n"
         }
 
-        onNext(helpString)
+        parameterizedCommand.event.textChannel.sendMessage(helpString).queue()
     }
+
 }
