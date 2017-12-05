@@ -1,47 +1,21 @@
 package hu.suppoze.pupperbot.pron
 
-import hu.suppoze.pupperbot.common.AvailableCommands
-import hu.suppoze.pupperbot.common.ChatCommand
-import hu.suppoze.pupperbot.common.ParameterizedCommand
-import hu.suppoze.pupperbot.common.UseCase
-import mu.KLogging
+import hu.suppoze.pupperbot.common.*
 import org.jsoup.Jsoup
 
 @ChatCommand(type = AvailableCommands.GIFLAND_NSFW)
-class PronCommand : UseCase<String> {
+class PronCommand : UseCase() {
 
-    companion object : KLogging()
-
-    private lateinit var parameterizedCommand: ParameterizedCommand
-
-    override val onNext: (String) -> Unit = {
-        parameterizedCommand.event.textChannel
-                .sendMessage(it)
-                .queue()
-    }
-
-    override val onError: (Throwable) -> Unit = {
-        logger.error(it) { it.message }
-    }
-
-    // TODO better implementation
-    override fun execute(parameterizedCommand: ParameterizedCommand) {
-        this.parameterizedCommand = parameterizedCommand
-
+    override fun onExecute() {
         if (!parameterizedCommand.event.textChannel.isNSFW) {
-            onNext("You naughty boy, this channel isn't NSFW!")
+            parameterizedCommand.event.textChannel.sendMessage("You naughty boy, this channel is SFW!").queue()
             return
         }
 
-        var imgUrl = ""
+        val document = Jsoup.connect("http://porn.gifland.us/").get()
+        val imgUrl = document.select("main.container a img").first().attr("src")
 
-        try {
-            val document = Jsoup.connect("http://porn.gifland.us/").get()
-            imgUrl = document.select("main.container a img").first().attr("src")
-        } catch (ex: Exception) {
-            onError(ex)
-        }
-
-        onNext(imgUrl)
+        parameterizedCommand.event.textChannel.sendMessage(imgUrl).queue()
     }
+
 }
