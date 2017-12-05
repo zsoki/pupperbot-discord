@@ -22,12 +22,7 @@ enum class AvailableCommands(val commandString: String) {
         override val example = "`;$commandString just do it!`"
     },
 
-    GIFLAND("roll") {
-        override val description = "Fetches a random NSFW gif from <http://porn.gifland.us>"
-        override val example = "`;$commandString`"
-    },
-
-    GIFLAND_NSFW("rollpron") {
+   GIFLAND_NSFW("pron") {
         override val description = "Fetches a random NSFW gif from <http://porn.gifland.us>"
         override val example = "`;$commandString`"
     },

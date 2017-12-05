@@ -8,7 +8,7 @@ class CommandProvider {
     companion object {
 
         private val logger = KotlinLogging.logger {}
-        private val commandMap = mutableMapOf<String, UseCase<*>>()
+        private val chatCommandClassMap = mutableMapOf<String, Class<*>>()
         private val packageString = "hu.suppoze.pupperbot"
 
         init {
@@ -19,11 +19,10 @@ class CommandProvider {
 
                 try {
 
-                    val useCase = clazz.newInstance() as UseCase<*>
                     val chatCommand = clazz.getAnnotation(ChatCommand::class.java) as ChatCommand
 
-                    if (!commandMap.containsKey(chatCommand.type.commandString)) {
-                        commandMap.put(chatCommand.type.commandString, useCase)
+                    if (!chatCommandClassMap.containsKey(chatCommand.type.commandString)) {
+                        chatCommandClassMap.put(chatCommand.type.commandString, clazz)
                     } else {
                         logger.warn { "Duplicated commands! ${chatCommand.type} already defined!" }
                     }
@@ -38,8 +37,8 @@ class CommandProvider {
             }
         }
 
-        fun getUseCaseFor(commandString: String) = commandMap[commandString]
+        fun getUseCaseFor(commandString: String) = chatCommandClassMap[commandString]?.newInstance() as? UseCase
 
-        fun getCommandStrings() = commandMap.keys
+        fun getCommandStrings() = chatCommandClassMap.keys
     }
 }

@@ -3,27 +3,20 @@ package hu.suppoze.pupperbot.giphy
 import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.*
 import hu.suppoze.pupperbot.di.kodein
-import mu.KLogging
 
 @ChatCommand(type = AvailableCommands.GIPHY_RANDOM)
-class GiphyRandomCommand : UseCase2<String> {
+class GiphyRandomCommand : UseCase() {
 
     private val giphyServer: GiphyServer by kodein.instance()
 
-    val onNext: (String) -> Unit = {
-        parameterizedCommand.event.textChannel.sendMessage("${parameterizedCommand.paramString} $it").queue()
-    }
-
-    fun execute(parameterizedCommand: ParameterizedCommand) {
-        this.parameterizedCommand = parameterizedCommand
-
-        val tag = parameterizedCommand.paramString
-        if (tag == null) {
-            onError(Throwable("Tag was null."))
-            return
-        }
+    override fun onExecute() {
+        val tag = parameterizedCommand.paramString ?: throw IllegalStateException("Tag was null.")
 
         giphyServer.getRandomGiphyBy(tag)
-                .subscribe(onNext, onError)
+                .subscribe({
+                    parameterizedCommand.event.textChannel.sendMessage("${parameterizedCommand.paramString} $it").queue()
+                }, {
+
+                })
     }
 }

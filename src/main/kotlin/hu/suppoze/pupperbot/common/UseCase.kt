@@ -2,7 +2,7 @@ package hu.suppoze.pupperbot.common
 
 import mu.KLogging
 
-abstract class UseCase2<T> {
+abstract class UseCase {
 
     companion object : KLogging()
 
@@ -19,17 +19,6 @@ abstract class UseCase2<T> {
     }
 
     fun execute(parameterizedCommand: ParameterizedCommand) {
-        this.parameterizedCommand = parameterizedCommand
-        try {
-            onExecute()
-            onNext()
-        } catch (ex: Exception) {
-            onError(ex)
-            return
-        }
-    }
-
-    fun execute2(parameterizedCommand: ParameterizedCommand) {
         this.parameterizedCommand = parameterizedCommand
         try {
             onExecute()

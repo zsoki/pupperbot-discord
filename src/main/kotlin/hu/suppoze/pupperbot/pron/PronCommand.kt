@@ -1,15 +1,14 @@
 package hu.suppoze.pupperbot.pron
 
 import hu.suppoze.pupperbot.common.*
-import mu.KLogging
 import org.jsoup.Jsoup
 
 @ChatCommand(type = AvailableCommands.GIFLAND_NSFW)
-class PronCommand : UseCase2<String>() {
+class PronCommand : UseCase() {
 
     override fun onExecute() {
         if (!parameterizedCommand.event.textChannel.isNSFW) {
-            parameterizedCommand.event.textChannel.sendMessage("You naughty boy, this channel isn't NSFW!").queue()
+            parameterizedCommand.event.textChannel.sendMessage("You naughty boy, this channel is SFW!").queue()
             return
         }
 

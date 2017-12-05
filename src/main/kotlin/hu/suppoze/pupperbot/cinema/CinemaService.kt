@@ -35,7 +35,7 @@ class CinemaService {
         schedule
     }
 
-    fun getMoviesForDay(dayCount: Int): List<Pair<Movie, List<LocalDateTime>>> {
+    private fun getMoviesForDay(dayCount: Int): List<Pair<Movie, List<LocalDateTime>>> {
         val date = LocalDate.now().plusDays(dayCount.toLong())
         val formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
         val document = getScheduleInfoRowsDocument(formattedDate)
