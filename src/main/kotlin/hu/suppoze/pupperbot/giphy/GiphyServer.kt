@@ -1,13 +1,11 @@
 package hu.suppoze.pupperbot.giphy
 
-import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.fuel.rx.rx_object
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.gson.responseObject
 import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.giphy.model.GiphyRandomResponse
 import hu.suppoze.pupperbot.giphy.model.GiphySearchResponse
-import io.reactivex.Single
-import java.util.concurrent.TimeUnit
 
 class GiphyServer {
 
@@ -15,22 +13,31 @@ class GiphyServer {
     private val giphyRandomUrl: String by kodein.instance("giphyRandomUrl")
     private val giphySearchUrl: String by kodein.instance("giphySearchUrl")
 
-    fun getRandomGiphyBy(tag: String): Single<String> {
-        return giphyRandomUrl
-                .httpGet(listOf("api_key" to demoKey, "tag" to tag, "rating" to "r")) // The API key is public demo key, don't panic
-                .rx_object(GiphyRandomResponse.Deserializer())
-                .timeout(3, TimeUnit.SECONDS)
-                .retry(1)
-                .map { it.get().data.url }
+    fun getRandomGiphyBy(tag: String): String {
+        val (_, _, result) =
+                Fuel.get(giphyRandomUrl, listOf("api_key" to demoKey, "tag" to tag, "rating" to "r"))
+                        .timeout(3000)
+                        .responseObject<GiphyRandomResponse>()
+        val (giphyRandomResponse, fuelError) = result
+
+        if (giphyRandomResponse == null)
+            throw fuelError!!.exception
+
+        return giphyRandomResponse.data.url
     }
 
-    fun searchGiphyBy(phrase: String, limit: Int): Single<GiphySearchResponse> {
-        return giphySearchUrl
-                .httpGet(listOf("api_key" to demoKey, "q" to phrase, "limit" to limit, "rating" to "r"))
-                .rx_object(GiphySearchResponse.Deserializer())
-                .timeout(3, TimeUnit.SECONDS)
-                .retry(1)
-                .map { it.get() }
+
+    fun searchGiphyBy(phrase: String, limit: Int): GiphySearchResponse {
+        val (_, _, result) =
+                Fuel.get(giphySearchUrl, listOf("api_key" to demoKey, "q" to phrase, "limit" to limit, "rating" to "r"))
+                        .timeout(3000)
+                        .responseObject<GiphySearchResponse>()
+        val (giphySearchResponse, fuelError) = result
+
+        if (giphySearchResponse == null)
+            throw fuelError!!.exception
+
+        return giphySearchResponse
     }
 
 }

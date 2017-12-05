@@ -1,5 +1,7 @@
 package hu.suppoze.pupperbot.common
 
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 import mu.KLogging
 
 abstract class UseCase {
@@ -8,7 +10,7 @@ abstract class UseCase {
 
     protected lateinit var parameterizedCommand: ParameterizedCommand
 
-    private val onNext: () -> Unit = {
+    private val onComplete: () -> Unit = {
         logger.info { "${parameterizedCommand.command} executed with params \"${parameterizedCommand.paramString}\"" }
     }
 
@@ -21,12 +23,13 @@ abstract class UseCase {
 
     fun execute(parameterizedCommand: ParameterizedCommand) {
         this.parameterizedCommand = parameterizedCommand
-        try {
-            onExecute()
-            onNext()
-        } catch (ex: Exception) {
-            onError(ex)
-            return
+        launch(CommonPool) {
+            try {
+                onExecute()
+                onComplete()
+            } catch (ex: Exception) {
+                onError(ex)
+            }
         }
     }
 

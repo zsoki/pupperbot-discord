@@ -18,17 +18,12 @@ class GiphySearchCommand : UseCase() {
 
         val urlEncodedPhrase = URLEncoder.encode(phrase, Charsets.UTF_8.name())
         val limit = 10
+        val giphyRandomResponse = giphyServer.searchGiphyBy(urlEncodedPhrase, limit)
 
-        giphyServer.searchGiphyBy(urlEncodedPhrase, limit)
-                .map {
-                    val upperRange = minOf(limit, it.pagination.count)
-                    if (upperRange == 0) throw Throwable("No results found.") // TODO: Custom exception
-                    it.data[ThreadLocalRandom.current().nextInt(upperRange)].url // TODO: outsource randomizer
-                }
-                .subscribe({
-                    parameterizedCommand.event.textChannel.sendMessage("${parameterizedCommand.paramString} $it").queue()
-                }, {
+        val upperRange = minOf(limit, giphyRandomResponse.pagination.count)
+        if (upperRange == 0) throw IndexOutOfBoundsException("No results found.")
 
-                })
+        val url = giphyRandomResponse.data[ThreadLocalRandom.current().nextInt(upperRange)].url // TODO: outsource randomizer
+        parameterizedCommand.event.textChannel.sendMessage("${parameterizedCommand.paramString} $url").queue()
     }
 }

@@ -26,7 +26,7 @@ class PupperBot {
     fun init() {
         api = JDABuilder(AccountType.BOT)
                 .setToken(TokenProvider.token)
-                .setGame(Game.of(";help for commands"))
+                .setGame(Game.playing(";help for commands"))
                 .setEventManager(AnnotatedEventManager())
                 .addEventListener(this)
                 .buildBlocking()

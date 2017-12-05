@@ -1,26 +1,11 @@
 package hu.suppoze.pupperbot.giphy.model
 
-import com.github.kittinunf.fuel.core.ResponseDeserializable
-import com.google.gson.Gson
-
 data class GiphyRandomResponse(val data: GiphyGifObject,
-                               val meta: GiphyMetaObject) {
-
-    class Deserializer : ResponseDeserializable<GiphyRandomResponse> {
-        override fun deserialize(content: String): GiphyRandomResponse? =
-                Gson().fromJson(content, GiphyRandomResponse::class.java)
-    }
-}
+                               val meta: GiphyMetaObject)
 
 data class GiphySearchResponse(val data: List<GiphyGifObject>,
                                val pagination: GiphyPaginationObject,
-                               val meta: GiphyMetaObject) {
-
-    class Deserializer : ResponseDeserializable<GiphySearchResponse> {
-        override fun deserialize(content: String): GiphySearchResponse? =
-                Gson().fromJson(content, GiphySearchResponse::class.java)
-    }
-}
+                               val meta: GiphyMetaObject)
 
 data class GiphyGifObject(val type: String,
                           val id: String,

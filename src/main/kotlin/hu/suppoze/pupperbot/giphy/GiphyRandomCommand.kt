@@ -11,12 +11,8 @@ class GiphyRandomCommand : UseCase() {
 
     override fun onExecute() {
         val tag = parameterizedCommand.paramString ?: throw IllegalStateException("Tag was null.")
+        val url = giphyServer.getRandomGiphyBy(tag)
 
-        giphyServer.getRandomGiphyBy(tag)
-                .subscribe({
-                    parameterizedCommand.event.textChannel.sendMessage("${parameterizedCommand.paramString} $it").queue()
-                }, {
-
-                })
+        parameterizedCommand.event.textChannel.sendMessage("${parameterizedCommand.paramString} $url").queue()
     }
 }
