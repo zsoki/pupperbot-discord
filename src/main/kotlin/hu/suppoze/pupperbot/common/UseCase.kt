@@ -8,14 +8,15 @@ abstract class UseCase {
 
     protected lateinit var parameterizedCommand: ParameterizedCommand
 
-    protected val onNext: () -> Unit = {
+    private val onNext: () -> Unit = {
         logger.info { "${parameterizedCommand.command} executed with params \"${parameterizedCommand.paramString}\"" }
     }
 
-    protected val onError: (Throwable) -> Unit = {
+    private val onError: (Throwable) -> Unit = {
         logger.error(it) { it.message }
-        parameterizedCommand.event.textChannel.sendMessage(
-                "Error during ${parameterizedCommand.command} command: ${it.message}")
+        parameterizedCommand.event.textChannel
+                .sendMessage("Error during ${parameterizedCommand.command} command: ${it.message}")
+                .queue()
     }
 
     fun execute(parameterizedCommand: ParameterizedCommand) {
