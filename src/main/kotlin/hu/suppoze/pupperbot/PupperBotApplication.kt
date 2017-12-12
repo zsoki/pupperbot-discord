@@ -15,7 +15,7 @@ private val logger = KotlinLogging.logger {}
 object PupperBotApplication {
 
     private val pupperBot: PupperBot by kodein.instance()
-    private val consoleScanner: Scanner by lazy { Scanner(System.`in`) }
+    private val consoleScanner: Scanner = Scanner(System.`in`)
 
     @JvmStatic
     fun main(args: Array<String>) {
