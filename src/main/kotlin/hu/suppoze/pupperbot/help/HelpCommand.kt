@@ -11,7 +11,7 @@ class HelpCommand : UseCase() {
             helpString += "${item.example} - ${item.description}\n"
         }
 
-        parameterizedCommand.event.textChannel.sendMessage(helpString).queue()
+        commandContext.event.textChannel.sendMessage(helpString).queue()
     }
 
 }

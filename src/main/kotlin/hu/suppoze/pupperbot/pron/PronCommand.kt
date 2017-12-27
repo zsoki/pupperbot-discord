@@ -7,15 +7,15 @@ import org.jsoup.Jsoup
 class PronCommand : UseCase() {
 
     override fun onExecute() {
-        if (!parameterizedCommand.event.textChannel.isNSFW) {
-            parameterizedCommand.event.textChannel.sendMessage("You naughty boy, this channel is SFW!").queue()
+        if (!commandContext.event.textChannel.isNSFW) {
+            commandContext.event.textChannel.sendMessage("You naughty boy, this channel is SFW!").queue()
             return
         }
 
         val document = Jsoup.connect("http://porn.gifland.us/").get()
         val imgUrl = document.select("main.container a img").first().attr("src")
 
-        parameterizedCommand.event.textChannel.sendMessage(imgUrl).queue()
+        commandContext.event.textChannel.sendMessage(imgUrl).queue()
     }
 
 }

@@ -11,20 +11,20 @@ class CommandParser {
         return rawContent.matches(Regex("^;($appendedCommands).*"))
     }
 
-    fun createParameterizedCommand(event: MessageReceivedEvent): ParameterizedCommand {
+    fun buildCommandContext(event: MessageReceivedEvent): CommandContext {
         val commandLine: String = event.message.rawContent.trimStart(';')
         val words = commandLine.split(' ')
-        return ParameterizedCommand(
+        return CommandContext(
                 event,
                 words[0],
-                extractRawParams(commandLine, words[0]),
-                extractParams(words)
+                extractRawArguments(commandLine, words[0]),
+                extractArgumentList(words)
         )
     }
 
-    private fun extractRawParams(commandLine: String, commandString: String) =
+    private fun extractRawArguments(commandLine: String, commandString: String) =
             commandLine.drop(commandString.length + 1)
 
-    private fun extractParams(words: List<String>) = if (words.size > 1) words.drop(1) else null
+    private fun extractArgumentList(words: List<String>) = if (words.size > 1) words.drop(1) else null
 
 }

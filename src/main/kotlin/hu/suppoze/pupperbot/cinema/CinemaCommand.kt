@@ -20,7 +20,7 @@ class CinemaCommand : UseCase() {
 
     override fun onExecute() {
         val schedule = cinemaService.fetchSchedule()
-        parameterizedCommand.event.textChannel.sendMessage(buildScheduleEmbed(schedule)).queue()
+        commandContext.event.textChannel.sendMessage(buildScheduleEmbed(schedule)).queue()
     }
 
     private fun buildScheduleEmbed(schedule: Schedule): MessageEmbed {

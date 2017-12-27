@@ -10,9 +10,9 @@ class GiphyRandomCommand : UseCase() {
     private val giphyServer: GiphyServer by kodein.instance()
 
     override fun onExecute() {
-        val tag = parameterizedCommand.paramString ?: throw IllegalStateException("Tag was null.")
+        val tag = commandContext.rawArgs ?: throw IllegalStateException("Tag was null.")
         val url = giphyServer.getRandomGiphyBy(tag)
 
-        parameterizedCommand.event.textChannel.sendMessage("${parameterizedCommand.paramString} $url").queue()
+        commandContext.event.textChannel.sendMessage("${commandContext.rawArgs} $url").queue()
     }
 }

@@ -14,7 +14,7 @@ class GiphySearchCommand : UseCase() {
     private val giphyServer: GiphyServer by kodein.instance()
 
     override fun onExecute() {
-        val phrase = parameterizedCommand.paramString ?: throw IllegalStateException("Param string was null.")
+        val phrase = commandContext.rawArgs ?: throw IllegalStateException("Param string was null.")
 
         val urlEncodedPhrase = URLEncoder.encode(phrase, Charsets.UTF_8.name())
         val limit = 10
@@ -24,6 +24,6 @@ class GiphySearchCommand : UseCase() {
         if (upperRange == 0) throw IndexOutOfBoundsException("No results found.")
 
         val url = giphyRandomResponse.data[ThreadLocalRandom.current().nextInt(upperRange)].url // TODO: outsource randomizer
-        parameterizedCommand.event.textChannel.sendMessage("${parameterizedCommand.paramString} $url").queue()
+        commandContext.event.textChannel.sendMessage("${commandContext.rawArgs} $url").queue()
     }
 }

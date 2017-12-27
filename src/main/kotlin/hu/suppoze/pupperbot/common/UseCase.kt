@@ -8,21 +8,21 @@ abstract class UseCase {
 
     companion object : KLogging()
 
-    protected lateinit var parameterizedCommand: ParameterizedCommand
+    protected lateinit var commandContext: CommandContext
 
     private val onComplete: () -> Unit = {
-        logger.info { "${parameterizedCommand.command} executed with params \"${parameterizedCommand.paramString}\"" }
+        logger.info { "${commandContext.rawCommand} executed with arguments \"${commandContext.rawArgs}\"" }
     }
 
     private val onError: (Throwable) -> Unit = {
         logger.error(it) { it.message }
-        parameterizedCommand.event.textChannel
-                .sendMessage("Error during ${parameterizedCommand.command} command: ${it.message}")
+        commandContext.event.textChannel
+                .sendMessage("Error during ${commandContext.rawCommand} rawCommand: ${it.message}")
                 .queue()
     }
 
-    fun executeAsync(parameterizedCommand: ParameterizedCommand) {
-        this.parameterizedCommand = parameterizedCommand
+    fun executeAsync(commandContext: CommandContext) {
+        this.commandContext = commandContext
         launch(CommonPool) {
             try {
                 onExecute()
