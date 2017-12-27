@@ -45,7 +45,7 @@ class PupperBot {
         if (commandParser.isValidCommand(rawContent)) {
             logger.info { "Command received. Raw content='$rawContent'" }
             val parameterizedCommand = commandParser.createParameterizedCommand(event)
-            CommandProvider.getUseCaseFor(parameterizedCommand.command)?.execute(parameterizedCommand)
+            CommandProvider.getUseCaseFor(parameterizedCommand.command)?.executeAsync(parameterizedCommand)
         }
     }
 }

@@ -21,7 +21,7 @@ abstract class UseCase {
                 .queue()
     }
 
-    fun execute(parameterizedCommand: ParameterizedCommand) {
+    fun executeAsync(parameterizedCommand: ParameterizedCommand) {
         this.parameterizedCommand = parameterizedCommand
         launch(CommonPool) {
             try {
