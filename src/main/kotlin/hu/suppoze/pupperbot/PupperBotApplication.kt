@@ -38,11 +38,6 @@ object PupperBotApplication {
                 "logout" -> logoutAndShutdown(command, ExitCodes.EXIT_CODE_NORMAL)
                 "restart" -> logoutAndShutdown(command, ExitCodes.EXIT_CODE_RESTART)
                 "update" -> logoutAndShutdown(command, ExitCodes.EXIT_CODE_UPDATE)
-                "party" -> pupperBot.api.guilds
-                    .forEach {
-                        it.textChannels
-                            .forEach { it.sendMessage("<a:party_parrot:393681799789674508>") }
-                    }
                 else -> logger.trace { "Unrecognized command." }
             }
         }

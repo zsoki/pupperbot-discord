@@ -1,6 +1,5 @@
 package hu.suppoze.pupperbot.common
 
-import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import mu.KLogging
 
@@ -23,14 +22,13 @@ abstract class UseCase {
 
     fun executeAsync(commandContext: CommandContext) {
         this.commandContext = commandContext
-        launch(CommonPool) {
+        launch {
             try {
                 onExecute()
-                onComplete()
             } catch (ex: Exception) {
                 onError(ex)
             }
-        }
+        }.invokeOnCompletion { onComplete() }
     }
 
     protected abstract fun onExecute()
