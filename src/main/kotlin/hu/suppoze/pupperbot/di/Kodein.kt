@@ -1,10 +1,13 @@
 package hu.suppoze.pupperbot.di
 
-import com.github.salomonbrys.kodein.*
 import hu.suppoze.pupperbot.PupperBot
 import hu.suppoze.pupperbot.cinema.CinemaService
 import hu.suppoze.pupperbot.common.CommandParser
 import hu.suppoze.pupperbot.giphy.GiphyServer
+import org.kodein.Kodein
+import org.kodein.generic.bind
+import org.kodein.generic.singleton
+import org.kodein.generic.with
 
 
 val appModule = Kodein.Module {
@@ -23,7 +26,7 @@ val serverModule = Kodein.Module {
     bind<GiphyServer>() with singleton { GiphyServer() }
 }
 
-val kodein = Kodein.lazy {
+val kodein = Kodein {
     import(appModule)
     import(serviceModule)
     import(serverModule)

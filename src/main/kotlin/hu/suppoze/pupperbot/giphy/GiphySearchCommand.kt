@@ -1,10 +1,10 @@
 package hu.suppoze.pupperbot.giphy
 
-import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.AvailableCommands
 import hu.suppoze.pupperbot.common.ChatCommand
 import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.di.kodein
+import org.kodein.generic.instance
 import java.net.URLEncoder
 import java.util.concurrent.ThreadLocalRandom
 
@@ -23,7 +23,8 @@ class GiphySearchCommand : UseCase() {
         val upperRange = minOf(limit, giphyRandomResponse.pagination.count)
         if (upperRange == 0) throw IndexOutOfBoundsException("No results found.")
 
-        val url = giphyRandomResponse.data[ThreadLocalRandom.current().nextInt(upperRange)].url // TODO: outsource randomizer
+        val url =
+            giphyRandomResponse.data[ThreadLocalRandom.current().nextInt(upperRange)].url // TODO: outsource randomizer
         commandContext.event.textChannel.sendMessage("${commandContext.rawArgs} $url").queue()
     }
 }

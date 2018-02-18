@@ -1,8 +1,10 @@
 package hu.suppoze.pupperbot.giphy
 
-import com.github.salomonbrys.kodein.instance
-import hu.suppoze.pupperbot.common.*
+import hu.suppoze.pupperbot.common.AvailableCommands
+import hu.suppoze.pupperbot.common.ChatCommand
+import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.di.kodein
+import org.kodein.generic.instance
 
 @ChatCommand(type = AvailableCommands.GIPHY_RANDOM)
 class GiphyRandomCommand : UseCase() {

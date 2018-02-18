@@ -44,35 +44,38 @@ class CinemaService {
 
     private fun getScheduleInfoRowsDocument(formattedDate: String): Document {
         val deficientBody = Jsoup.connect("http://www.cinemacity.hu/scheduleInfoRows")
-                .data(mutableMapOf(
-                        "locationId" to szegedLocationId.toString(),
-                        "date" to formattedDate,
-                        "venueTypeId" to "1"))
-                .method(Connection.Method.POST)
-                .execute()
-                .body()
+            .data(
+                mutableMapOf(
+                    "locationId" to szegedLocationId.toString(),
+                    "date" to formattedDate,
+                    "venueTypeId" to "1"
+                )
+            )
+            .method(Connection.Method.POST)
+            .execute()
+            .body()
         val body = "<html><head></head><body><table>$deficientBody</table></html>"
 
         return Jsoup.parse(body)
     }
 
     private fun extractMoviesFrom(document: Document, date: LocalDate) =
-            document.select("tbody > tr")
-                    .filterNot { it.childNodeSize() < 5 }
-                    .map {
+        document.select("tbody > tr")
+            .filterNot { it.childNodeSize() < 5 }
+            .map {
 
-                        val movie = Movie(
-                                title = it.child(0).text(),
-                                type = it.child(2).ownText(),
-                                language = it.child(3).ownText(),
-                                length = it.child(4).text()
-                        )
+                val movie = Movie(
+                    title = it.child(0).text(),
+                    type = it.child(2).ownText(),
+                    language = it.child(3).ownText(),
+                    length = it.child(4).text()
+                )
 
-                        val screeningDateTimes = it.select("td > a.presentationLink")
-                                .filter { it.hasText() }
-                                .map { LocalTime.parse(it.text()).atDate(date) }
-                                .toList()
+                val screeningDateTimes = it.select("td > a.presentationLink")
+                    .filter { it.hasText() }
+                    .map { LocalTime.parse(it.text()).atDate(date) }
+                    .toList()
 
-                        Pair(movie, screeningDateTimes)
-                    }
+                Pair(movie, screeningDateTimes)
+            }
 }

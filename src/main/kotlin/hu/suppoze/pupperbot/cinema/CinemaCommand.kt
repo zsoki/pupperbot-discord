@@ -1,12 +1,12 @@
 package hu.suppoze.pupperbot.cinema
 
-import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.AvailableCommands
 import hu.suppoze.pupperbot.common.ChatCommand
 import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.di.kodein
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.MessageEmbed
+import org.kodein.generic.instance
 import java.awt.Color
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -25,19 +25,20 @@ class CinemaCommand : UseCase() {
 
     private fun buildScheduleEmbed(schedule: Schedule): MessageEmbed {
         val builder = EmbedBuilder()
-                .setTitle("Cinema City Szeged Műsor")
-                .setDescription(createDescriptionText())
-                .setColor(Color.ORANGE)
-                .setImage("http://www.cinemacity.hu/media/iti_cz/imgs/cc_logo.png")
+            .setTitle("Cinema City Szeged Műsor")
+            .setDescription(createDescriptionText())
+            .setColor(Color.ORANGE)
+            .setImage("http://www.cinemacity.hu/media/iti_cz/imgs/cc_logo.png")
         for (screening in schedule.screenings) {
             builder.addField(
-                    screening.key.title,
-                    screening.value
-                            .sorted()
-                            .groupBy { it.toLocalTime() }
-                            .map { createScreeningRow(it) }
-                            .reduce { r1, r2 -> "$r1\n$r2" },
-                    false)
+                screening.key.title,
+                screening.value
+                    .sorted()
+                    .groupBy { it.toLocalTime() }
+                    .map { createScreeningRow(it) }
+                    .reduce { r1, r2 -> "$r1\n$r2" },
+                false
+            )
         }
         return builder.build()
     }

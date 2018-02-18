@@ -17,8 +17,8 @@ abstract class UseCase {
     private val onError: (Throwable) -> Unit = {
         logger.error(it) { it.message }
         commandContext.event.textChannel
-                .sendMessage("Error during ${commandContext.rawCommand} rawCommand: ${it.message}")
-                .queue()
+            .sendMessage("Error during ${commandContext.rawCommand} rawCommand: ${it.message}")
+            .queue()
     }
 
     fun executeAsync(commandContext: CommandContext) {

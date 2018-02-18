@@ -1,6 +1,5 @@
 package hu.suppoze.pupperbot
 
-import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.common.CommandParser
 import hu.suppoze.pupperbot.common.CommandProvider
 import hu.suppoze.pupperbot.common.TokenProvider
@@ -14,6 +13,7 @@ import net.dv8tion.jda.core.events.ReadyEvent
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.hooks.AnnotatedEventManager
 import net.dv8tion.jda.core.hooks.SubscribeEvent
+import org.kodein.generic.instance
 
 class PupperBot {
 
@@ -25,11 +25,11 @@ class PupperBot {
 
     fun init() {
         api = JDABuilder(AccountType.BOT)
-                .setToken(TokenProvider.token)
-                .setGame(Game.playing(";help for commands"))
-                .setEventManager(AnnotatedEventManager())
-                .addEventListener(this)
-                .buildBlocking()
+            .setToken(TokenProvider.token)
+            .setGame(Game.playing(";help for commands"))
+            .setEventManager(AnnotatedEventManager())
+            .addEventListener(this)
+            .buildBlocking()
     }
 
     @Suppress("UNUSED_PARAMETER") // Annotations are processed at runtime
@@ -41,7 +41,7 @@ class PupperBot {
 
     @SubscribeEvent
     private fun onMessageReceived(event: MessageReceivedEvent) {
-        val rawContent = event.message.rawContent
+        val rawContent = event.message.contentRaw
         if (commandParser.isValidCommand(rawContent)) {
             logger.info { "Command received. Raw content='$rawContent'" }
             val commandContext = commandParser.buildCommandContext(event)

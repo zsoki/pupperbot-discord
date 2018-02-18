@@ -2,10 +2,10 @@ package hu.suppoze.pupperbot.giphy
 
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.gson.responseObject
-import com.github.salomonbrys.kodein.instance
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.giphy.model.GiphyRandomResponse
 import hu.suppoze.pupperbot.giphy.model.GiphySearchResponse
+import org.kodein.generic.instance
 
 class GiphyServer {
 
@@ -16,8 +16,8 @@ class GiphyServer {
     fun getRandomGiphyBy(tag: String): String {
         val (_, _, result) =
                 Fuel.get(giphyRandomUrl, listOf("api_key" to demoKey, "tag" to tag, "rating" to "r"))
-                        .timeout(3000)
-                        .responseObject<GiphyRandomResponse>()
+                    .timeout(3000)
+                    .responseObject<GiphyRandomResponse>()
         val (giphyRandomResponse, fuelError) = result
 
         if (giphyRandomResponse == null)
@@ -30,8 +30,8 @@ class GiphyServer {
     fun searchGiphyBy(phrase: String, limit: Int): GiphySearchResponse {
         val (_, _, result) =
                 Fuel.get(giphySearchUrl, listOf("api_key" to demoKey, "q" to phrase, "limit" to limit, "rating" to "r"))
-                        .timeout(3000)
-                        .responseObject<GiphySearchResponse>()
+                    .timeout(3000)
+                    .responseObject<GiphySearchResponse>()
         val (giphySearchResponse, fuelError) = result
 
         if (giphySearchResponse == null)
