@@ -2,13 +2,14 @@ package hu.suppoze.pupperbot
 
 import hu.suppoze.pupperbot.common.TokenProvider
 import hu.suppoze.pupperbot.di.kodein
-import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.asCoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
 import mu.KotlinLogging
 import net.dv8tion.jda.core.Permission
 import org.kodein.generic.instance
 import java.io.FileReader
 import java.util.*
+import java.util.concurrent.Executors
 
 private val logger = KotlinLogging.logger {}
 
@@ -29,7 +30,7 @@ object PupperBotApplication {
         logInviteLink()
     }
 
-    fun listenForCommand() = launch(CommonPool) {
+    fun listenForCommand() = launch(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) {
         while (isActive) {
             logger.info { "Listening for user input on System.in" }
             val command = consoleScanner.next() ?: continue
