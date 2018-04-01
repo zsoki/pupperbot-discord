@@ -2,7 +2,7 @@
 <module external.linked.project.id="pupperbot-bootloader:main" external.linked.project.path="$MODULE_DIR$/../../pupperbot-bootloader" external.root.project.path="$MODULE_DIR$/../../pupperbot-bootloader" external.system.id="GRADLE" external.system.module.group="hu.suppoze.pupperbot.bootloader" external.system.module.type="sourceSet" external.system.module.version="0.2" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="2" platform="JVM 1.6" useProjectSettings="false">
+      <configuration version="3" platform="JVM 1.6" useProjectSettings="false">
         <compilerSettings />
         <compilerArguments>
           <option name="destination" value="$MODULE_DIR$/../../pupperbot-bootloader/build/kotlin-classes/main" />
@@ -19,7 +19,6 @@
           <option name="pluginClasspaths">
             <array />
           </option>
-          <option name="coroutinesWarn" value="true" />
         </compilerArguments>
       </configuration>
     </facet>

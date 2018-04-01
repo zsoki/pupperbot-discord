@@ -6,7 +6,7 @@ import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.di.kodein
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.MessageEmbed
-import org.kodein.generic.instance
+import org.kodein.di.generic.instance
 import java.awt.Color
 import java.time.LocalDate
 import java.time.LocalDateTime

@@ -5,7 +5,7 @@ import com.github.kittinunf.fuel.gson.responseObject
 import hu.suppoze.pupperbot.di.kodein
 import hu.suppoze.pupperbot.giphy.model.GiphyRandomResponse
 import hu.suppoze.pupperbot.giphy.model.GiphySearchResponse
-import org.kodein.generic.instance
+import org.kodein.di.generic.instance
 
 class GiphyServer {
 

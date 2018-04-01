@@ -4,7 +4,7 @@ import hu.suppoze.pupperbot.common.AvailableCommands
 import hu.suppoze.pupperbot.common.ChatCommand
 import hu.suppoze.pupperbot.common.UseCase
 import hu.suppoze.pupperbot.di.kodein
-import org.kodein.generic.instance
+import org.kodein.di.generic.instance
 
 @ChatCommand(type = AvailableCommands.GIPHY_RANDOM)
 class GiphyRandomCommand : UseCase() {
