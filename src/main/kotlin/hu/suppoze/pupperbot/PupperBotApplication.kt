@@ -6,7 +6,7 @@ import kotlinx.coroutines.experimental.asCoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
 import mu.KotlinLogging
 import net.dv8tion.jda.core.Permission
-import org.kodein.generic.instance
+import org.kodein.di.generic.instance
 import java.io.FileReader
 import java.util.*
 import java.util.concurrent.Executors

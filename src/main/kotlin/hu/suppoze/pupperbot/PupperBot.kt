@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.events.ReadyEvent
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.hooks.AnnotatedEventManager
 import net.dv8tion.jda.core.hooks.SubscribeEvent
-import org.kodein.generic.instance
+import org.kodein.di.generic.instance
 
 class PupperBot {
 

@@ -4,10 +4,10 @@ import hu.suppoze.pupperbot.PupperBot
 import hu.suppoze.pupperbot.cinema.CinemaService
 import hu.suppoze.pupperbot.common.CommandParser
 import hu.suppoze.pupperbot.giphy.GiphyServer
-import org.kodein.Kodein
-import org.kodein.generic.bind
-import org.kodein.generic.singleton
-import org.kodein.generic.with
+import org.kodein.di.Kodein
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.singleton
+import org.kodein.di.generic.with
 
 
 val appModule = Kodein.Module {
