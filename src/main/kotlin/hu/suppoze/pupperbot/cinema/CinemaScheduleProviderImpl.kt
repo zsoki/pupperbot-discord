@@ -1,5 +1,7 @@
 package hu.suppoze.pupperbot.cinema
 
+import hu.suppoze.pupperbot.cinema.api.CinemaApi
+import hu.suppoze.pupperbot.di.kodein
 import kotlinx.coroutines.experimental.channels.Channel
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.newSingleThreadContext
@@ -7,16 +9,19 @@ import kotlinx.coroutines.experimental.runBlocking
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.kodein.di.generic.instance
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class CinemaService {
+class CinemaScheduleProviderImpl : CinemaScheduleProvider {
+
+    private val cinemaApi: CinemaApi by kodein.instance()
 
     private val szegedLocationId = 1010214
 
-    fun fetchSchedule() = runBlocking {
+    override fun fetchSchedule() = runBlocking {
         val scheduleContext = newSingleThreadContext("ScheduleContext")
         val channel = Channel<List<Pair<Movie, List<LocalDateTime>>>>()
         val schedule = Schedule(szegedLocationId, 1, HashMap())
@@ -26,7 +31,7 @@ class CinemaService {
             val pairList = channel.receive()
             pairList.forEach {
                 if (!schedule.screenings.containsKey(it.first)) {
-                    schedule.screenings.put(it.first, mutableListOf())
+                    schedule.screenings[it.first] = mutableListOf()
                 }
                 schedule.screenings[it.first]?.addAll(it.second)
             }
