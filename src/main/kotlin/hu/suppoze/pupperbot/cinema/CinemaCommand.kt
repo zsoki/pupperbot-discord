@@ -13,7 +13,7 @@ class CinemaCommand : UseCase() {
     private val cinemaScheduleEmbedBuilder: CinemaScheduleEmbedBuilder by kodein.instance()
 
     override fun onExecute() {
-        val schedule = cinemaScheduleProvider.fetchSchedule()
+        val schedule = cinemaScheduleProvider.fetchNextWeekSchedule("szeged") // TODO hardcoded value
         val embed = cinemaScheduleEmbedBuilder.buildScheduleEmbed(schedule)
         commandContext.event.textChannel.sendMessage(embed).queue()
     }

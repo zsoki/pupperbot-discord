@@ -6,12 +6,12 @@ data class CinemaApiResponse(
     val body: CinemaApiBody
 )
 
-data class CinemaApiFilms(
-    val films: List<CinemaApiMovie>,
+data class CinemaApiFilmEvents(
+    val films: List<CinemaApiFilm>,
     val events: List<CinemaApiEvent>
 ) : CinemaApiBody
 
-data class CinemaApiMovie(
+data class CinemaApiFilm(
     val id: String,
     val name: String,
     val length: Int,
@@ -34,7 +34,7 @@ data class CinemaApiEvent(
     val soldOut: Boolean
 )
 
-data class CinemaApiCinemaList(
+data class CinemaApiCinemasWrapper(
     val cinemas: List<CinemaApiCinema>
 ) : CinemaApiBody
 

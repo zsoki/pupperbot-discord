@@ -4,7 +4,7 @@ import hu.suppoze.pupperbot.PupperBot
 import hu.suppoze.pupperbot.cinema.CinemaScheduleEmbedBuilder
 import hu.suppoze.pupperbot.cinema.CinemaScheduleProvider
 import hu.suppoze.pupperbot.cinema.CinemaScheduleProviderImpl
-import hu.suppoze.pupperbot.cinema.api.CinemaApi
+import hu.suppoze.pupperbot.cinema.api.CinemaApiClient
 import hu.suppoze.pupperbot.common.CommandParser
 import hu.suppoze.pupperbot.giphy.GiphyServer
 import org.kodein.di.Kodein
@@ -22,7 +22,7 @@ val cinemaModule = Kodein.Module {
     constant("cinemaApiUrl") with "https://www.cinemacity.hu/hu/data-api-service/v1/quickbook/10102/"
     bind<CinemaScheduleProvider>() with singleton { CinemaScheduleProviderImpl() }
     bind<CinemaScheduleEmbedBuilder>() with singleton { CinemaScheduleEmbedBuilder() }
-    bind<CinemaApi>() with singleton { CinemaApi() }
+    bind<CinemaApiClient>() with singleton { CinemaApiClient() } // TODO replace with RestClient
 }
 
 val serverModule = Kodein.Module {
