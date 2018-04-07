@@ -25,15 +25,15 @@ class CinemaApiClient : RestClient {
             .format(DateTimeFormatter.ISO_DATE)
 
         val (_, _, result) =
-                Fuel.get(cinemaListRequestUrl.withPathParams(isoDate), listOf("lang" to "hu_HU"))
+                Fuel.get(cinemaListRequestUrl.withPathParams(isoDate), listOf("attr" to "", "lang" to "hu_HU"))
                     .timeout(3000)
-                    .responseObject<CinemaApiCinemasWrapper>()
-        val (cinemasWrapper, fuelError) = result
+                    .responseObject<CinemaApiResponse>()
+        val (cinemaResponse, fuelError) = result
 
-        if (cinemasWrapper == null)
+        if (cinemaResponse == null)
             throw fuelError!!.exception
 
-        return cinemasWrapper.cinemas
+        return (cinemaResponse.body as CinemaApiCinemasWrapper).cinemas
     }
 
     fun getFilmEventsFor(cinemaId: String, date: LocalDate): CinemaApiFilmEvents {
