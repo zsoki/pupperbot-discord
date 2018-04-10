@@ -1,15 +1,32 @@
 package hu.suppoze.pupperbot.cinema.api
 
-interface CinemaApiBody
+data class CinemaApiCinemasResponse(
+    val body: CinemaApiCinemasWrapper
+)
 
-data class CinemaApiResponse(
-    val body: CinemaApiBody
+data class CinemaApiCinemasWrapper(
+    val cinemas: List<CinemaApiCinema>
+)
+
+data class CinemaApiCinema(
+    val id: String,
+    val groupId: String,
+    val displayName: String,
+    val link: String,
+    val address: String,
+    val bookingUrl: String,
+    val blockOnlineSales: Boolean,
+    val blockOnlineSalesUntil: String
+)
+
+data class CinemaApiFilmEventsResponse(
+    val body: CinemaApiFilmEvents
 )
 
 data class CinemaApiFilmEvents(
     val films: List<CinemaApiFilm>,
     val events: List<CinemaApiEvent>
-) : CinemaApiBody
+)
 
 data class CinemaApiFilm(
     val id: String,
@@ -32,19 +49,4 @@ data class CinemaApiEvent(
     val attributeIds: List<String>,
     val bookingLink: String,
     val soldOut: Boolean
-)
-
-data class CinemaApiCinemasWrapper(
-    val cinemas: List<CinemaApiCinema>
-) : CinemaApiBody
-
-data class CinemaApiCinema(
-    val id: String,
-    val groupId: String,
-    val displayName: String,
-    val link: String,
-    val address: String,
-    val bookingUrl: String,
-    val blockOnlineSales: Boolean,
-    val blockOnlineSalesUntil: String
 )

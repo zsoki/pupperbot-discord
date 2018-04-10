@@ -1,4 +1,4 @@
-package hu.suppoze.pupperbot.cinema
+package hu.suppoze.pupperbot.cinema.domain
 
 import hu.suppoze.pupperbot.cinema.api.CinemaApiClient
 import hu.suppoze.pupperbot.cinema.api.CinemaApiFilm

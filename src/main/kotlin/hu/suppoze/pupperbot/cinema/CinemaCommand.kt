@@ -1,5 +1,6 @@
 package hu.suppoze.pupperbot.cinema
 
+import hu.suppoze.pupperbot.cinema.domain.CinemaScheduleProvider
 import hu.suppoze.pupperbot.common.AvailableCommands
 import hu.suppoze.pupperbot.common.ChatCommand
 import hu.suppoze.pupperbot.common.UseCase

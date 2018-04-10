@@ -1,5 +1,6 @@
 package hu.suppoze.pupperbot.cinema
 
+import hu.suppoze.pupperbot.cinema.domain.Schedule
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.MessageEmbed
 import java.awt.Color

@@ -2,10 +2,13 @@ package hu.suppoze.pupperbot.di
 
 import hu.suppoze.pupperbot.PupperBot
 import hu.suppoze.pupperbot.cinema.CinemaScheduleEmbedBuilder
-import hu.suppoze.pupperbot.cinema.CinemaScheduleProvider
-import hu.suppoze.pupperbot.cinema.CinemaScheduleProviderImpl
 import hu.suppoze.pupperbot.cinema.api.CinemaApiClient
+import hu.suppoze.pupperbot.cinema.api.OkHttpBaseCinemaApiClient
+import hu.suppoze.pupperbot.cinema.domain.CinemaScheduleProvider
+import hu.suppoze.pupperbot.cinema.domain.CinemaScheduleProviderImpl
 import hu.suppoze.pupperbot.common.CommandParser
+import hu.suppoze.pupperbot.common.http.OkHttpRestClient
+import hu.suppoze.pupperbot.common.http.RestClient
 import hu.suppoze.pupperbot.giphy.GiphyServer
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -19,10 +22,10 @@ val appModule = Kodein.Module {
 }
 
 val cinemaModule = Kodein.Module {
-    constant("cinemaApiUrl") with "https://www.cinemacity.hu/hu/data-api-service/v1/quickbook/10102/"
     bind<CinemaScheduleProvider>() with singleton { CinemaScheduleProviderImpl() }
     bind<CinemaScheduleEmbedBuilder>() with singleton { CinemaScheduleEmbedBuilder() }
-    bind<CinemaApiClient>() with singleton { CinemaApiClient() } // TODO replace with RestClient
+    bind<CinemaApiClient>() with singleton { OkHttpBaseCinemaApiClient() }
+    bind<RestClient>() with singleton { OkHttpRestClient() }
 }
 
 val serverModule = Kodein.Module {

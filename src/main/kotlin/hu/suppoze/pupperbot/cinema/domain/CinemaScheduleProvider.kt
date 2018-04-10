@@ -1,4 +1,4 @@
-package hu.suppoze.pupperbot.cinema
+package hu.suppoze.pupperbot.cinema.domain
 
 interface CinemaScheduleProvider {
 
