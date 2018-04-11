@@ -1,4 +1,4 @@
-package hu.suppoze.pupperbot.giphy.model
+package hu.suppoze.pupperbot.giphy.api
 
 data class GiphyRandomResponse(
     val data: GiphyGifObject,

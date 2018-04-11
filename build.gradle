@@ -75,8 +75,6 @@ dependencies {
     // Networking
     compile "com.squareup.okhttp3:okhttp-urlconnection:$okhttp_version"
     compile "com.squareup.okhttp3:okhttp:$okhttp_version"
-    compile "com.github.kittinunf.fuel:fuel:$fuel_version"
-    compile "com.github.kittinunf.fuel:fuel-gson:$fuel_version"
     compile "com.google.code.gson:gson:$gson_version"
 
     // DI
