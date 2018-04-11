@@ -1,8 +1,10 @@
 package hu.suppoze.pupperbot.cinema
 
 import hu.suppoze.pupperbot.cinema.domain.Schedule
+import hu.suppoze.pupperbot.di.kodein
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.MessageEmbed
+import org.kodein.di.generic.instance
 import java.awt.Color
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -12,12 +14,14 @@ import java.time.format.DateTimeFormatter
 // TODO: dependency inversion
 class CinemaScheduleEmbedBuilder {
 
+    private val cinemaCityLogoUrl: String by kodein.instance("cinemaCityLogoUrl")
+
     fun buildScheduleEmbed(schedule: Schedule) : MessageEmbed {
         val builder = EmbedBuilder()
-            .setTitle("Cinema City Szeged Műsor")
+            .setTitle("${schedule.cinemaName} vetítések")
             .setDescription(createDescriptionText())
             .setColor(Color.ORANGE)
-            .setImage("http://www.cinemacity.hu/media/iti_cz/imgs/cc_logo.png")
+            .setImage(cinemaCityLogoUrl)
         for (screening in schedule.screenings) {
             builder.addField(
                 screening.key.title,

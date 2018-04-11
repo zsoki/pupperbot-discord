@@ -17,7 +17,7 @@ class CinemaApiClientImpl : CinemaApiClient {
 
     override fun getCinemas(): List<CinemaApiCinema> {
         val responseBody = client.get(
-            cinemaFilmEventsRequestUrl,
+            cinemaListRequestUrl,
             listOf("attr" to "", "lang" to "hu_HU"),
             getUntilIsoDate()
         )
@@ -28,7 +28,7 @@ class CinemaApiClientImpl : CinemaApiClient {
 
     override fun getFilmEventsFor(cinemaId: String, date: LocalDate): CinemaApiFilmEvents {
         val responseBody = client.get(
-            cinemaListRequestUrl,
+            cinemaFilmEventsRequestUrl,
             listOf("attr" to "", "lang" to "hu_HU"),
             cinemaId, date.format(DateTimeFormatter.ISO_DATE)
         )

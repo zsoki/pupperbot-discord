@@ -28,6 +28,7 @@ val appModule = Kodein.Module {
 val cinemaModule = Kodein.Module {
     constant("cinemaListRequestUrl") with "http://www.cinemacity.hu/hu/data-api-service/v1/quickbook/10102/cinemas/with-event/until/{{0}}"
     constant("cinemaFilmEventsRequestUrl") with "http://www.cinemacity.hu/hu/data-api-service/v1/quickbook/10102/film-events/in-cinema/{{0}}/at-date/{{1}}"
+    constant("cinemaCityLogoUrl") with "https://www.cinemacity.hu/xmedia/img/10102/default-placeholder.png"
 
     bind<CinemaScheduleProvider>() with singleton { CinemaScheduleProviderImpl() }
     bind<CinemaScheduleEmbedBuilder>() with singleton { CinemaScheduleEmbedBuilder() }
