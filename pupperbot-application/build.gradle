@@ -1,19 +1,5 @@
 group 'hu.suppoze.pupperbot'
-version '0.3.5'
-
-buildscript {
-    repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
-    }
-
-    dependencies {
-        classpath "com.github.jengelman.gradle.plugins:shadow:$shadow_plugin_version"
-        classpath "org.junit.platform:junit-platform-gradle-plugin:$junit_gradle_plugin_version"
-    }
-}
-
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'org.junit.platform.gradle.plugin'
+version '0.3.6'
 
 mainClassName = "hu.suppoze.pupperbot.app.PupperBotApplication"
 
@@ -56,7 +42,7 @@ dependencies {
 }
 
 task copyResources(type: Copy) {
-    from 'token_release.txt'
+    from '../token_release.txt'
     into 'build/libs'
     rename ('token_release.txt', 'token.txt')
 }

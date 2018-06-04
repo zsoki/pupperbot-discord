@@ -92,7 +92,7 @@ object BootLoader {
 
         // The main program has already prepared the shaded jar. We just need to replace the jars.
         val oldJar = File("./" + config?.jarName)
-        oldJar.delete()
+        if (oldJar.exists()) oldJar.delete()
 
         val newJar = File("./update/target/" + config?.jarName)
         newJar.renameTo(oldJar)

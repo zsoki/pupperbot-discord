@@ -1,9 +1,9 @@
 group 'hu.suppoze.pupperbot.bootloader'
-version '0.3'
+version '0.4'
 
 mainClassName = "hu.suppoze.pupperbot.bootloader.BootLoader"
 
 task copyResources(type: Copy) {
     from 'bootloader.json'
-    into 'build/install/pupperbot-bootloader/bin'
+    into 'build/install/pupperbot-bootloader-shadow/bin'
 }

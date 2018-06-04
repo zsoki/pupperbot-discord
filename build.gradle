@@ -3,18 +3,16 @@ buildscript {
         kotlin_version = '1.2.41'
         kotlinx_coroutines_version = '0.22.5'
         kotlin_logging_version = '1.5.4'
-        log4j2_version = '2.10.0'
+        log4j2_version = '2.11.0'
         reflections_version = '0.9.11'
         okhttp_version = '3.10.0'
-        fuel_version = '1.12.1'
-        gson_version = '2.8.2'
-        jda_version = '3.6.0_354'
+        gson_version = '2.8.5'
+        jda_version = '3.6.0_372'
         kodein_version = '5.0.0'
-        jsoup_version = '1.11.2'
-        shadow_plugin_version = '2.0.3'
-        junit_gradle_plugin_version = '1.1.0'
-        junit_jupiter_version = '5.1.0'
-        mockk_version = '1.7.15'
+        jsoup_version = '1.11.3'
+        shadow_plugin_version = '2.0.4'
+        junit_jupiter_version = '5.2.0'
+        mockk_version = '1.8.1'
     }
 
     repositories {
@@ -24,10 +22,12 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.github.jengelman.gradle.plugins:shadow:$shadow_plugin_version"
     }
 }
 
 allprojects {
+    apply plugin : 'com.github.johnrengelman.shadow'
     apply plugin : 'kotlin'
     apply plugin : 'application'
 
