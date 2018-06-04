@@ -2,12 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-bootloader.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-bootloader.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-bootloader_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-bootloader_main.iml" group="pupperbot-bootloader" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-bootloader_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-bootloader_test.iml" group="pupperbot-bootloader" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot_main.iml" group="pupperbot" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot_test.iml" group="pupperbot" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-application/pupperbot-application.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-application/pupperbot-application.iml" group="pupperbot-application" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-application/pupperbot-application_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-application/pupperbot-application_main.iml" group="pupperbot-application" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-application/pupperbot-application_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-application/pupperbot-application_test.iml" group="pupperbot-application" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader.iml" group="pupperbot-bootloader" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader_main.iml" group="pupperbot-bootloader" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader_test.iml" group="pupperbot-bootloader" />
+      <module fileurl="file://$PROJECT_DIR$/pupperbot-root.iml" filepath="$PROJECT_DIR$/pupperbot-root.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-root_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-root_main.iml" group="pupperbot-root" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-root_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-root_test.iml" group="pupperbot-root" />
     </modules>
   </component>
 </project>

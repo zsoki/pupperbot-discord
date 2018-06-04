@@ -1,0 +1,66 @@
+group 'hu.suppoze.pupperbot'
+version '0.3.5'
+
+buildscript {
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:$shadow_plugin_version"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:$junit_gradle_plugin_version"
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'org.junit.platform.gradle.plugin'
+
+mainClassName = "hu.suppoze.pupperbot.app.PupperBotApplication"
+
+repositories {
+    jcenter()
+    maven { url "https://jitpack.io" }
+    maven { url "https://dl.bintray.com/kodein-framework/Kodein-DI/" } // KodeIn workaround
+}
+
+dependencies {
+    // Kotlin
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinx_coroutines_version"
+
+    // Logging
+    compile "io.github.microutils:kotlin-logging:$kotlin_logging_version"
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2_version"
+
+    // Discord
+    compile "net.dv8tion:JDA:$jda_version"
+
+    // Reflection
+    compile "org.reflections:reflections:$reflections_version"
+
+    // Networking
+    compile "com.squareup.okhttp3:okhttp-urlconnection:$okhttp_version"
+    compile "com.squareup.okhttp3:okhttp:$okhttp_version"
+
+    // DI
+    compile "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
+
+    // Scraper
+    compile "org.jsoup:jsoup:$jsoup_version"
+
+    // Testing
+    testCompile "org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version"
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version"
+    testRuntime "org.junit.jupiter:junit-jupiter-params:$junit_jupiter_version"
+    testCompile "io.mockk:mockk:$mockk_version"
+}
+
+task copyResources(type: Copy) {
+    from 'token_release.txt'
+    into 'build/libs'
+    rename ('token_release.txt', 'token.txt')
+}
+
+test {
+    useJUnitPlatform()
+}
