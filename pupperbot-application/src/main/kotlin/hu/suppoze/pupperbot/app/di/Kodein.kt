@@ -8,11 +8,15 @@ import hu.suppoze.pupperbot.app.cinema.api.CinemaApiClient
 import hu.suppoze.pupperbot.app.cinema.api.CinemaApiClientImpl
 import hu.suppoze.pupperbot.app.cinema.domain.CinemaScheduleProvider
 import hu.suppoze.pupperbot.app.cinema.domain.CinemaScheduleProviderImpl
-import hu.suppoze.pupperbot.app.common.CommandParser
+import hu.suppoze.pupperbot.app.common.command.CommandParser
 import hu.suppoze.pupperbot.app.common.http.OkHttpRestClient
 import hu.suppoze.pupperbot.app.common.http.RestClient
 import hu.suppoze.pupperbot.app.giphy.api.GiphyClient
 import hu.suppoze.pupperbot.app.giphy.api.GiphyClientImpl
+import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertImporter
+import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertImporterImpl
+import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertScheduler
+import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertSchedulerImpl
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
@@ -43,8 +47,16 @@ val giphyModule = Kodein.Module {
     bind<GiphyClient>() with singleton { GiphyClientImpl() }
 }
 
+val spawnAlertModule = Kodein.Module {
+    constant("spawnAlertScheduleFileLocation") with "./spawnAlertSchedule.csv"
+
+    bind<SpawnAlertImporter>() with singleton { SpawnAlertImporterImpl() }
+    bind<SpawnAlertScheduler>() with singleton { SpawnAlertSchedulerImpl() }
+}
+
 val kodein = Kodein {
     import(appModule)
     import(cinemaModule)
     import(giphyModule)
+    import(spawnAlertModule)
 }

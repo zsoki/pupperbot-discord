@@ -1,8 +1,8 @@
 package hu.suppoze.pupperbot.app.say
 
-import hu.suppoze.pupperbot.app.common.AvailableCommands
-import hu.suppoze.pupperbot.app.common.ChatCommand
-import hu.suppoze.pupperbot.app.common.UseCase
+import hu.suppoze.pupperbot.app.common.command.AvailableCommands
+import hu.suppoze.pupperbot.app.common.command.ChatCommand
+import hu.suppoze.pupperbot.app.common.command.UseCase
 
 @ChatCommand(type = AvailableCommands.SAY)
 class SayCommand : UseCase() {

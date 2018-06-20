@@ -72,8 +72,8 @@
     <orderEntry type="library" name="Gradle: org.opentest4j:opentest4j:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: io.mockk:mockk-common:1.8.1" level="project" />
     <orderEntry type="library" name="Gradle: io.mockk:mockk-agent-jvm:1.8.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.platform:junit-platform-engine:1.2.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Gradle: club.minnced:opus-java-api:1.0.2" level="project" />
     <orderEntry type="library" name="Gradle: club.minnced:opus-java-natives:1.0.2" level="project" />
     <orderEntry type="library" name="Gradle: io.mockk:mockk-dsl:1.8.1" level="project" />

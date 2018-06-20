@@ -1,4 +1,4 @@
-package hu.suppoze.pupperbot.app.common
+package hu.suppoze.pupperbot.app.common.command
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 
