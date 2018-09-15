@@ -1,4 +1,4 @@
-package hu.suppoze.pupperbot.app.common
+package hu.suppoze.pupperbot.app.common.command
 
 import mu.KotlinLogging
 import org.reflections.Reflections

@@ -1,9 +1,9 @@
 package hu.suppoze.pupperbot.app.cinema
 
 import hu.suppoze.pupperbot.app.cinema.domain.CinemaScheduleProvider
-import hu.suppoze.pupperbot.app.common.AvailableCommands
-import hu.suppoze.pupperbot.app.common.ChatCommand
-import hu.suppoze.pupperbot.app.common.UseCase
+import hu.suppoze.pupperbot.app.common.command.AvailableCommands
+import hu.suppoze.pupperbot.app.common.command.ChatCommand
+import hu.suppoze.pupperbot.app.common.command.UseCase
 import hu.suppoze.pupperbot.app.di.kodein
 import org.kodein.di.generic.instance
 

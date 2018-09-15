@@ -1,4 +1,4 @@
-package hu.suppoze.pupperbot.app.common
+package hu.suppoze.pupperbot.app.common.command
 
 enum class AvailableCommands(val commandString: String) {
 
@@ -29,6 +29,11 @@ enum class AvailableCommands(val commandString: String) {
 
     CINEMA_CITY("mozi") {
         override val description = "Fetches movies shown in Cinema City Szeged."
+        override val example = "`;$commandString`"
+    },
+
+    SPAWN_ALERT("spawnalert") {
+        override val description = "Subscribe to Black Desert boss spawn notifications."
         override val example = "`;$commandString`"
     };
 

@@ -1,9 +1,10 @@
 package hu.suppoze.pupperbot.app
 
-import hu.suppoze.pupperbot.app.common.CommandParser
-import hu.suppoze.pupperbot.app.common.CommandProvider
+import hu.suppoze.pupperbot.app.common.command.CommandParser
+import hu.suppoze.pupperbot.app.common.command.CommandProvider
 import hu.suppoze.pupperbot.app.common.TokenProvider
 import hu.suppoze.pupperbot.app.di.kodein
+import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertScheduler
 import mu.KLogging
 import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA
@@ -20,6 +21,7 @@ class PupperBot {
     companion object : KLogging()
 
     private val commandParser: CommandParser by kodein.instance()
+    private val spawnAlertScheduler: SpawnAlertScheduler by kodein.instance()
 
     lateinit var api: JDA
 
@@ -37,6 +39,7 @@ class PupperBot {
     private fun onReady(event: ReadyEvent) {
         logger.info { "ReadyEvent received, WOOF! " }
         PupperBotApplication.listenForCommand()
+        spawnAlertScheduler.start()
     }
 
     @SubscribeEvent

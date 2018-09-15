@@ -1,8 +1,8 @@
 package hu.suppoze.pupperbot.app.pron
 
-import hu.suppoze.pupperbot.app.common.AvailableCommands
-import hu.suppoze.pupperbot.app.common.ChatCommand
-import hu.suppoze.pupperbot.app.common.UseCase
+import hu.suppoze.pupperbot.app.common.command.AvailableCommands
+import hu.suppoze.pupperbot.app.common.command.ChatCommand
+import hu.suppoze.pupperbot.app.common.command.UseCase
 import org.jsoup.Jsoup
 
 @ChatCommand(type = AvailableCommands.GIFLAND_NSFW)

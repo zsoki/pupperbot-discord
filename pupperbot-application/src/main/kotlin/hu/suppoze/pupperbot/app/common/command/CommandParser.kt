@@ -1,4 +1,4 @@
-package hu.suppoze.pupperbot.app.common
+package hu.suppoze.pupperbot.app.common.command
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 
@@ -6,7 +6,7 @@ class CommandParser {
 
     fun isValidCommand(rawContent: String): Boolean {
         val appendedCommands = CommandProvider.getCommandStrings()
-            .reduce { first, second -> first + "|" + second }
+            .reduce { first, second -> "$first|$second" }
         return rawContent.matches(Regex("^;($appendedCommands).*"))
     }
 

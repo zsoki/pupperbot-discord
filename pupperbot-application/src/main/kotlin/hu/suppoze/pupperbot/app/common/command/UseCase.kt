@@ -1,4 +1,4 @@
-package hu.suppoze.pupperbot.app.common
+package hu.suppoze.pupperbot.app.common.command
 
 import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.launch

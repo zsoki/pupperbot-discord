@@ -18,6 +18,8 @@ object PupperBotApplication {
     private val pupperBot: PupperBot by kodein.instance()
     private val consoleScanner: Scanner = Scanner(System.`in`)
 
+    lateinit var inviteUrl: String
+
     @JvmStatic
     fun main(args: Array<String>) {
         val reader = FileReader("./token.txt")
@@ -27,7 +29,7 @@ object PupperBotApplication {
 
         pupperBot.init()
 
-        logInviteLink()
+        inviteUrl = logInviteLink()
     }
 
     fun listenForCommand() = launch(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) {
@@ -59,7 +61,7 @@ object PupperBotApplication {
         System.exit(exitCode)
     }
 
-    private fun logInviteLink() {
+    private fun logInviteLink(): String {
         val inviteUrl = pupperBot.api.asBot().getInviteUrl(
             listOf(
                 Permission.MESSAGE_WRITE,
@@ -67,7 +69,8 @@ object PupperBotApplication {
                 Permission.MESSAGE_MANAGE
             )
         )
-        logger.info { "Invite link: $inviteUrl" }
+        logger.info { "Invite link created: $inviteUrl" }
+        return inviteUrl
     }
 
     private object ExitCodes {
