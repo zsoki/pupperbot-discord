@@ -6,10 +6,10 @@ import hu.suppoze.pupperbot.app.cinema.api.CinemaApiFilm
 import hu.suppoze.pupperbot.app.cinema.api.CinemaApiFilmEvents
 import hu.suppoze.pupperbot.app.di.kodein
 import hu.suppoze.pupperbot.app.util.containsAsciiPrintableIgnoreCase
-import kotlinx.coroutines.experimental.channels.Channel
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.newSingleThreadContext
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
 import org.kodein.di.generic.instance
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -27,7 +27,7 @@ class CinemaScheduleProviderImpl : CinemaScheduleProvider {
         (0..7).map { LocalDate.now().plusDays(it.toLong()) }
             .forEach { launch(scheduleContext) { channel.send(getMoviesForDay(cinema.id, it)) } }
 
-        (0..7).forEach {
+        (0..7).forEach { _ ->
             val screeningsByMovie = channel.receive()
             mergeScreenings(screeningsByMovie, nextWeekScreenings)
         }
@@ -49,8 +49,9 @@ class CinemaScheduleProviderImpl : CinemaScheduleProvider {
         filmEvents: CinemaApiFilmEvents
     ) = Pair(
         Movie(film.name, film.length, film.attributeIds),
-        filmEvents.events.filter { event -> event.filmId == film.id }
-            .map { LocalDateTime.parse(it.eventDateTime) }
+        filmEvents.events.asSequence()
+            .filter { event -> event.filmId == film.id }
+            .map { LocalDateTime.parse(it.eventDateTime) }.toList()
     )
 
     private fun mergeScreenings(

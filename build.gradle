@@ -1,23 +1,25 @@
 buildscript {
     ext {
-        kotlin_version = '1.2.41'
-        kotlinx_coroutines_version = '0.22.5'
-        kotlin_logging_version = '1.5.4'
-        log4j2_version = '2.11.0'
+        kotlin_version = '1.3-M2'
+        kotlinx_coroutines_version = '0.26.0-eap13'
+        kotlin_logging_version = '1.6.10'
+        log4j2_version = '2.11.1'
         reflections_version = '0.9.11'
-        okhttp_version = '3.10.0'
+        okhttp_version = '3.11.0'
         gson_version = '2.8.5'
-        jda_version = '3.6.0_372'
-        kodein_version = '5.0.0'
+        jda_version = '3.7.1_422'
+        kodein_version = '5.2.0'
         jsoup_version = '1.11.3'
         shadow_plugin_version = '2.0.4'
-        junit_jupiter_version = '5.2.0'
-        mockk_version = '1.8.1'
+        junit_jupiter_version = '5.3.1'
+        mockk_version = '1.8.7'
     }
 
     repositories {
         mavenCentral()
+        jcenter()
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "http://dl.bintray.com/kotlin/kotlin-eap" }
     }
 
     dependencies {
@@ -34,30 +36,22 @@ allprojects {
     repositories {
         mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "http://dl.bintray.com/kotlin/kotlin-eap" }
     }
 
     dependencies {
         compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
         compile "com.google.code.gson:gson:$gson_version"
     }
-
-    kapt {
-        generateStubs = true
-    }
+//
+//    kapt {
+//        generateStubs = true
+//        mapDiagnosticLocations = true
+//    }
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
         kotlinOptions {
             jvmTarget = "1.8"
         }
-    }
-
-    kotlin {
-        experimental {
-            coroutines "enable"
-        }
-    }
-
-    kapt {
-        mapDiagnosticLocations = true
     }
 }

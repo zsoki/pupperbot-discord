@@ -2,8 +2,7 @@ package hu.suppoze.pupperbot.app
 
 import hu.suppoze.pupperbot.app.common.TokenProvider
 import hu.suppoze.pupperbot.app.di.kodein
-import kotlinx.coroutines.experimental.asCoroutineDispatcher
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
 import mu.KotlinLogging
 import net.dv8tion.jda.core.Permission
 import org.kodein.di.generic.instance
@@ -32,28 +31,29 @@ object PupperBotApplication {
         inviteUrl = logInviteLink()
     }
 
-    fun listenForCommand() = launch(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) {
-        while (isActive) {
-            logger.info { "Listening for user input on System.in" }
-            val command = consoleScanner.next() ?: continue
+    fun listenForCommand() =
+        GlobalScope.launch(Executors.newSingleThreadExecutor().asCoroutineDispatcher(), CoroutineStart.DEFAULT, null, {
+            while (isActive) {
+                logger.info { "Listening for user input on System.in" }
+                val command = consoleScanner.next() ?: continue
 
-            when (command) {
-                "logout" -> logoutAndShutdown(
-                    command,
-                    ExitCodes.EXIT_CODE_NORMAL
-                )
-                "restart" -> logoutAndShutdown(
-                    command,
-                    ExitCodes.EXIT_CODE_RESTART
-                )
-                "update" -> logoutAndShutdown(
-                    command,
-                    ExitCodes.EXIT_CODE_UPDATE
-                )
-                else -> logger.trace { "Unrecognized command." }
+                when (command) {
+                    "logout" -> logoutAndShutdown(
+                        command,
+                        ExitCodes.EXIT_CODE_NORMAL
+                    )
+                    "restart" -> logoutAndShutdown(
+                        command,
+                        ExitCodes.EXIT_CODE_RESTART
+                    )
+                    "update" -> logoutAndShutdown(
+                        command,
+                        ExitCodes.EXIT_CODE_UPDATE
+                    )
+                    else -> logger.trace { "Unrecognized command." }
+                }
             }
-        }
-    }
+        })
 
     private fun logoutAndShutdown(command: String, exitCode: Int) {
         logger.info { "command=$command msg='Shutting down with ExitCode: $exitCode'" }

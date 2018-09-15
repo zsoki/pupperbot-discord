@@ -1,8 +1,8 @@
 package hu.suppoze.pupperbot.app
 
+import hu.suppoze.pupperbot.app.common.TokenProvider
 import hu.suppoze.pupperbot.app.common.command.CommandParser
 import hu.suppoze.pupperbot.app.common.command.CommandProvider
-import hu.suppoze.pupperbot.app.common.TokenProvider
 import hu.suppoze.pupperbot.app.di.kodein
 import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertScheduler
 import mu.KLogging
@@ -31,7 +31,7 @@ class PupperBot {
             .setGame(Game.playing(";help for commands"))
             .setEventManager(AnnotatedEventManager())
             .addEventListener(this)
-            .buildBlocking()
+            .build().awaitReady()
     }
 
     @Suppress("UNUSED_PARAMETER") // Annotations are processed at runtime
