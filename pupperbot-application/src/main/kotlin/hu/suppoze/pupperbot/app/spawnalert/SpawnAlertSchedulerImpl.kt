@@ -23,13 +23,13 @@ class SpawnAlertSchedulerImpl : SpawnAlertScheduler {
         schedule = spawnAlertImporter.importSchedule()
 
         with(schedule!!) {
-            GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+            GlobalScope.launch {
                 while (true) {
-                    delay(10, TimeUnit.SECONDS)
+                    delay(10)
                     val time = LocalDateTime.now()
                     spawnEntries.forEach { alertWithinThreshold(time, it, true) }
                 }
-            })
+            }
         }
     }
 

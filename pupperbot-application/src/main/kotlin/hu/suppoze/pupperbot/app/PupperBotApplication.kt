@@ -2,7 +2,10 @@ package hu.suppoze.pupperbot.app
 
 import hu.suppoze.pupperbot.app.common.TokenProvider
 import hu.suppoze.pupperbot.app.di.kodein
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import net.dv8tion.jda.core.Permission
 import org.kodein.di.generic.instance
@@ -31,8 +34,8 @@ object PupperBotApplication {
         inviteUrl = logInviteLink()
     }
 
-    fun listenForCommand() =
-        GlobalScope.launch(Executors.newSingleThreadExecutor().asCoroutineDispatcher(), CoroutineStart.DEFAULT, null, {
+    fun listenForCommand() {
+        GlobalScope.launch(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) {
             while (isActive) {
                 logger.info { "Listening for user input on System.in" }
                 val command = consoleScanner.next() ?: continue
@@ -53,7 +56,8 @@ object PupperBotApplication {
                     else -> logger.trace { "Unrecognized command." }
                 }
             }
-        })
+        }
+    }
 
     private fun logoutAndShutdown(command: String, exitCode: Int) {
         logger.info { "command=$command msg='Shutting down with ExitCode: $exitCode'" }
@@ -66,7 +70,8 @@ object PupperBotApplication {
             listOf(
                 Permission.MESSAGE_WRITE,
                 Permission.MESSAGE_READ,
-                Permission.MESSAGE_MANAGE
+                Permission.MESSAGE_MANAGE,
+                Permission.MESSAGE_HISTORY
             )
         )
         logger.info { "Invite link created: $inviteUrl" }
