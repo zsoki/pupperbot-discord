@@ -5,8 +5,7 @@ import hu.suppoze.pupperbot.app.spawnalert.domain.Alert
 import hu.suppoze.pupperbot.app.spawnalert.domain.SpawnAlertSchedule
 import hu.suppoze.pupperbot.app.spawnalert.domain.SpawnEntry
 import hu.suppoze.pupperbot.app.spawnalert.domain.SubscriptionEvent
-import kotlinx.coroutines.experimental.delay
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
 import net.dv8tion.jda.core.entities.MessageChannel
 import org.kodein.di.generic.instance
 import java.time.Duration
@@ -24,9 +23,9 @@ class SpawnAlertSchedulerImpl : SpawnAlertScheduler {
         schedule = spawnAlertImporter.importSchedule()
 
         with(schedule!!) {
-            launch {
+            GlobalScope.launch {
                 while (true) {
-                    delay(10, TimeUnit.SECONDS)
+                    delay(10)
                     val time = LocalDateTime.now()
                     spawnEntries.forEach { alertWithinThreshold(time, it, true) }
                 }

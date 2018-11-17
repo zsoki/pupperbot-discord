@@ -1,7 +1,7 @@
 package hu.suppoze.pupperbot.app.common.command
 
-import kotlinx.coroutines.experimental.DefaultDispatcher
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mu.KLogging
 
 abstract class UseCase {
@@ -23,7 +23,7 @@ abstract class UseCase {
 
     fun executeAsync(commandContext: CommandContext) {
         this.commandContext = commandContext
-        launch(DefaultDispatcher) {
+        GlobalScope.launch {
             try {
                 onExecute()
                 onComplete()

@@ -23,13 +23,13 @@ import org.kodein.di.generic.singleton
 import org.kodein.di.generic.with
 
 
-val appModule = Kodein.Module {
+val appModule = Kodein.Module("appModule") {
     bind<CommandParser>() with singleton { CommandParser() }
     bind<PupperBot>() with singleton { PupperBot() }
     bind<Gson>() with singleton { GsonBuilder().create() }
 }
 
-val cinemaModule = Kodein.Module {
+val cinemaModule = Kodein.Module("cinemaModule") {
     constant("cinemaListRequestUrl") with "http://www.cinemacity.hu/hu/data-api-service/v1/quickbook/10102/cinemas/with-event/until/{{0}}"
     constant("cinemaFilmEventsRequestUrl") with "http://www.cinemacity.hu/hu/data-api-service/v1/quickbook/10102/film-events/in-cinema/{{0}}/at-date/{{1}}"
     constant("cinemaCityLogoUrl") with "https://www.cinemacity.hu/xmedia/img/10102/default-placeholder.png"
@@ -40,14 +40,14 @@ val cinemaModule = Kodein.Module {
     bind<RestClient>() with singleton { OkHttpRestClient() }
 }
 
-val giphyModule = Kodein.Module {
+val giphyModule = Kodein.Module("giphyModule") {
     constant("giphyRandomUrl") with "http://api.giphy.com/v1/gifs/random"
     constant("giphySearchUrl") with "http://api.giphy.com/v1/gifs/search"
 
     bind<GiphyClient>() with singleton { GiphyClientImpl() }
 }
 
-val spawnAlertModule = Kodein.Module {
+val spawnAlertModule = Kodein.Module("spawnAlertModule") {
     constant("spawnAlertScheduleFileLocation") with "./spawnAlertSchedule.csv"
 
     bind<SpawnAlertImporter>() with singleton { SpawnAlertImporterImpl() }
