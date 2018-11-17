@@ -10,7 +10,6 @@ import net.dv8tion.jda.core.entities.MessageChannel
 import org.kodein.di.generic.instance
 import java.time.Duration
 import java.time.LocalDateTime
-import java.util.concurrent.TimeUnit
 
 class SpawnAlertSchedulerImpl : SpawnAlertScheduler {
 
@@ -20,7 +19,7 @@ class SpawnAlertSchedulerImpl : SpawnAlertScheduler {
     private var schedule: SpawnAlertSchedule? = null
 
     override fun start() {
-        schedule = spawnAlertImporter.importSchedule()
+        schedule = spawnAlertImporter.loadSchedule()
 
         with(schedule!!) {
             GlobalScope.launch {

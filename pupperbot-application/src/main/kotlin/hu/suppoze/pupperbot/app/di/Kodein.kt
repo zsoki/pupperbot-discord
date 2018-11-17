@@ -17,6 +17,7 @@ import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertImporter
 import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertImporterImpl
 import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertScheduler
 import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertSchedulerImpl
+import org.jetbrains.exposed.sql.Database
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
@@ -54,9 +55,14 @@ val spawnAlertModule = Kodein.Module("spawnAlertModule") {
     bind<SpawnAlertScheduler>() with singleton { SpawnAlertSchedulerImpl() }
 }
 
+val databaseModule = Kodein.Module("databaseModule") {
+    constant("dbInstance") with Database.connect("jdbc:sqlite/data/data.db", driver = "org.sqlite.JDBC")
+}
+
 val kodein = Kodein {
     import(appModule)
     import(cinemaModule)
     import(giphyModule)
     import(spawnAlertModule)
+    import(databaseModule)
 }

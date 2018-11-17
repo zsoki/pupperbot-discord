@@ -4,7 +4,7 @@ import hu.suppoze.pupperbot.app.spawnalert.domain.SpawnAlertSchedule
 
 interface SpawnAlertImporter {
 
-    fun importSchedule(): SpawnAlertSchedule
+    fun loadSchedule(): SpawnAlertSchedule
 
     fun saveSchedule(schedule: SpawnAlertSchedule)
 

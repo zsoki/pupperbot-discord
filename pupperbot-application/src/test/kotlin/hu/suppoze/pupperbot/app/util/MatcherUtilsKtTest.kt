@@ -7,12 +7,7 @@ import java.util.stream.Stream
 
 internal class MatcherUtilsKtTest {
 
-    data class PathParamReplacerData(
-        val rawUrl: String,
-        val params: List<String>,
-        val expectedUrl: String
-    )
-
+    @Suppress("unused")
     private fun pathParamReplacerDataProvider(): Stream<PathParamReplacerData> {
         return Stream.of(
             PathParamReplacerData(
@@ -44,5 +39,11 @@ internal class MatcherUtilsKtTest {
         val replaced = data.rawUrl.withPathParams(*data.params.toTypedArray())
         assertEquals(data.expectedUrl, replaced)
     }
+
+    data class PathParamReplacerData(
+        val rawUrl: String,
+        val params: List<String>,
+        val expectedUrl: String
+    )
 
 }
