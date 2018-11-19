@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
 
 class SpawnAlertImporterImpl : SpawnAlertImporter {
 
-    private val spawnAlertScheduleFileLocation: String by kodein.instance("spawnAlertScheduleFileLocation")
+    private val spawnAlertScheduleFileLocation: String by kodein.instance("spawnAlertScheduleResource")
 
     override fun loadSchedule(): SpawnAlertSchedule {
         var scheduleString = getLatestScheduleFromDb()

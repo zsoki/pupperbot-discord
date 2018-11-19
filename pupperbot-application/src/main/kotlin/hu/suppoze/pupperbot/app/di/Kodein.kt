@@ -49,7 +49,7 @@ val giphyModule = Kodein.Module("giphyModule") {
 }
 
 val spawnAlertModule = Kodein.Module("spawnAlertModule") {
-    constant("spawnAlertScheduleFileLocation") with "./spawnAlertSchedule.csv"
+    constant("spawnAlertScheduleResource") with "spawnAlertSchedule.csv"
 
     bind<SpawnAlertImporter>() with singleton { SpawnAlertImporterImpl() }
     bind<SpawnAlertScheduler>() with singleton { SpawnAlertSchedulerImpl() }
