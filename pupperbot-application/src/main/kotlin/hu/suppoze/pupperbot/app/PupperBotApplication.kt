@@ -1,6 +1,5 @@
 package hu.suppoze.pupperbot.app
 
-import hu.suppoze.pupperbot.app.common.TokenProvider
 import hu.suppoze.pupperbot.app.di.kodein
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.asCoroutineDispatcher
