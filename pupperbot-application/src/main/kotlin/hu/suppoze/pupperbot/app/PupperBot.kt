@@ -1,10 +1,9 @@
 package hu.suppoze.pupperbot.app
 
-import hu.suppoze.pupperbot.app.common.TokenProvider
-import hu.suppoze.pupperbot.app.common.command.CommandParser
-import hu.suppoze.pupperbot.app.common.command.CommandProvider
+import hu.suppoze.pupperbot.app.command.CommandParser
+import hu.suppoze.pupperbot.app.command.CommandProvider
 import hu.suppoze.pupperbot.app.di.kodein
-import hu.suppoze.pupperbot.app.spawnalert.SpawnAlertScheduler
+import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertScheduler
 import mu.KLogging
 import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA

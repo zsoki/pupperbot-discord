@@ -1,6 +1,6 @@
 package hu.suppoze.pupperbot.app.data
 
-import hu.suppoze.pupperbot.app.spawnalert.repository.ScheduleStringTable
+import hu.suppoze.pupperbot.app.command.spawnalert.repository.ScheduleStringTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.TransactionManager
