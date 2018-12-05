@@ -12,7 +12,7 @@ buildscript {
         jsoup_version = '1.11.3'
         shadow_plugin_version = '4.0.2'
         junit_jupiter_version = '5.3.1'
-        mockk_version = '1.8.13.kotlin13'
+        mockk_version = '1.8.13'
         exposed_version = '0.11.2'
         xerial_sqlite_version = '3.21.0.1'
     }

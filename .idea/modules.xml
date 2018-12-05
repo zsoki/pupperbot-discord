@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader.iml" group="pupperbot-bootloader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader_main.iml" group="pupperbot-bootloader" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-bootloader/pupperbot-bootloader_test.iml" group="pupperbot-bootloader" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pupperbot-root.iml" filepath="$PROJECT_DIR$/.idea/pupperbot-root.iml" />
       <module fileurl="file://$PROJECT_DIR$/pupperbot-root.iml" filepath="$PROJECT_DIR$/pupperbot-root.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-root_main.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-root_main.iml" group="pupperbot-root" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/pupperbot-root_test.iml" filepath="$PROJECT_DIR$/.idea/modules/pupperbot-root_test.iml" group="pupperbot-root" />

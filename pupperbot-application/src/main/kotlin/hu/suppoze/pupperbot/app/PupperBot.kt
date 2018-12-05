@@ -4,6 +4,7 @@ import hu.suppoze.pupperbot.app.command.CommandParser
 import hu.suppoze.pupperbot.app.command.CommandProvider
 import hu.suppoze.pupperbot.app.di.kodein
 import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertScheduler
+import hu.suppoze.pupperbot.app.reaction.ReactionCallbackCache
 import mu.KLogging
 import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA
@@ -11,6 +12,7 @@ import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
 import net.dv8tion.jda.core.events.ReadyEvent
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent
 import net.dv8tion.jda.core.hooks.AnnotatedEventManager
 import net.dv8tion.jda.core.hooks.SubscribeEvent
 import org.kodein.di.generic.instance
@@ -20,6 +22,7 @@ class PupperBot {
     companion object : KLogging()
 
     private val commandParser: CommandParser by kodein.instance()
+    private val reactionCallbackCache: ReactionCallbackCache by kodein.instance()
     private val spawnAlertScheduler: SpawnAlertScheduler by kodein.instance()
 
     lateinit var api: JDA
@@ -33,7 +36,7 @@ class PupperBot {
             .build().awaitReady()
     }
 
-    @Suppress("UNUSED_PARAMETER") // Annotations are processed at runtime
+    @Suppress("unused_parameter", "unused")
     @SubscribeEvent
     private fun onReady(event: ReadyEvent) {
         logger.info { "ReadyEvent received, WOOF! " }
@@ -41,6 +44,7 @@ class PupperBot {
         spawnAlertScheduler.start()
     }
 
+    @Suppress("unused")
     @SubscribeEvent
     private fun onMessageReceived(event: MessageReceivedEvent) {
         val rawContent = event.message.contentRaw
@@ -49,5 +53,11 @@ class PupperBot {
             val commandContext = commandParser.buildCommandContext(event)
             CommandProvider.getUseCaseFor(commandContext.rawCommand)?.executeAsync(commandContext)
         }
+    }
+
+    @Suppress("unused")
+    @SubscribeEvent
+    private fun onMessageReceived(event: MessageReactionAddEvent) {
+        reactionCallbackCache.executeAwaiting(event)
     }
 }

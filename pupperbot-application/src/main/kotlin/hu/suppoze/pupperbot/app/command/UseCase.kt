@@ -1,10 +1,16 @@
 package hu.suppoze.pupperbot.app.command
 
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import mu.KLogging
+import kotlin.coroutines.CoroutineContext
 
-abstract class UseCase {
+abstract class UseCase : CoroutineScope {
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Default + SupervisorJob()
 
     companion object : KLogging()
 
@@ -23,7 +29,7 @@ abstract class UseCase {
 
     fun executeAsync(commandContext: CommandContext) {
         this.commandContext = commandContext
-        GlobalScope.launch {
+        launch {
             try {
                 onExecute()
                 onComplete()
