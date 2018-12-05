@@ -17,6 +17,7 @@ import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertImporter
 import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertImporterImpl
 import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertScheduler
 import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertSchedulerImpl
+import hu.suppoze.pupperbot.app.reaction.ReactionCallbackCache
 import org.jetbrains.exposed.sql.Database
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -26,6 +27,7 @@ import org.kodein.di.generic.with
 
 val appModule = Kodein.Module("appModule") {
     bind<CommandParser>() with singleton { CommandParser() }
+    bind<ReactionCallbackCache>() with singleton { ReactionCallbackCache() }
     bind<PupperBot>() with singleton { PupperBot() }
     bind<Gson>() with singleton { GsonBuilder().create() }
 }

@@ -14,7 +14,7 @@ class GiphySearchCommand : UseCase() {
 
     private val giphyClient: GiphyClient by kodein.instance()
 
-    override fun onExecute() {
+    override suspend fun onExecute() {
         val phrase = commandContext.rawArgs ?: throw IllegalStateException("Param string was null.")
 
         val urlEncodedPhrase = URLEncoder.encode(phrase, Charsets.UTF_8.name())

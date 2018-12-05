@@ -6,12 +6,15 @@ import hu.suppoze.pupperbot.app.command.spawnalert.domain.SpawnAlertSchedule
 import hu.suppoze.pupperbot.app.command.spawnalert.domain.SpawnEntry
 import hu.suppoze.pupperbot.app.command.spawnalert.domain.SubscriptionEvent
 import kotlinx.coroutines.*
+import mu.KLogging
 import net.dv8tion.jda.core.entities.MessageChannel
 import org.kodein.di.generic.instance
 import java.time.Duration
 import java.time.LocalDateTime
 
 class SpawnAlertSchedulerImpl : SpawnAlertScheduler {
+
+    companion object : KLogging()
 
     private val spawnAlertImporter: SpawnAlertImporter by kodein.instance()
 
@@ -24,9 +27,13 @@ class SpawnAlertSchedulerImpl : SpawnAlertScheduler {
         with(schedule!!) {
             GlobalScope.launch {
                 while (true) {
-                    delay(10)
-                    val time = LocalDateTime.now()
-                    spawnEntries.forEach { alertWithinThreshold(time, it, true) }
+                    try {
+                        delay(15000)
+                        val time = LocalDateTime.now()
+                        spawnEntries.forEach { alertWithinThreshold(time, it, true) }
+                    } catch (ex: Exception) {
+                        logger.error(ex) { "Exception during spawn alert scheduler loop: ${ex.message}" }
+                    }
                 }
             }
         }

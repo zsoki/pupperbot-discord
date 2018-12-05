@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 @ChatCommand(type = AvailableCommands.EMOTE_REPORT)
 class EmoteReportCommand : UseCase() {
 
-    override fun onExecute() {
+    override suspend fun onExecute() {
         val server = commandContext.event.guild
         val reportMap = mutableMapOf<String, Int>()
 

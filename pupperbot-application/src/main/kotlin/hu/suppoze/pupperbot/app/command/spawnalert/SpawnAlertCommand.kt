@@ -12,7 +12,7 @@ class SpawnAlertCommand : UseCase() {
 
     private val spawnAlertScheduler: SpawnAlertScheduler by kodein.instance()
 
-    override fun onExecute() {
+    override suspend fun onExecute() {
         val channel = commandContext.event.channel
         val subscriptionEvent = spawnAlertScheduler.subscribeChannel(channel)
 

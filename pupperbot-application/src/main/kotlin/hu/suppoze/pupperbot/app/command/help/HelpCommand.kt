@@ -8,7 +8,7 @@ import hu.suppoze.pupperbot.app.command.UseCase
 @ChatCommand(type = AvailableCommands.HELP)
 class HelpCommand : UseCase() {
 
-    override fun onExecute() {
+    override suspend fun onExecute() {
         var helpString = "To invite PupperBot to your server, use this link: <${PupperBotApplication.inviteUrl}>\n\n"
 
         for (item in AvailableCommands.values()) {

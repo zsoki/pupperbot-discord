@@ -1,33 +1,24 @@
 package hu.suppoze.pupperbot.app.reaction
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import mu.KLogging
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent
-import kotlin.coroutines.CoroutineContext
 
 typealias ReactionCallback = suspend () -> Unit
 
-class ReactionCallbackCache : IReactionCallbackCache, CoroutineScope {
+class ReactionCallbackCache : IReactionCallbackCache {
 
     companion object : KLogging()
 
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Default + SupervisorJob()
-
     private val reactionCallbackMap = mutableMapOf<Int, ReactionCallback>() // TODO Thread safe?
 
-    override fun executeAwaiting(messageReactionAddEvent: MessageReactionAddEvent) {
-        launch {
-            try {
-                val reactionCallbackKey = getHashForMessageReactionEvent(messageReactionAddEvent).hashCode()
-                reactionCallbackMap[reactionCallbackKey]?.invoke()
-            } catch (e: Exception) {
-                logger.error(e) { "Error during reaction callback: ${e.message}" }
-            }
+    override suspend fun executeAwaiting(messageReactionAddEvent: MessageReactionAddEvent) {
+        try {
+            val reactionCallbackKey = getHashForMessageReactionEvent(messageReactionAddEvent).hashCode()
+            reactionCallbackMap[reactionCallbackKey]?.invoke()
+            reactionCallbackMap.remove(reactionCallbackKey)
+        } catch (e: Exception) {
+            logger.error(e) { "Error during reaction callback: ${e.message}" }
         }
     }
 

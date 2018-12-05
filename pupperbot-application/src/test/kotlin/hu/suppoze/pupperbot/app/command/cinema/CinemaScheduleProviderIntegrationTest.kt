@@ -2,6 +2,7 @@ package hu.suppoze.pupperbot.app.command.cinema
 
 import hu.suppoze.pupperbot.app.command.cinema.domain.CinemaScheduleProviderImpl
 import hu.suppoze.pupperbot.app.command.cinema.domain.Schedule
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
@@ -15,7 +16,7 @@ internal class CinemaScheduleProviderIntegrationTest {
     private lateinit var schedule: Schedule
 
     @Test
-    fun fetchNextWeekSchedule() {
+    fun fetchNextWeekSchedule() = runBlocking {
         givenCity("szeged")
         whenNextWeekScheduleIsRequested()
         thenScheduleShouldNotBeEmpty()
@@ -25,7 +26,7 @@ internal class CinemaScheduleProviderIntegrationTest {
         this.city = city
     }
 
-    private fun whenNextWeekScheduleIsRequested() {
+    private suspend fun whenNextWeekScheduleIsRequested() {
         schedule = cinemaScheduleProvider.fetchNextWeekSchedule(city)
     }
 

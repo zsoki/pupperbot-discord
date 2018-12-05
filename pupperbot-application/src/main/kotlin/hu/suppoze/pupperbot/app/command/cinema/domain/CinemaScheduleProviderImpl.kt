@@ -6,9 +6,8 @@ import hu.suppoze.pupperbot.app.command.cinema.api.CinemaApiFilm
 import hu.suppoze.pupperbot.app.command.cinema.api.CinemaApiFilmEvents
 import hu.suppoze.pupperbot.app.di.kodein
 import hu.suppoze.pupperbot.app.util.containsAsciiPrintableIgnoreCase
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import org.kodein.di.generic.instance
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -17,20 +16,18 @@ class CinemaScheduleProviderImpl : CinemaScheduleProvider {
 
     private val cinemaClient: CinemaApiClient by kodein.instance()
 
-    override fun fetchNextWeekSchedule(city: String): Schedule = runBlocking {
-        val cinema = findCinema(city)
-        val channel = Channel<Map<Movie, List<LocalDateTime>>>()
-        val nextWeekScreenings = HashMap<Movie, MutableList<LocalDateTime>>()
+    override suspend fun fetchNextWeekSchedule(city: String): Schedule {
+        return coroutineScope {
+            val cinema = findCinema(city)
+            val nextWeekScreenings = HashMap<Movie, MutableList<LocalDateTime>>()
 
-        (0..7).map { LocalDate.now().plusDays(it.toLong()) }
-            .forEach { launch { channel.send(getMoviesForDay(cinema.id, it)) } }
+            (0..7).map { LocalDate.now().plusDays(it.toLong()) }
+                .map { async { getMoviesForDay(cinema.id, it) } }
+                .forEach { mergeScreenings(it.await(), nextWeekScreenings) }
 
-        (0..7).forEach { _ ->
-            val screeningsByMovie = channel.receive()
-            mergeScreenings(screeningsByMovie, nextWeekScreenings)
+            val screenings = nextWeekScreenings.map { Screening(it.key, it.value) }
+            Schedule(cinema.displayName, screenings)
         }
-
-        Schedule(cinema.displayName, nextWeekScreenings)
     }
 
     private fun findCinema(city: String): CinemaApiCinema =

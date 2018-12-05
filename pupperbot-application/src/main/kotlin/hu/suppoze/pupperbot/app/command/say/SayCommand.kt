@@ -7,7 +7,7 @@ import hu.suppoze.pupperbot.app.command.UseCase
 @ChatCommand(type = AvailableCommands.SAY)
 class SayCommand : UseCase() {
 
-    override fun onExecute() {
+    override suspend fun onExecute() {
         if (commandContext.rawArgs == null || commandContext.rawArgs!!.isEmpty()) {
             throw IllegalArgumentException("Argument string is null or empty")
         }

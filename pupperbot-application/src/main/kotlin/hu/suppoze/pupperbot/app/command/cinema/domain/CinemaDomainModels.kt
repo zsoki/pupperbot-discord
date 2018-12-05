@@ -4,7 +4,12 @@ import java.time.LocalDateTime
 
 data class Schedule(
     val cinemaName: String,
-    val screenings: Map<Movie, List<LocalDateTime>>
+    val screenings: List<Screening>
+)
+
+class Screening(
+    val movie: Movie,
+    val screeningTimes: List<LocalDateTime>
 )
 
 data class Movie(

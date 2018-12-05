@@ -12,7 +12,7 @@ class GiphyRandomCommand : UseCase() {
 
     private val giphyServer: GiphyClient by kodein.instance()
 
-    override fun onExecute() {
+    override suspend fun onExecute() {
         val tag = commandContext.rawArgs ?: throw IllegalStateException("Tag was null.")
         val url = giphyServer.getRandomGiphyBy(tag)
 

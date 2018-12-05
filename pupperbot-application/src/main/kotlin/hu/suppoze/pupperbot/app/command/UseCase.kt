@@ -1,16 +1,8 @@
 package hu.suppoze.pupperbot.app.command
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 import mu.KLogging
-import kotlin.coroutines.CoroutineContext
 
-abstract class UseCase : CoroutineScope {
-
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Default + SupervisorJob()
+abstract class UseCase {
 
     companion object : KLogging()
 
@@ -27,18 +19,16 @@ abstract class UseCase : CoroutineScope {
             .queue()
     }
 
-    fun executeAsync(commandContext: CommandContext) {
+    suspend fun executeAsync(commandContext: CommandContext) {
         this.commandContext = commandContext
-        launch {
-            try {
-                onExecute()
-                onComplete()
-            } catch (ex: Exception) {
-                onError(ex)
-            }
+        try {
+            onExecute()
+            onComplete()
+        } catch (ex: Exception) {
+            onError(ex)
         }
     }
 
-    protected abstract fun onExecute()
+    protected abstract suspend fun onExecute()
 
 }

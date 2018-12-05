@@ -8,7 +8,7 @@ import org.jsoup.Jsoup
 @ChatCommand(type = AvailableCommands.GIFLAND_NSFW)
 class PronCommand : UseCase() {
 
-    override fun onExecute() {
+    override suspend fun onExecute() {
         if (!commandContext.event.textChannel.isNSFW) {
             commandContext.event.textChannel.sendMessage("You naughty boy, this channel is SFW!").queue()
             return
