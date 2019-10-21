@@ -33,6 +33,9 @@
 # IntelliJ
 /out/
 /pupperbot-bootloader/out/
+/pupperbot-bootloader/build/
+/pupperbot-application/out/
+/pupperbot-application/build/
 /build/
 
 # mpeltonen/sbt-idea plugin
@@ -81,3 +84,5 @@ run.bat
 .idea/dictionaries
 codeStyleSettings.xml
 /.idea/codeStyles/
+/.idea/usage.statistics.xml
+/.idea/jarRepositories.xml

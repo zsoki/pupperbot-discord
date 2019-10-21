@@ -67,6 +67,6 @@ class PupperBot : CoroutineScope {
     @SubscribeEvent
     private fun onMessageReceived(event: MessageReactionAddEvent) = launch {
         if (event.reaction.isSelf) return@launch
-        reactionCallbackCache.executeAwaiting(event)
+        reactionCallbackCache.executeCachedReaction(event)
     }
 }

@@ -5,8 +5,8 @@ import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent
 
 interface IReactionCallbackCache {
 
-    suspend fun executeAwaiting(messageReactionAddEvent: MessageReactionAddEvent)
+    suspend fun executeCachedReaction(messageReactionAddEvent: MessageReactionAddEvent)
 
-    fun queueCallbacksFor(messageReceivedEvent: MessageReceivedEvent, callbacksToEmotes: Map<String, ReactionCallback>)
+    fun cacheReactionsForEvent(messageReceivedEvent: MessageReceivedEvent, callbacksToEmotes: Map<String, ReactionCallback>)
 
 }

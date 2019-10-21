@@ -23,12 +23,12 @@ class CinemaCommand : UseCase() {
 
         val reactionEmojiPool = CuratedReactionEmojiPool()
         val emoteToScreening = schedule.screenings.associateBy { reactionEmojiPool.getNext() }
-        val emoteToReactionCallback = emoteToScreening
+        val emoteToCallbackMap = emoteToScreening
             .mapValues { cinemaScheduleEmbedBuilder.buildScreeningTimeEmbed(it.value) }
             .mapValues { createReactionCallback(it) }
 
         val movieEmbed = cinemaScheduleEmbedBuilder.buildMovieListEmbed(schedule.cinemaName, emoteToScreening)
-        reactionCallbackCache.queueCallbacksFor(commandContext.event, emoteToReactionCallback)
+        reactionCallbackCache.cacheReactionsForEvent(commandContext.event, emoteToCallbackMap)
 
         val sentMessage = commandContext.event.textChannel.sendMessage(movieEmbed).complete()
         emoteToScreening.forEach { sentMessage.addReaction(it.key).queue() }

@@ -3,6 +3,7 @@ package hu.suppoze.pupperbot.app.reaction
 import mu.KLogging
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent
+import java.util.concurrent.ConcurrentHashMap
 
 typealias ReactionCallback = suspend () -> Unit
 
@@ -10,9 +11,9 @@ class ReactionCallbackCache : IReactionCallbackCache {
 
     companion object : KLogging()
 
-    private val reactionCallbackMap = mutableMapOf<Int, ReactionCallback>() // TODO Thread safe?
+    private val reactionCallbackMap = ConcurrentHashMap<Int, ReactionCallback>()
 
-    override suspend fun executeAwaiting(messageReactionAddEvent: MessageReactionAddEvent) {
+    override suspend fun executeCachedReaction(messageReactionAddEvent: MessageReactionAddEvent) {
         try {
             val reactionCallbackKey = getHashForMessageReactionEvent(messageReactionAddEvent).hashCode()
             reactionCallbackMap[reactionCallbackKey]?.invoke()
@@ -22,7 +23,7 @@ class ReactionCallbackCache : IReactionCallbackCache {
         }
     }
 
-    override fun queueCallbacksFor(
+    override fun cacheReactionsForEvent(
         messageReceivedEvent: MessageReceivedEvent,
         callbacksToEmotes: Map<String, ReactionCallback>
     ) {
