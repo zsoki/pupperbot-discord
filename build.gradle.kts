@@ -17,18 +17,18 @@ allprojects {
     apply(plugin = "kotlin")
     apply(plugin = "com.github.johnrengelman.shadow")
     apply(plugin = "application")
-}
 
-dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("com.google.code.gson:gson:2.8.5")
-}
-
-tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+    tasks {
+        compileKotlin {
+            kotlinOptions.jvmTarget = "1.8"
+        }
+        compileTestKotlin {
+            kotlinOptions.jvmTarget = "1.8"
+        }
     }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+
+    dependencies {
+        implementation(kotlin("stdlib-jdk8"))
+        implementation("com.google.code.gson:gson:2.8.5")
     }
 }
