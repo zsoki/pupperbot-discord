@@ -48,6 +48,7 @@ cmake-build-*/
 
 # IntelliJ
 out/
+build/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -111,3 +112,4 @@ build.gradle.rej
 run.bat
 /token.txt
 /token_release.txt
+data.db
