@@ -14,6 +14,7 @@ allprojects {
         jcenter()
     }
 
+    apply(plugin = "kotlin")
     apply(plugin = "com.github.johnrengelman.shadow")
     apply(plugin = "application")
 }
@@ -25,9 +26,9 @@ dependencies {
 
 tasks {
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.11"
+        kotlinOptions.jvmTarget = "1.8"
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.11"
+        kotlinOptions.jvmTarget = "1.8"
     }
 }
