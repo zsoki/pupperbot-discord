@@ -2,6 +2,7 @@ package hu.suppoze.pupperbot.app.http
 
 import hu.suppoze.pupperbot.app.util.withPathParams
 import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -21,9 +22,9 @@ class OkHttpRestClient : RestClient {
         params: List<Pair<String, Any>>?,
         vararg pathParams: String
     ): String {
-        val replacedUrl = url.withPathParams(*pathParams)
+        val replacedUrl: String = url.withPathParams(*pathParams)
 
-        val httpUrl = HttpUrl.parse(replacedUrl)!!.newBuilder()
+        val httpUrl = replacedUrl.toHttpUrlOrNull()!!.newBuilder()
             .addAllQueryParams(params)
             .build()
 
@@ -33,7 +34,7 @@ class OkHttpRestClient : RestClient {
 
         restClient.newCall(request).execute().use { response ->
             if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            return response.body()!!.string()
+            return response.body!!.string()
         }
     }
 

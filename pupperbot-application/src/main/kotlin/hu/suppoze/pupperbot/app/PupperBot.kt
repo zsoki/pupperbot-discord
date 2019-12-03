@@ -10,15 +10,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import mu.KLogging
-import net.dv8tion.jda.core.AccountType
-import net.dv8tion.jda.core.JDA
-import net.dv8tion.jda.core.JDABuilder
-import net.dv8tion.jda.core.entities.Game
-import net.dv8tion.jda.core.events.ReadyEvent
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent
-import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent
-import net.dv8tion.jda.core.hooks.AnnotatedEventManager
-import net.dv8tion.jda.core.hooks.SubscribeEvent
+import net.dv8tion.jda.api.AccountType
+import net.dv8tion.jda.api.JDA
+import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.entities.Activity
+import net.dv8tion.jda.api.events.ReadyEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
+import net.dv8tion.jda.api.hooks.AnnotatedEventManager
+import net.dv8tion.jda.api.hooks.SubscribeEvent
 import org.kodein.di.generic.instance
 import kotlin.coroutines.CoroutineContext
 
@@ -38,9 +38,9 @@ class PupperBot : CoroutineScope {
     fun init() {
         api = JDABuilder(AccountType.BOT)
             .setToken(TokenProvider.token)
-            .setGame(Game.playing(";help for commands"))
+            .setActivity(Activity.playing(";help for commands"))
             .setEventManager(AnnotatedEventManager())
-            .addEventListener(this)
+            .addEventListeners(this)
             .build().awaitReady()
     }
 

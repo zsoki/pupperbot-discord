@@ -7,7 +7,7 @@ import hu.suppoze.pupperbot.app.command.spawnalert.domain.SpawnEntry
 import hu.suppoze.pupperbot.app.command.spawnalert.domain.SubscriptionEvent
 import kotlinx.coroutines.*
 import mu.KLogging
-import net.dv8tion.jda.core.entities.MessageChannel
+import net.dv8tion.jda.api.entities.MessageChannel
 import org.kodein.di.generic.instance
 import java.time.Duration
 import java.time.LocalDateTime

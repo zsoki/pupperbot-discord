@@ -8,7 +8,7 @@ import hu.suppoze.pupperbot.app.di.kodein
 import hu.suppoze.pupperbot.app.reaction.CuratedReactionEmojiPool
 import hu.suppoze.pupperbot.app.reaction.ReactionCallback
 import hu.suppoze.pupperbot.app.reaction.ReactionCallbackCache
-import net.dv8tion.jda.core.entities.MessageEmbed
+import net.dv8tion.jda.api.entities.MessageEmbed
 import org.kodein.di.generic.instance
 
 @ChatCommand(type = AvailableCommands.CINEMA_CITY)

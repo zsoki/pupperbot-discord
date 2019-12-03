@@ -6,6 +6,7 @@ abstract class UseCase {
 
     companion object : KLogging()
 
+    // TODO pass as a parameter instead
     protected lateinit var commandContext: CommandContext
 
     private val onComplete: () -> Unit = {

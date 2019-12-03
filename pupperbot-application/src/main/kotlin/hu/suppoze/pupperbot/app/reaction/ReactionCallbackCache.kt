@@ -1,8 +1,8 @@
 package hu.suppoze.pupperbot.app.reaction
 
 import mu.KLogging
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent
-import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
 import java.util.concurrent.ConcurrentHashMap
 
 typealias ReactionCallback = suspend () -> Unit
@@ -44,7 +44,7 @@ class ReactionCallbackCache : IReactionCallbackCache {
     private fun getHashForMessageReactionEvent(messageReactionAddEvent: MessageReactionAddEvent) = EventKeyHashArgs(
         guildName = messageReactionAddEvent.guild.id,
         textChannelName = messageReactionAddEvent.textChannel.id,
-        initiatedUser = messageReactionAddEvent.member.user.id,
+        initiatedUser = messageReactionAddEvent.user.id,
         emojiUnicode = messageReactionAddEvent.reactionEmote.name
     )
 

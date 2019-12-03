@@ -3,8 +3,8 @@ package hu.suppoze.pupperbot.app.command.emotereport
 import hu.suppoze.pupperbot.app.command.AvailableCommands
 import hu.suppoze.pupperbot.app.command.ChatCommand
 import hu.suppoze.pupperbot.app.command.UseCase
-import net.dv8tion.jda.core.MessageBuilder
-import net.dv8tion.jda.core.entities.Message
+import net.dv8tion.jda.api.MessageBuilder
+import net.dv8tion.jda.api.entities.Message
 import java.time.LocalDateTime
 
 @ChatCommand(type = AvailableCommands.EMOTE_REPORT)
@@ -50,6 +50,6 @@ class EmoteReportCommand : UseCase() {
     }
 
     private fun messageCreatedSince(message: Message, months: Long) =
-        message.creationTime.toLocalDateTime().isAfter(LocalDateTime.now().minusMonths(months))
+        message.timeCreated.toLocalDateTime().isAfter(LocalDateTime.now().minusMonths(months))
 
 }

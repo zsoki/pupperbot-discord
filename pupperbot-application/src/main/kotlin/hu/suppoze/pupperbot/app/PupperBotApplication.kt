@@ -6,7 +6,7 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
-import net.dv8tion.jda.core.Permission
+import net.dv8tion.jda.api.Permission
 import org.kodein.di.generic.instance
 import java.io.FileReader
 import java.util.*
@@ -65,7 +65,7 @@ object PupperBotApplication {
     }
 
     private fun logInviteLink(): String {
-        val inviteUrl = pupperBot.api.asBot().getInviteUrl(
+        val inviteUrl = pupperBot.api.getInviteUrl(
             listOf(
                 Permission.MESSAGE_WRITE,
                 Permission.MESSAGE_READ,

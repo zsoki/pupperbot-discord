@@ -13,6 +13,6 @@ class SayCommand : UseCase() {
         }
 
         commandContext.event.message.delete().queue()
-        commandContext.event.textChannel.sendMessage(commandContext.rawArgs).queue()
+        commandContext.event.textChannel.sendMessage(commandContext.rawArgs!!).queue()
     }
 }
