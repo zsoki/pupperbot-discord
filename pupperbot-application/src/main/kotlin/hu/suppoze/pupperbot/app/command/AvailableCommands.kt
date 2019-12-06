@@ -32,11 +32,6 @@ enum class AvailableCommands(val commandString: String) {
         override val example = "`;$commandString`"
     },
 
-    SPAWN_ALERT("spawnalert") {
-        override val description = "Subscribe to Black Desert boss spawn notifications."
-        override val example = "`;$commandString`"
-    },
-
     EMOTE_REPORT("emotereport") {
         override val description = "Generate guild emote usage statistics on the server."
         override val example = "`;$commandString`"
