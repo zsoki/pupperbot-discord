@@ -3,7 +3,6 @@ package hu.suppoze.pupperbot.app
 import hu.suppoze.pupperbot.app.command.CommandParser
 import hu.suppoze.pupperbot.app.command.CommandProvider
 import hu.suppoze.pupperbot.app.di.kodein
-import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertScheduler
 import hu.suppoze.pupperbot.app.reaction.ReactionCallbackCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +30,6 @@ class PupperBot : CoroutineScope {
 
     private val commandParser: CommandParser by kodein.instance()
     private val reactionCallbackCache: ReactionCallbackCache by kodein.instance()
-    private val spawnAlertScheduler: SpawnAlertScheduler by kodein.instance()
 
     lateinit var api: JDA
 
@@ -49,7 +47,6 @@ class PupperBot : CoroutineScope {
     private fun onReady(event: ReadyEvent) {
         logger.info { "ReadyEvent received, WOOF! " }
         PupperBotApplication.listenForCommand()
-        spawnAlertScheduler.start()
     }
 
     @Suppress("unused")

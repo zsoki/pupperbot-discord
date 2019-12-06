@@ -1,5 +1,5 @@
 group = "hu.suppoze.pupperbot.bootloader"
-version = "0.4.0"
+version = "0.5.0"
 
 application {
     mainClassName = "hu.suppoze.pupperbot.bootloader.BootLoader"

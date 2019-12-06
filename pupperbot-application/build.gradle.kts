@@ -1,5 +1,5 @@
-group = "hu.suppoze.pupperbot"
-version = "0.4.0"
+group = "hu.suppoze.pupperbot.app"
+version = "0.5.0"
 
 application {
     mainClassName = "hu.suppoze.pupperbot.app.PupperBotApplication"
@@ -33,10 +33,6 @@ dependencies {
 
     // Scraper
     implementation("org.jsoup:jsoup:1.12.1")
-
-    // Database
-    implementation("org.jetbrains.exposed:exposed:0.11.2")
-    implementation("org.xerial:sqlite-jdbc:3.21.0.1")
 
     // Testing
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")

@@ -13,12 +13,7 @@ import hu.suppoze.pupperbot.app.http.OkHttpRestClient
 import hu.suppoze.pupperbot.app.http.RestClient
 import hu.suppoze.pupperbot.app.command.giphy.api.GiphyClient
 import hu.suppoze.pupperbot.app.command.giphy.api.GiphyClientImpl
-import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertImporter
-import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertImporterImpl
-import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertScheduler
-import hu.suppoze.pupperbot.app.command.spawnalert.SpawnAlertSchedulerImpl
 import hu.suppoze.pupperbot.app.reaction.ReactionCallbackCache
-import org.jetbrains.exposed.sql.Database
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
@@ -50,21 +45,8 @@ val giphyModule = Kodein.Module("giphyModule") {
     bind<GiphyClient>() with singleton { GiphyClientImpl() }
 }
 
-val spawnAlertModule = Kodein.Module("spawnAlertModule") {
-    constant("spawnAlertScheduleResource") with "spawnAlertSchedule.csv"
-
-    bind<SpawnAlertImporter>() with singleton { SpawnAlertImporterImpl() }
-    bind<SpawnAlertScheduler>() with singleton { SpawnAlertSchedulerImpl() }
-}
-
-val databaseModule = Kodein.Module("databaseModule") {
-    constant("dbInstance") with Database.connect("jdbc:sqlite/data/data.db", driver = "org.sqlite.JDBC")
-}
-
 val kodein = Kodein {
     import(appModule)
     import(cinemaModule)
     import(giphyModule)
-    import(spawnAlertModule)
-    import(databaseModule)
 }
