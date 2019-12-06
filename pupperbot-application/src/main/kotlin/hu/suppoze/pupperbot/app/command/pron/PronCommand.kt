@@ -3,6 +3,8 @@ package hu.suppoze.pupperbot.app.command.pron
 import hu.suppoze.pupperbot.app.command.AvailableCommands
 import hu.suppoze.pupperbot.app.command.ChatCommand
 import hu.suppoze.pupperbot.app.command.UseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 
 @ChatCommand(type = AvailableCommands.GIFLAND_NSFW)
@@ -14,8 +16,9 @@ class PronCommand : UseCase() {
             return
         }
 
-        val document = Jsoup.connect("http://porn.gifland.us/").get()
-        val imgUrl = document.select("main.container a img").first().attr("src")
+        val document = withContext(Dispatchers.IO) { Jsoup.connect("http://porn.gifland.club/").get() }
+        val selector = "body > main > div.gf__body.gf__body--image.gf__body--big > a > img"
+        val imgUrl = "https:${document.select(selector).first().attr("src")}"
 
         commandContext.event.textChannel.sendMessage(imgUrl).queue()
     }
