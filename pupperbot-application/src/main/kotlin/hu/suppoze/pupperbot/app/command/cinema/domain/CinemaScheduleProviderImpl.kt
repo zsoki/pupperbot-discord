@@ -4,20 +4,18 @@ import hu.suppoze.pupperbot.app.command.cinema.api.CinemaApiCinema
 import hu.suppoze.pupperbot.app.command.cinema.api.CinemaApiClient
 import hu.suppoze.pupperbot.app.command.cinema.api.CinemaApiFilm
 import hu.suppoze.pupperbot.app.command.cinema.api.CinemaApiFilmEvents
-import hu.suppoze.pupperbot.app.di.kodein
 import hu.suppoze.pupperbot.app.util.containsAsciiPrintableIgnoreCase
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import org.kodein.di.generic.instance
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-class CinemaScheduleProviderImpl : CinemaScheduleProvider {
+class CinemaScheduleProviderImpl(
+    private val cinemaClient: CinemaApiClient
+) : CinemaScheduleProvider {
 
-    private val cinemaClient: CinemaApiClient by kodein.instance()
-
-    override suspend fun fetchNextWeekSchedule(city: String): Schedule {
-        return coroutineScope {
+    override fun fetchNextWeekSchedule(city: String): Schedule {
+        return runBlocking {
             val cinema = findCinema(city)
             val nextWeekScreenings = HashMap<Movie, MutableList<LocalDateTime>>()
 

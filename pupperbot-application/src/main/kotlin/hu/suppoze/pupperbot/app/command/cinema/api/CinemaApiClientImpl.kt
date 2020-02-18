@@ -1,22 +1,21 @@
 package hu.suppoze.pupperbot.app.command.cinema.api
 
 import com.google.gson.Gson
-import hu.suppoze.pupperbot.app.http.RestClient
-import hu.suppoze.pupperbot.app.di.kodein
-import org.kodein.di.generic.instance
+import hu.suppoze.pupperbot.app.http.PupperRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+class CinemaApiClientImpl(
+    private val clientPupper: PupperRestClient,
+    private val cinemaListRequestUrl: String = "cinemaListRequestUrl",
+    private val cinemaFilmEventsRequestUrl: String = "cinemaFilmEventsRequestUrl"
+) : CinemaApiClient {
 
-class CinemaApiClientImpl : CinemaApiClient {
-
-    private val cinemaListRequestUrl: String by kodein.instance("cinemaListRequestUrl")
-    private val cinemaFilmEventsRequestUrl: String by kodein.instance("cinemaFilmEventsRequestUrl")
-    private val client: RestClient by kodein.instance()
-    private val gson: Gson by kodein.instance()
+    // TODO dependency injection
+    private val gson = Gson().newBuilder().create()
 
     override fun getCinemas(): List<CinemaApiCinema> {
-        val responseBody = client.get(
+        val responseBody = clientPupper.get(
             cinemaListRequestUrl,
             listOf("attr" to "", "lang" to "hu_HU"),
             getUntilIsoDate()
@@ -27,7 +26,7 @@ class CinemaApiClientImpl : CinemaApiClient {
     }
 
     override fun getFilmEventsFor(cinemaId: String, date: LocalDate): CinemaApiFilmEvents {
-        val responseBody = client.get(
+        val responseBody = clientPupper.get(
             cinemaFilmEventsRequestUrl,
             listOf("attr" to "", "lang" to "hu_HU"),
             cinemaId, date.format(DateTimeFormatter.ISO_DATE)

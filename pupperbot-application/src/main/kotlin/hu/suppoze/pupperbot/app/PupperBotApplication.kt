@@ -1,33 +1,31 @@
 package hu.suppoze.pupperbot.app
 
-import hu.suppoze.pupperbot.app.di.kodein
+import hu.suppoze.pupperbot.app.command.CommandLibrary
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import mu.KotlinLogging
 import net.dv8tion.jda.api.Permission
-import org.kodein.di.generic.instance
-import java.io.FileReader
+
 import java.util.*
 import java.util.concurrent.Executors
+import kotlin.system.exitProcess
 
 private val logger = KotlinLogging.logger {}
 
 object PupperBotApplication {
 
-    private val pupperBot: PupperBot by kodein.instance()
     private val consoleScanner: Scanner = Scanner(System.`in`)
 
     lateinit var inviteUrl: String
 
+    private lateinit var pupperBot: PupperBot
+
     @JvmStatic
     fun main(args: Array<String>) {
-        val reader = FileReader("./token.txt")
-        val token = reader.readText()
-
-        TokenProvider.token = token
-
+        val commandLibrary = CommandLibrary(pupperConfiguration)
+        pupperBot = PupperBot(commandLibrary, pupperConfiguration.reactionCallbackCache)
         pupperBot.init()
 
         inviteUrl = logInviteLink()
@@ -36,23 +34,27 @@ object PupperBotApplication {
     fun listenForCommand() {
         GlobalScope.launch(Executors.newSingleThreadExecutor().asCoroutineDispatcher()) {
             while (isActive) {
-                logger.info { "Listening for user input on System.in" }
-                val command = consoleScanner.next() ?: continue
+                try {
+                    logger.info { "Listening for user input on System.in" }
+                    val command = consoleScanner.next() ?: continue
 
-                when (command) {
-                    "logout" -> logoutAndShutdown(
-                        command,
-                        ExitCodes.EXIT_CODE_NORMAL
-                    )
-                    "restart" -> logoutAndShutdown(
-                        command,
-                        ExitCodes.EXIT_CODE_RESTART
-                    )
-                    "update" -> logoutAndShutdown(
-                        command,
-                        ExitCodes.EXIT_CODE_UPDATE
-                    )
-                    else -> logger.trace { "Unrecognized command." }
+                    when (command) {
+                        "logout" -> logoutAndShutdown(
+                            command,
+                            ExitCodes.EXIT_CODE_NORMAL
+                        )
+                        "restart" -> logoutAndShutdown(
+                            command,
+                            ExitCodes.EXIT_CODE_RESTART
+                        )
+                        "update" -> logoutAndShutdown(
+                            command,
+                            ExitCodes.EXIT_CODE_UPDATE
+                        )
+                        else -> logger.trace { "Unrecognized command." }
+                    }
+                } catch (e: Exception) {
+                    println("Exception during console command: ${e.message}")
                 }
             }
         }
@@ -61,7 +63,7 @@ object PupperBotApplication {
     private fun logoutAndShutdown(command: String, exitCode: Int) {
         logger.info { "command=$command msg='Shutting down with ExitCode: $exitCode'" }
         pupperBot.api.shutdownNow()
-        System.exit(exitCode)
+        exitProcess(exitCode)
     }
 
     private fun logInviteLink(): String {

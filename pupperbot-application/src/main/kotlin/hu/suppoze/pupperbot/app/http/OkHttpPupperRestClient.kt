@@ -10,7 +10,7 @@ import java.io.IOException
 import java.net.CookieHandler
 import java.net.CookieManager
 
-class OkHttpRestClient : RestClient {
+class OkHttpPupperRestClient : PupperRestClient {
 
     private val cookieHandler: CookieHandler = CookieManager()
     private val restClient: OkHttpClient = OkHttpClient.Builder()

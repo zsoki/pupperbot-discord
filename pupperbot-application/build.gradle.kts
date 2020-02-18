@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 group = "hu.suppoze.pupperbot.app"
 version = "0.5.0"
 
@@ -47,8 +49,12 @@ tasks {
         into("build/libs")
         rename("token_release.txt", "token.txt")
     }
-}
-
-tasks.test {
-    useJUnitPlatform()
+    test {
+        useJUnitPlatform()
+    }
+    compileKotlin {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-XXLanguage:+InlineClasses")
+        }
+    }
 }

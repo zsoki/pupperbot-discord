@@ -2,12 +2,12 @@ package hu.suppoze.pupperbot.app.command
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 
-class CommandParser {
+class CommandParser(
+    private val commandLibrary: CommandLibrary
+) {
 
     fun isValidCommand(rawContent: String): Boolean {
-        val appendedCommands = CommandProvider.getCommandStrings()
-            .reduce { first, second -> "$first|$second" }
-        return rawContent.matches(Regex("^;($appendedCommands).*"))
+        return commandLibrary.keywords.any { rawContent.startsWith(";$it") }
     }
 
     fun buildCommandContext(event: MessageReceivedEvent): CommandContext {

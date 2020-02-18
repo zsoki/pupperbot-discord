@@ -1,16 +1,15 @@
 package hu.suppoze.pupperbot.app.command.emotereport
 
-import hu.suppoze.pupperbot.app.command.AvailableCommands
-import hu.suppoze.pupperbot.app.command.ChatCommand
-import hu.suppoze.pupperbot.app.command.UseCase
+import hu.suppoze.pupperbot.app.command.CommandContext
+import hu.suppoze.pupperbot.app.command.common.CommandExecutor
 import net.dv8tion.jda.api.MessageBuilder
 import net.dv8tion.jda.api.entities.Message
 import java.time.LocalDateTime
 
-@ChatCommand(type = AvailableCommands.EMOTE_REPORT)
-class EmoteReportCommand : UseCase() {
+class EmoteReportExecutor : CommandExecutor {
 
-    override suspend fun onExecute() {
+    // TODO optimize
+    override fun execute(commandContext: CommandContext) {
         val server = commandContext.event.guild
         val reportMap = mutableMapOf<String, Int>()
 
@@ -51,5 +50,4 @@ class EmoteReportCommand : UseCase() {
 
     private fun messageCreatedSince(message: Message, months: Long) =
         message.timeCreated.toLocalDateTime().isAfter(LocalDateTime.now().minusMonths(months))
-
 }

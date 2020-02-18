@@ -7,7 +7,7 @@ data class Schedule(
     val screenings: List<Screening>
 )
 
-class Screening(
+data class Screening(
     val movie: Movie,
     val screeningTimes: List<LocalDateTime>
 )

@@ -2,19 +2,16 @@ package hu.suppoze.pupperbot.app.command.cinema
 
 import hu.suppoze.pupperbot.app.command.cinema.domain.Movie
 import hu.suppoze.pupperbot.app.command.cinema.domain.Screening
-import hu.suppoze.pupperbot.app.di.kodein
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
-import org.kodein.di.generic.instance
 import java.awt.Color
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-// TODO: dependency inversion
 class CinemaScheduleEmbedBuilder {
 
-    private val cinemaCityLogoUrl: String by kodein.instance("cinemaCityLogoUrl")
+    private val cinemaCityLogoUrl = "https://www.cinemacity.hu/xmedia/img/10102/default-placeholder.png"
 
     fun buildMovieListEmbed(cinemaName: String, emoteToScreening: Map<String, Screening>): MessageEmbed {
         val builder = EmbedBuilder()
