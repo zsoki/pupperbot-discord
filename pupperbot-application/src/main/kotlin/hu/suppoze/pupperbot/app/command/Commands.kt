@@ -1,17 +1,12 @@
 package hu.suppoze.pupperbot.app.command
 
-import hu.suppoze.pupperbot.app.command.cinema.CinemaExecutor
-import hu.suppoze.pupperbot.app.command.cinema.CinemaScheduleEmbedBuilder
-import hu.suppoze.pupperbot.app.command.cinema.domain.CinemaScheduleProvider
 import hu.suppoze.pupperbot.app.command.common.CommandExecutor
-import hu.suppoze.pupperbot.app.command.emotereport.EmoteReportExecutor
 import hu.suppoze.pupperbot.app.command.gif.RandomGifExecutor
 import hu.suppoze.pupperbot.app.command.gif.SearchGifExecutor
 import hu.suppoze.pupperbot.app.command.gif.api.PupperGifClient
 import hu.suppoze.pupperbot.app.command.help.HelpExecutor
 import hu.suppoze.pupperbot.app.command.pron.PronExecutor
 import hu.suppoze.pupperbot.app.command.say.SayCommandExecutor
-import hu.suppoze.pupperbot.app.reaction.ReactionCallbackCache
 
 sealed class Command {
     abstract val executor: CommandExecutor
@@ -61,25 +56,6 @@ class PronCommand : PublicCommand() {
     override val keyword = "pron"
     override val description = "Fetches a random NSFW gif from <http://porn.gifland.club>"
     override val example = "`;$keyword`"
-}
-
-class CinemaCommand(
-    reactionCallbackCache: ReactionCallbackCache,
-    cinemaScheduleProvider: CinemaScheduleProvider,
-    cinemaScheduleEmbedBuilder: CinemaScheduleEmbedBuilder
-) : PublicCommand() {
-    override val executor = CinemaExecutor(reactionCallbackCache, cinemaScheduleProvider, cinemaScheduleEmbedBuilder)
-    override val keyword = "mozi"
-    override val description = "Fetches movies shown in Cinema City Szeged."
-    override val example = "`;$keyword`"
-}
-
-class EmoteReportCommand : PublicCommand() {
-    override val executor = EmoteReportExecutor()
-    override val keyword = "emotereport"
-    override val description = "Generate guild emote usage ranking for the server in the last X months."
-    override val example = "`;$keyword 3` - Collects statistics from the last 3 months."
-
 }
 
 class NoopCommand : Command() {

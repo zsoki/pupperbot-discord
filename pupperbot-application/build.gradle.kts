@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 group = "hu.suppoze.pupperbot.app"
 version = "0.5.0"
 
@@ -14,33 +12,23 @@ repositories {
 dependencies {
     // Kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.3.61")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
 
     // Logging
     implementation("io.github.microutils:kotlin-logging:1.7.8")
-    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.12.1")
+    implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.13.0")
 
     // Discord
-    implementation("net.dv8tion:JDA:4.0.0_67")
-
-    // Reflection
-    implementation("org.reflections:reflections:0.9.11")
-
-    // Networking
-    implementation("com.squareup.okhttp3:okhttp-urlconnection:4.2.2")
-    implementation("com.squareup.okhttp3:okhttp:4.2.2")
-
-    // DI
-    implementation("org.kodein.di:kodein-di-generic-jvm:6.4.1")
+    implementation("com.jessecorbett:diskord:1.5.3")
 
     // Scraper
-    implementation("org.jsoup:jsoup:1.12.1")
+    implementation("org.jsoup:jsoup:1.12.2")
 
     // Testing
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.5.2")
-    testImplementation("io.mockk:mockk:1.9")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.6.0")
+    testImplementation("io.mockk:mockk:1.9.3")
 }
 
 tasks {

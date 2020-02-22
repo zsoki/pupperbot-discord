@@ -9,9 +9,7 @@ class CommandLibrary(config: PupperConfiguration) {
         SayCommand(),
         SearchGifCommand(config.gifClient),
         RandomGifCommand(config.gifClient),
-        PronCommand(),
-        CinemaCommand(config.reactionCallbackCache, config.cinemaScheduleProvider, config.cinemaScheduleEmbedBuilder),
-        EmoteReportCommand()
+        PronCommand()
     )
 
     private val commandsByKeyword = commands.associateBy { command -> command.keyword }

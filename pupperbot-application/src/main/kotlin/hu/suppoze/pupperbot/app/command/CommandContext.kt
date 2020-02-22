@@ -1,9 +1,9 @@
 package hu.suppoze.pupperbot.app.command
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import com.jessecorbett.diskord.api.model.Message
 
 data class CommandContext(
-    val event: MessageReceivedEvent,
+    val event: Message,
     val keyword: String,
     val rawArgs: String? = null,
     val argList: List<String>? = null

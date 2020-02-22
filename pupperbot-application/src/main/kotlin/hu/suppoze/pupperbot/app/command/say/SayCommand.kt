@@ -10,7 +10,7 @@ class SayCommandExecutor : CommandExecutor {
             throw IllegalArgumentException("Argument string is null or empty")
         }
 
-        commandContext.event.message.delete().queue()
-        commandContext.event.textChannel.sendMessage(commandContext.rawArgs).queue()
+//        commandContext.event.message.delete().queue() TODO
+//        commandContext.event.textChannel.sendMessage(commandContext.rawArgs).queue()
     }
 }

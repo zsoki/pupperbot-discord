@@ -10,6 +10,6 @@ class RandomGifExecutor(private val gifClient: PupperGifClient) : CommandExecuto
         val tag = commandContext.rawArgs ?: throw IllegalStateException("Tag was null.")
         val url = gifClient.getRandomGifBy(tag)
 
-        commandContext.event.textChannel.sendMessage("${commandContext.rawArgs} $url").queue()
+//        commandContext.event.sendMessage("${commandContext.rawArgs} $url").queue() TODO
     }
 }

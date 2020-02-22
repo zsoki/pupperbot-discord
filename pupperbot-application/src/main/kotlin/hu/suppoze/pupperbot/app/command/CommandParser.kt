@@ -1,6 +1,7 @@
 package hu.suppoze.pupperbot.app.command
 
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent
+import com.jessecorbett.diskord.api.model.Message
+
 
 class CommandParser(
     private val commandLibrary: CommandLibrary
@@ -10,8 +11,8 @@ class CommandParser(
         return commandLibrary.keywords.any { rawContent.startsWith(";$it") }
     }
 
-    fun buildCommandContext(event: MessageReceivedEvent): CommandContext {
-        val commandLine: String = event.message.contentRaw.trimStart(';')
+    fun buildCommandContext(event: Message): CommandContext {
+        val commandLine: String = event.content.trimStart(';')
         val words = commandLine.split(' ')
         return CommandContext(
             event,

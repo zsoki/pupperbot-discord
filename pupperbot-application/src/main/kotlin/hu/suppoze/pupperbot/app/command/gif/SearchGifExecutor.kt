@@ -20,6 +20,6 @@ class SearchGifExecutor(private val gifClient: PupperGifClient) : CommandExecuto
 
         val url =
             giphyRandomResponse.data[ThreadLocalRandom.current().nextInt(upperRange)].url // TODO: outsource randomizer
-        commandContext.event.textChannel.sendMessage("${commandContext.rawArgs} $url").queue()
+//        commandContext.event.textChannel.sendMessage("${commandContext.rawArgs} $url").queue() TODO
     }
 }
