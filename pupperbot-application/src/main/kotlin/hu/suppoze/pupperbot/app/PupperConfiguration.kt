@@ -7,13 +7,10 @@ import java.io.FileReader
 
 val pupperConfiguration = pupperConfiguration {
     token { FileReader("./token.txt").readText() }
-    gifClient { GiphyClient(restClient) }
 }
 
 data class PupperConfiguration(
-    val token: String,
-    val restClient: PupperRestClient,
-    val gifClient: PupperGifClient
+    val token: String
 )
 
 private inline fun pupperConfiguration(lambda: PupperConfigurationBuilder.() -> Unit): PupperConfiguration {
@@ -22,12 +19,8 @@ private inline fun pupperConfiguration(lambda: PupperConfigurationBuilder.() -> 
 
 class PupperConfigurationBuilder {
     lateinit var token: String
-    lateinit var restClient: PupperRestClient
-    lateinit var gifClient: PupperGifClient
 
     inline fun token(provider: () -> String) { token = provider() }
-    inline fun restClient(provider: () -> PupperRestClient) { restClient = provider() }
-    inline fun gifClient(provider: () -> PupperGifClient) { gifClient = provider() }
 
-    fun build() = PupperConfiguration(token, restClient, gifClient)
+    fun build() = PupperConfiguration(token)
 }

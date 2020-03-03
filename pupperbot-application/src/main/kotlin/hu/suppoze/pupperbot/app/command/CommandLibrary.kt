@@ -7,8 +7,6 @@ class CommandLibrary(config: PupperConfiguration) {
     val commands = listOf(
         HelpCommand(this),
         SayCommand(),
-        SearchGifCommand(config.gifClient),
-        RandomGifCommand(config.gifClient),
         PronCommand()
     )
 

@@ -17,7 +17,7 @@ fun main() {
             bot(pupperConfiguration.token) {
                 commands(";") {
                     command("help") {
-                        reply("Work in progress.")
+                        launch { reply("Work in progress.") }
                     }
                 }
             }
